@@ -59,7 +59,7 @@ if (empty($clean_programme_id)) {
 	$podcast_feed->charset = _CHARSET;
 	$podcast_feed->category = $podcastModule->name();
 
-	$url = ICMS_URL . 'images/logo.gif';
+	$url = ICMS_URL . '/images/logo.gif';
 	$podcast_feed->image = array('title' => $podcast_feed->title, 'url' => $url,
 			'link' => PODCAST_URL . 'new.php');
 	$width = $podcastConfig['screenshot_width'];
