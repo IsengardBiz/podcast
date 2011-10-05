@@ -1,0 +1,37 @@
+<div id="podcast-main-content-container">
+
+<{includeq file='db:podcast_header.html'}>
+
+<h2><{$smarty.const._CO_PODCAST_ARCHIVE_ABOUT_THIS_ARCHIVE}></h2>
+<{if $podcast_archive}>
+<div>
+	<div>
+		<p class="podcast_separator"><{$smarty.const._CO_PODCAST_ARCHIVE_OAIPMH_TARGET}></p>
+	</div>
+	<div><strong><{$smarty.const._CO_PODCAST_ARCHIVE_REPOSITORY_NAME}></strong>:
+		<{$podcast_archive.repository_name}></div>
+	<div><strong><{$smarty.const._CO_PODCAST_ARCHIVE_METADATA_PREFIX}></strong>:
+		<{$podcast_archive.metadata_prefix}></div>
+	<div><strong><{$smarty.const._CO_PODCAST_ARCHIVE_GRANULARITY}></strong>:
+		<{$podcast_archive.granularity}></div>
+	<div><strong><{$smarty.const._CO_PODCAST_ARCHIVE_DELETED_RECORD}></strong>:
+		<{$podcast_archive.deleted_record}></div>
+	<div><strong><{$smarty.const._CO_PODCAST_ARCHIVE_EARLIEST_DATE_STAMP}></strong>:
+		<{$podcast_archive.earliest_date_stamp}></div>
+	<div><strong><{$smarty.const._CO_PODCAST_ARCHIVE_ADMIN_EMAIL}></strong>:
+		<{$podcast_archive.admin_email}></div>
+	<div><strong><{$smarty.const._CO_PODCAST_ARCHIVE_PROTOCOL_VERSION}></strong>:
+		<{$podcast_archive.protocol_version}></div>
+	<div><strong><{$smarty.const._CO_PODCAST_ARCHIVE_BASE_URL}></strong>:
+		<{$podcast_archive.base_url}></div>
+	<div><strong><{$smarty.const._CO_PODCAST_ARCHIVE_COMPRESSION}></strong>:
+		<{$podcast_archive.compression}></div>
+
+</div>
+<{else}>
+<{$smarty.const._CO_PODCAST_ARCHIVE_NOT_AVAILABLE}>
+<{/if}>
+
+<{includeq file='db:podcast_footer.html'}>
+
+</div>

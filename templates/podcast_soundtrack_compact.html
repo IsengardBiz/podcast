@@ -1,0 +1,17 @@
+<tr>
+    <td style="padding:0px 20px 1em 0px;"><{$podcast_soundtrack.itemLink}><br />
+        <{$podcast_soundtrack.creator}> (<{$podcast_soundtrack.date}>)
+    </td>
+    <td width="30%">
+		<{if $podcast_soundtrack.download}><{$podcast_soundtrack.download}>
+		<{else}>
+			<a href="<{$podcast_soundtrack.identifier}>"><{$smarty.const._CO_PODCAST_PROGRAMME_DOWNLOAD}></a>
+		<{/if}>
+		<{if $podcast_soundtrack.streaming}> <{$podcast_soundtrack.streaming}>
+		<{else}>
+		<{if $podcast_soundtrack.download || !$podcast_soundtrack.streaming}> | <{/if}>
+			<a href="<{$podcast_soundtrack.identifier}>&amp;m3u_flag=1"><{$smarty.const._CO_PODCAST_PROGRAMME_STREAM}></a>
+		<{/if}>
+		<{if $podcast_soundtrack.format }> [<{$podcast_soundtrack.format}>, <{$podcast_soundtrack.file_size}>]<{/if}>
+	</td>
+</tr>

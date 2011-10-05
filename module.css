@@ -1,0 +1,25 @@
+/**
+* Specific CSS for the module
+*
+* @copyright	http://smartfactory.ca The SmartFactory
+* @license		http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License (GPL)
+* @since		1.0
+* @author		marcan aka Marc-André Lanciault <marcan@smartfactory.ca>
+* @author		Madfish <simon@isengard.biz>
+* @version		$Id$
+*/
+
+.podcast_headertable {padding: 0; margin: 0; border-bottom: 1px solid; margin-bottom: 1em;}
+.podcast_modulename {font-size: 0.8em; text-align: left; font-weight: bold; padding-right: 0.3em; line-height: 18px;}
+.podcast_breadcrumb {font-size: 0.8em; line-height: 18px;}
+.podcast_adminlinks {padding-top: 1em; padding-bottom: 1em; font-size: 0.8em; text-align: center; line-height: 1em;}
+
+/* Holds the entire module content area, adjust the margins and padding to match your theme here */
+#podcast-main-content-container {
+}
+
+/* Used to vertically separate elements, especially floating ones, to neaten up the display */
+.podcast_separator{margin-bottom:1em;}
+
+/* Item metadata (author, date etc) */
+.podcast_info {font-size: 1em; margin-top:1em; margin-bottom:1em;}

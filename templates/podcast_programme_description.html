@@ -1,0 +1,52 @@
+<{if $podcast_programme_view == 'single'}>
+<h2><{if $podcast_programme_rss_button}><{$podcast_programme_rss_button}><{/if}>
+    <{$podcast_programme.title}>
+</h2>
+<{elseif $podcast_programme_view == 'multiple'}>
+<h3 style="clear:left;"><{if $podcast_programme.rss_button}><{$podcast_programme.rss_button}><{/if}>
+    <{$podcast_programme.itemLink}>
+</h3>
+<{/if}>
+<{if $podcast_programme.date || $podcast_programme.publisher || $podcast_programme.rss || $podcast_programme.track_count || $podcast_programme.counter || $podcast_programme.play_all_button}>
+<div class="podcast_info">
+	<{if $podcast_programme.date}>
+	<{$smarty.const._CO_PODCAST_PROGRAMME_DATE}>: <{$podcast_programme.date}>
+	<{/if}>
+	<{if $podcast_programme.date && $podcast_programme.publisher}>
+	|
+	<{/if}>
+	<{if $podcast_programme.publisher}>
+	<{$smarty.const._CO_PODCAST_PROGRAMME_PUBLISHER}>: <{$podcast_programme.publisher}>
+	<{/if}>
+	<{if ($podcast_programme.date || $podcast_programme.publisher) && $podcast_programme.track_count}>
+	|
+	<{/if}>
+	<{if $podcast_programme.track_count}>
+	<{$podcast_programme.track_count}> <{$smarty.const._CO_PODCAST_PROGRAMME_TRACKS}><{if $podcast_programme.track_count > 1}>s<{/if}>
+	<{/if}>
+	<{if ($podcast_programme.date || $podcast_programme.publisher || $podcast_programme.track_count) && $podcast_programme.counter}>
+	|
+	<{/if}>
+	<{if $podcast_programme.counter}><{$podcast_programme.counter}> <{$smarty.const._CO_PODCAST_PROGRAMME_COUNTER}><{if $podcast_programme.counter > 1}>s<{/if}><{/if}>
+	<{if ($podcast_programme.date || $podcast_programme.publisher || $podcast_programme.track_count || $podcast_programme.counter) && $podcast_programme.play_all_button}>
+	|
+	<{/if}>
+	<{if $podcast_programme.play_all_button}><{$podcast_programme.play_all_button}><{/if}>
+</div>
+<{/if}>
+<{if $podcast_programme.cover_path}>
+<div style="float:left; padding: 0px 10px 5px 0px;">
+	<!-- image width is set in module preferences, width takes precedence over height as aspect ratio is maintained -->
+	<{if $podcast_programme.cover_link}>
+	<a href="<{$podcast_programme.cover_link}>"><{resized_image file=$podcast_programme.cover_path width=$podcast_programme.cover_width
+		height="800" fit="inside"}></a>
+	<{else}>
+	<{resized_image file=$podcast_programme.cover_path width=$podcast_programme.cover_width height="800" fit="inside"}>
+	<{/if}>
+</div>
+<{/if}>
+<{if $podcast_programme.description}>
+<div>
+	<{$podcast_programme.description}>
+</div>
+<{/if}>

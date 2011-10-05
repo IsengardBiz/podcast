@@ -1,0 +1,15 @@
+CHANGELOG
+=========
+
+Version 1.2
+-----------
+
+* Added additional sort options for podcast programmes (alphabetical).
+* Fixed whitescreen when recent podcasts block is displayed on the top page.
+* Added missing function that was crashing OAIPMH requests with from/to parameters.
+* Standardised admin menu links.
+* This is the last version of Podcast that will be compatible with the ImpressCMS 1.2.x series.
+
+Version 1.21
+------------
+* 1.3 compatibility fix: Include icmspersistablecontroller.php in class/soundtrack.php

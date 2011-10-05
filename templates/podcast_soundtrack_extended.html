@@ -1,0 +1,57 @@
+<div style="clear:left;">
+    <{if $podcast_soundtrack_view == 'single'}>
+        <div>
+            <h2><a href="<{$podcast_soundtrack.identifier}>"><{$podcast_soundtrack.title}></a></h2>
+        </div>
+    <{elseif $podcast_soundtrack_view == 'multiple'}>
+        <div>
+                <h3><{$podcast_soundtrack.itemLink}></h3>
+        </div>
+    <{/if}>
+    <div class="podcast_info">
+        <p>
+            <{if $podcast_soundtrack.creator}><{$smarty.const._CO_PODCAST_SOUNDTRACK_BY}> <{$podcast_soundtrack.creator}><{/if}><{if $podcast_soundtrack.creator && $podcast_soundtrack.date}>, <{/if}>
+            <{if $podcast_soundtrack.date}><{$podcast_soundtrack.date}><{/if}>
+            <{if ($podcast_soundtrack.creator || $podcast_soundtrack.date) && $podcast_soundtrack.format}> | <{/if}>
+            <{if $podcast_soundtrack.format}><{$podcast_soundtrack.format}><{if $podcast_soundtrack.file_size}>, <{$podcast_soundtrack.file_size}><{/if}><{/if}>
+            <{if ($podcast_soundtrack.creator || $podcast_soundtrack.date || $podcast_soundtrack.format) && $podcast_soundtrack.counter}> | <{/if}>
+            <{if $podcast_soundtrack.counter}><{$podcast_soundtrack.counter}> <{$smarty.const._CO_PODCAST_SOUNDTRACK_COUNTER}><{if $podcast_soundtrack.counter >1}>s<{/if}><{/if}>
+            <{if ($podcast_soundtrack.creator || $podcast_soundtrack.date || $podcast_soundtrack.format || $podcast_soundtrack.counter)
+                && ($podcast_soundtrack.download || $podcast_soundtrack.streaming)}> | <{/if}>
+            <{if $podcast_soundtrack.download}><{$podcast_soundtrack.download}><{/if}> <{if $podcast_soundtrack.streaming}><{$podcast_soundtrack.streaming}><{/if}>
+            <{if $podcast_soundtrack.source}><br /><{$smarty.const._CO_PODCAST_SOUNDTRACK_SOURCE}>: <{$podcast_soundtrack.source}><{/if}>
+        </p>
+    </div>
+    <div class="podcast_separator"></div>
+    <{if $podcast_soundtrack.cover_path}>
+        <div style="float:left; padding: 0px 10px 5px 0px;">
+            <{if $podcast_soundtrack.cover_link}>
+                <a href="<{$podcast_soundtrack.cover_link}>">
+                    <{resized_image file=$podcast_soundtrack.cover_path
+                        width=$podcast_soundtrack.cover_width height="800" fit="inside"}></a>
+            <{else}>
+                <{resized_image file=$podcast_soundtrack.cover_path width=$podcast_soundtrack.cover_width
+                    height="800" fit="inside"}>
+            <{/if}>
+        </div>
+    <{/if}>
+    <div class="podcast_separator">
+        <p><{$podcast_soundtrack.description}></p>
+    </div>
+    <div class="podcast_info">
+        <p style="clear:left;">
+        <{if $podcast_soundtrack.publisher }>
+		<{$smarty.const._CO_PODCAST_SOUNDTRACK_PUBLISHER}>: <{$podcast_soundtrack.publisher}>
+        <{/if}>
+	<{if $podcast_soundtrack.publisher && $podcast_soundtrack.language}>
+		 | 
+	<{/if}>
+        <{if $podcast_soundtrack.language}>
+		<{$smarty.const._CO_PODCAST_SOUNDTRACK_LANGUAGE}>: <{$podcast_soundtrack.language}>
+        <{/if}>
+	<{if $podcast_soundtrack.rights}>
+            <br /><{$smarty.const._CO_PODCAST_SOUNDTRACK_RIGHTS}>: <{$podcast_soundtrack.rights}>
+        <{/if}>
+        </p>
+    </div>
+</div>

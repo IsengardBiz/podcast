@@ -1,0 +1,18 @@
+<{if $podcast_warnings}>
+<{$podcast_warnings}>
+<{/if}>
+
+<{if $podcast_programme_title}>
+<h1><{$podcast_programme_title}></h1>
+<{/if}>
+<{if $podcast_programme_info}>
+<p><{$podcast_programme_info}></p>
+<{/if}>
+
+<{if $podcast_programme_table}>
+<{$podcast_programme_table}>
+<{/if}>
+
+<{if $addprogramme}>
+<{includeq file='db:system_common_form.html' form=$addprogramme}>
+<{/if}>
