@@ -13,7 +13,4 @@ Version 1.2
 Version 1.21
 ------------
 * 1.3 compatibility fix: Include icmspersistablecontroller.php in class/soundtrack.php
-
-Version 1.22
-------------
-* Fixed broken logo in recent soundtracks RSS feed
+* Fixed broken logo in recent soundtracks RSS feed.
