@@ -1,0 +1,56 @@
+<div id="podcast-main-content-container">
+
+<{includeq file='db:podcast_header.html'}>
+
+<{if $podcast_feature || $podcast_programme_soundtracks}>
+<div>
+
+	<!-- most recent soundtrack is featured on the page -->
+
+	<{if $podcast_feature}>
+	<div>
+		<h2><{if $podcast_latest_release_rss_button}><{$podcast_latest_release_rss_button}> <{/if}><{$smarty.const._CO_PODCAST_NEW_ITEMS}></h2>
+	</div>
+	<{foreach item=podcast_soundtrack from = $podcast_feature}>
+	<{include file="db:podcast_soundtrack_extended.html"}>
+	<{/foreach}>
+	<{/if}>
+
+	<!-- list other recent soundtracks across all programmes -->
+
+	<{if $podcast_programme_soundtracks}>
+	<div><h2><{$smarty.const._CO_PODCAST_NEW}></h2></div>
+
+    <!-- navbar -->
+	<{if $podcast_navbar}><{$podcast_navbar}><{/if}>
+
+	<!-- compact view -->
+
+	<{if $podcast_new_compact_view == 1}>
+	<div style="clear:left;">
+		<table>
+			<{foreach item=podcast_soundtrack from = $podcast_programme_soundtracks}>
+			<{include file="db:podcast_soundtrack_compact.html"}>
+			<{/foreach}>
+		</table>
+	</div>
+
+	<!-- extended view -->
+
+	<{else}>
+	<div style="clear:left;">
+		<{foreach item=podcast_soundtrack from = $podcast_programme_soundtracks}>
+		<{include file="db:podcast_soundtrack_extended.html"}>
+		<{/foreach}>
+	</div>
+	<{/if}>
+
+	<!-- navbar -->
+	<{if $podcast_navbar}><{$podcast_navbar}><{/if}>
+	<{/if}>
+</div>
+<{/if}>
+
+<{includeq file='db:podcast_footer.html'}>
+
+</div>

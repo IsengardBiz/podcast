@@ -1,0 +1,66 @@
+<div id="podcast-main-content-container">
+
+<{includeq file='db:podcast_header.html'}>
+
+<!-- display one programme and its soundtracks -->
+
+<{if $podcast_programme}>
+<div>
+
+	<{include file="db:podcast_programme_description.html"}>
+
+	<!-- list soundtracks in this podcast -->
+
+	<{if $podcast_programme_soundtracks}>
+
+	<!-- compact view of programme contents -->
+
+	<{if $podcast_programme.compact_view == 1}>
+	<div style="clear:left"><h3><{$smarty.const._CO_PODCAST_PROGRAMME_SOUNDTRACKS}></h3></div>
+
+    <!-- pagination -->
+    <{if $podcast_navbar }><{$podcast_navbar}><{/if}>
+    
+    <div>
+		<table>
+			<{foreach item=podcast_soundtrack from = $podcast_programme_soundtracks}>
+			<{include file="db:podcast_soundtrack_compact.html"}>
+			<{/foreach}>
+		</table>
+	</div>
+
+	<!-- extended view -->
+
+	<{else}>
+	<div style="clear:left">
+		<{foreach item=podcast_soundtrack from = $podcast_programme_soundtracks}>
+		<{include file="db:podcast_soundtrack_extended.html"}>
+		<{/foreach}>
+	</div>
+	<{/if}>
+	<{/if}>
+</div>
+<{/if}>
+
+<!-- list programmes as summaries -->
+
+<{if $podcast_programme_table || $podcast_programme_array}>
+<h2><{$podcast_title}></h2>
+<{$podcast_programme_table}>
+<{/if}>
+
+<{if $podcast_programme_array}>
+<div>
+	<{foreach item=podcast_programme from=$podcast_programme_array}>
+	<{include file='db:podcast_programme_description.html'}>
+	<{/foreach}>
+</div>
+<{/if}>
+
+<!-- pagination -->
+
+<{if $podcast_navbar }><{$podcast_navbar}><{/if}>
+
+<{includeq file='db:podcast_footer.html'}>
+
+</div>

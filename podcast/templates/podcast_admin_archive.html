@@ -1,0 +1,16 @@
+<{if $podcast_archive_title}>
+<h1><{$podcast_archive_title}></h1>
+<{/if}>
+<{if $podcast_archive_info}>
+<p><{$podcast_archive_info}></p>
+<{/if}>
+
+<{if $podcast_archive_table}>
+<{if $podcast_archive_no_archive}><{$podcast_archive_no_archive}><{/if}>
+<{if $podcast_archive_status}><{$podcast_archive_status}><{/if}>
+<{$podcast_archive_table}>
+<{/if}>
+
+<{if $addarchive}>
+<{includeq file='db:system_common_form.html' form=$addarchive}>
+<{/if}>

@@ -1,0 +1,17 @@
+<div id="podcast-main-content-container">
+
+<{includeq file='db:podcast_header.html'}>
+
+<{if $podcast_soundtrack}>
+<div>
+	<{include file="db:podcast_soundtrack_extended.html"}>
+</div>
+<{/if}>
+<{if $podcast_soundtrack_table}>
+<h2><{$podcast_title}></h2>
+<{$podcast_soundtrack_table}>
+<{/if}>
+
+<{includeq file='db:podcast_footer.html'}>
+
+</div>
