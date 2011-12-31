@@ -13,12 +13,6 @@
 
 if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
 
-// including the IcmsPersistableSeoObject
-include_once ICMS_ROOT_PATH . '/kernel/icmspersistableseoobject.php';
-include_once ICMS_ROOT_PATH . '/kernel/icmspersistablecontroller.php';
-include_once(ICMS_ROOT_PATH . '/modules/' . basename(dirname(dirname(__FILE__)))
-	. '/include/functions.php');
-
 class PodcastSoundtrack extends icms_ipf_seo_Object {
 
 	/**
