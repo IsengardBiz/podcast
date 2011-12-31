@@ -33,13 +33,12 @@ if ($rightsObj && !$rightsObj->isNew()) {
 	$icms_metagen->createMetaTags();
 } else {
 	// display a table listing all rights
-	include_once ICMS_ROOT_PATH."/kernel/icmspersistabletable.php";
 
 	$icmsTpl->assign('podcast_title', _MD_PODCAST_ALL_RIGHTSS);
 
-	$objectTable = new IcmsPersistableTable($podcast_rights_handler, $criteria = null, array(), true);
+	$objectTable = new icms_ipf_view_Table($podcast_rights_handler, $criteria = null, array(), true);
 	$objectTable->isForUserSide();
-	$objectTable->addColumn(new IcmsPersistableColumn('title'));
+	$objectTable->addColumn(new icms_ipf_view_Column('title'));
 	$icmsTpl->assign('podcast_rights_table', $objectTable->fetch());
 }
 

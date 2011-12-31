@@ -24,7 +24,7 @@ function podcast_programmes_show($options) {
 		. '/include/common.php');
 	$podcast_programme_handler = icms_getModuleHandler('programme',
 		basename(dirname(dirname(__FILE__))), 'podcast');
-	$criteria = new CriteriaCompo();
+	$criteria = new icms_db_criteria_Compo();
 	$criteria->setStart(0);
 	$criteria->setLimit($options[0]);
 	$criteria->setSort('title');

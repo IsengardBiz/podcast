@@ -100,11 +100,11 @@ if (in_array($clean_op,$valid_op,true)) {
 
 			// display a summary table
 			include_once ICMS_ROOT_PATH."/kernel/icmspersistabletable.php";
-			$objectTable = new IcmsPersistableTable($podcast_programme_handler);
-			$objectTable->addColumn(new IcmsPersistableColumn('title'));
-			$objectTable->addColumn(new IcmsPersistableColumn('date'));
-			$objectTable->addColumn(new IcmsPersistableColumn('publisher'));
-			$objectTable->addColumn(new IcmsPersistableColumn('submission_time'));
+			$objectTable = new icms_ipf_view_Table($podcast_programme_handler);
+			$objectTable->addColumn(new icms_ipf_view_Column('title'));
+			$objectTable->addColumn(new icms_ipf_view_Column('date'));
+			$objectTable->addColumn(new icms_ipf_view_Column('publisher'));
+			$objectTable->addColumn(new icms_ipf_view_Column('submission_time'));
 			$objectTable->addIntroButton('addprogramme', 'programme.php?op=mod',
 				_AM_PODCAST_PROGRAMME_CREATE);
 			$icmsAdminTpl->assign('podcast_programme_table', $objectTable->fetch());

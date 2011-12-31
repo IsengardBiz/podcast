@@ -301,7 +301,7 @@ function podcast_check_module_configuration() {
 function podcast_getModuleAdminLink($moduleName='podcast') {
 	$podcastModule = icms_getModuleInfo(basename(dirname(dirname(__FILE__))));
 	if (!$moduleName && (isset ($podcastModule) && is_object($podcastModule))) {
-		$moduleName = $podcastModule->dirname();
+		$moduleName = $podcastModule->getVar('dirname');
 	}
 	$ret = '';
 	if ($moduleName) {
@@ -322,7 +322,7 @@ function podcast_getModuleAdminLink($moduleName='podcast') {
 function podcast_getModuleName($withLink = true, $forBreadCrumb = false, $moduleName = false) {
 	if (!$moduleName) {
 		$podcastModule = icms_getModuleInfo(basename(dirname(dirname(__FILE__))));
-		$moduleName = $podcastModule->dirname();
+		$moduleName = $podcastModule->getVar('dirname');
 	}
 	$icmsModuleConfig = icms_getModuleConfig($moduleName);
 	if (!isset ($podcastModule)) {

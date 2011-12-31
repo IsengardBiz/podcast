@@ -26,12 +26,12 @@ $podcast_soundtrack_handler = icms_getModuleHandler('soundtrack',
 $clean_start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 
 // get the most recent XX soundtracks as set in the module preferences
-$criteria = new CriteriaCompo();
+$criteria = new icms_db_criteria_Compo();
 $criteria->setStart($clean_start);
 $criteria->setLimit($podcastConfig['new_items']); // important for pagination
 $criteria->setSort('date');
 $criteria->setOrder('DESC');
-$criteria->add(new Criteria('status', true));
+$criteria->add(new icms_db_criteria_Item('status', true));
 $soundtrack_object_array = $podcast_soundtrack_handler->getObjects($criteria);
 
 if (empty($soundtrack_object_array)) {

@@ -40,31 +40,31 @@ if (isset($podcastModule)) {
 	$i = 0;
 
 	$headermenu[$i]['title'] = _CO_ICMS_GOTOMODULE;
-	$headermenu[$i]['link'] = ICMS_URL . '/modules/' . $podcastModule->dirname();
+	$headermenu[$i]['link'] = ICMS_URL . '/modules/' . $podcastModule->getVar('dirname');
 
 	$i++;
 	$headermenu[$i]['title'] = _PREFERENCES;
 	$headermenu[$i]['link'] = '../../system/admin.php?fct=preferences&amp;op=showmod&amp;mod='
-		. $podcastModule->mid();
+		. $podcastModule->getVar('mid');
 
 	$i++;
 	$headermenu[$i]['title'] = _MI_PODCAST_TEMPLATES;
 	$headermenu[$i]['link'] = '../../system/admin.php?fct=tplsets&op=listtpl&tplset='
-		. $icmsConfig['template_set'] . '&moddir=' . $podcastModule->dirname();
+		. $icmsConfig['template_set'] . '&moddir=' . $podcastModule->getVar('dirname');
 
 	$i++;
 	$headermenu[$i]['title'] = _CO_ICMS_UPDATE_MODULE;
 	$headermenu[$i]['link'] = ICMS_URL
 		. '/modules/system/admin.php?fct=modulesadmin&op=update&module='
-		. $podcastModule->dirname();
+		. $podcastModule->getVar('dirname');
 
 	$i++;
 	$headermenu[$i]['title'] = _MI_PODCAST_TEST_OAIPMH;
-	$headermenu[$i]['link'] = ICMS_URL . '/modules/' . $podcastModule->dirname()
+	$headermenu[$i]['link'] = ICMS_URL . '/modules/' . $podcastModule->getVar('dirname')
 		. '/admin/test_oaipmh.php';
 
 	$i++;
 	$headermenu[$i]['title'] = _MODABOUT_ABOUT;
-	$headermenu[$i]['link'] = ICMS_URL . '/modules/' . $podcastModule->dirname()
+	$headermenu[$i]['link'] = ICMS_URL . '/modules/' . $podcastModule->getVar('dirname')
 		. '/admin/about.php';
 }

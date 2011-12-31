@@ -40,9 +40,9 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		// get a list of soundtracks in this programme
 		$podcast_soundtrack_handler = icms_getModuleHandler('soundtrack',
 			basename(dirname(__FILE__)), 'podcast');
-		$criteria = new CriteriaCompo();
-		$criteria->add(new Criteria('source', $programmeObj->id()));
-		$criteria->add(new Criteria('status', true));
+		$criteria = new icms_db_criteria_Compo();
+		$criteria->add(new icms_db_criteria_Item('source', $programmeObj->id()));
+		$criteria->add(new icms_db_criteria_Item('status', true));
 
 		// set the soundtrack sort order for this programme
 		$sort_order = $programmeObj->getVar('sort_order', 'e');
@@ -136,9 +136,9 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		$soundtrack_array = array();
 		$podcast_soundtrack_handler = icms_getModuleHandler('soundtrack',
 			basename(dirname(__FILE__)), 'podcast');
-		$criteria = new CriteriaCompo();
-		$criteria->add(new Criteria('source', $programmeObj->id()));
-		$criteria->add(new Criteria('status', true));
+		$criteria = new icms_db_criteria_Compo();
+		$criteria->add(new icms_db_criteria_Item('source', $programmeObj->id()));
+		$criteria->add(new icms_db_criteria_Item('status', true));
 
 		// count the soundtracks before proceed
 		$soundtrack_count = $podcast_soundtrack_handler->getCount($criteria);
@@ -231,9 +231,9 @@ if ($programmeObj && !$programmeObj->isNew()) {
 
 		// pagination
 		include_once ICMS_ROOT_PATH . '/class/pagenav.php';
-		$criteria = new CriteriaCompo();
-		$criteria->add(new Criteria('source', $programmeObj->id()));
-		$criteria->add(new Criteria('status', true));
+		$criteria = new icms_db_criteria_Compo();
+		$criteria->add(new icms_db_criteria_Item('source', $programmeObj->id()));
+		$criteria->add(new icms_db_criteria_Item('status', true));
 		$soundtrack_count = $podcast_soundtrack_handler->getCount($criteria);
 		$extra_arg = 'programme_id=' . $programmeObj->id();
 		$pagenav = new XoopsPageNav($soundtrack_count,
@@ -242,7 +242,6 @@ if ($programmeObj && !$programmeObj->isNew()) {
 	}
 } else {
 	// display a list of programmes
-	include_once ICMS_ROOT_PATH."/kernel/icmspersistabletable.php";
 	$icmsTpl->assign('podcast_title', _MD_PODCAST_ALL_PROGRAMMES);
 	$icmsTpl->assign('podcast_programme_view', 'multiple');
 
@@ -252,7 +251,7 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		basename(dirname(__FILE__)), 'podcast');
 	$podcast_soundtrack_handler = icms_getModuleHandler('soundtrack',
 		basename(dirname(__FILE__)), 'podcast');
-	$criteria = new CriteriaCompo();
+	$criteria = new icms_db_criteria_Compo();
 	$criteria->setStart($clean_start);
 	$criteria->setLimit($podcastConfig['number_programmes_per_page']); // important for pagination
 
@@ -287,7 +286,7 @@ if ($programmeObj && !$programmeObj->isNew()) {
 
 		$programme_cover = $programmeObject->getVar('cover');
 		if (!empty($programme_cover)) {
-			$programme['cover_path'] = '/uploads/' . $podcastModule->dirname() . '/'
+			$programme['cover_path'] = '/uploads/' . $podcastModule->getVar('dirname') . '/'
 				. $programmeObject->getVar('cover');
 			$programme['cover_width'] = $podcastConfig['thumbnail_width'];
 			$programme['cover_link'] = PODCAST_URL . 'programme.php?programme_id='
@@ -301,9 +300,9 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		$programme['play_all_button'] = $programmeObject->get_play_all_button();
 
 		// calculate the number of soundtracks in the podcast
-		$criteria = new CriteriaCompo();
-		$criteria->add(new Criteria('source', $programmeObject->id()));
-		$criteria->add(new Criteria('status', true));
+		$criteria = new icms_db_criteria_Compo();
+		$criteria->add(new icms_db_criteria_Item('source', $programmeObject->id()));
+		$criteria->add(new icms_db_criteria_Item('status', true));
 		$programme['track_count'] = $podcast_soundtrack_handler->getCount($criteria);
 
 		// check display preferences and unset unwanted fields

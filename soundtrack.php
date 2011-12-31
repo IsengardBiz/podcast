@@ -117,8 +117,6 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 	}
 } else {
 	// list soundtracks
-	include_once ICMS_ROOT_PATH."/kernel/icmspersistabletable.php";
-
 	// prepare buffers to minimise queries
 	$podcast_programme_handler = icms_getModuleHandler('programme',
 			basename(dirname(__FILE__)), 'podcast');
@@ -128,15 +126,15 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 
 	$icmsTpl->assign('podcast_title', _MD_PODCAST_ALL_SOUNDTRACKS);
 
-	$criteria = new CriteriaCompo();
-	$criteria->add(new Criteria('status', true));
-	$objectTable = new IcmsPersistableTable($podcast_soundtrack_handler, $criteria, array(), true);
+	$criteria = new icms_db_criteria_Compo();
+	$criteria->add(new icms_db_criteria_Item('status', true));
+	$objectTable = new icms_ipf_view_Table($podcast_soundtrack_handler, $criteria, array(), true);
 	$objectTable->isForUserSide();
-	$objectTable->addColumn(new IcmsPersistableColumn('date'));
-	$objectTable->addColumn(new IcmsPersistableColumn('title'));
-	$objectTable->addColumn(new IcmsPersistableColumn('source', _GLOBAL_LEFT, false,
+	$objectTable->addColumn(new icms_ipf_view_Column('date'));
+	$objectTable->addColumn(new icms_ipf_view_Column('title'));
+	$objectTable->addColumn(new icms_ipf_view_Column('source', _GLOBAL_LEFT, false,
 		'source', $sources));
-	$objectTable->addColumn(new IcmsPersistableColumn('format', _GLOBAL_LEFT, false,
+	$objectTable->addColumn(new icms_ipf_view_Column('format', _GLOBAL_LEFT, false,
 		'format', $formats));
 	$objectTable->addFilter('source', 'source_filter');
 	$objectTable->addFilter('rights', 'rights_filter');

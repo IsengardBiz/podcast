@@ -93,9 +93,8 @@ if (in_array($clean_op,$valid_op,true)) {
 				}
 			}
 
-			include_once ICMS_ROOT_PATH."/kernel/icmspersistabletable.php";
-			$objectTable = new IcmsPersistableTable($podcast_archive_handler, false, array('edit'));
-			$objectTable->addColumn(new IcmsPersistableColumn('repository_name'));
+			$objectTable = new icms_ipf_view_Table($podcast_archive_handler, false, array('edit'));
+			$objectTable->addColumn(new icms_ipf_view_Column('repository_name'));
 
 			// only one archive object is needed or useful
 			// so only show the 'add archive' button if there isn't one already

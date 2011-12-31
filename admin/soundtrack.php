@@ -105,8 +105,6 @@ if (in_array($clean_op,$valid_op,true)) {
 
 			$podcastModule->displayAdminMenu(0, _AM_PODCAST_SOUNDTRACKS);
 
-			include_once ICMS_ROOT_PATH."/kernel/icmspersistabletable.php";
-
 			// check to see if /uploads/podcast is writeable, if not, complain
 			$warnings = '';
 			$warnings = podcast_check_module_configuration();
@@ -129,16 +127,16 @@ if (in_array($clean_op,$valid_op,true)) {
 			$sources = $podcast_programme_handler->getObjects(null, true);
 			$formats = $system_mimetype_handler->getObjects(null, true);
 
-			$objectTable = new IcmsPersistableTable($podcast_soundtrack_handler);
-			$objectTable->addColumn(new IcmsPersistableColumn('status', 'center', true));
-			$objectTable->addColumn(new IcmsPersistableColumn('title'));
-			$objectTable->addColumn(new IcmsPersistableColumn('format', _GLOBAL_LEFT, false,
+			$objectTable = new icms_ipf_view_Table($podcast_soundtrack_handler);
+			$objectTable->addColumn(new icms_ipf_view_Column('status', 'center', true));
+			$objectTable->addColumn(new icms_ipf_view_Column('title'));
+			$objectTable->addColumn(new icms_ipf_view_Column('format', _GLOBAL_LEFT, false,
 				'format', $formats));
-			$objectTable->addColumn(new IcmsPersistableColumn('source', _GLOBAL_LEFT, false,
+			$objectTable->addColumn(new icms_ipf_view_Column('source', _GLOBAL_LEFT, false,
 				'source', $sources));
-			$objectTable->addColumn(new IcmsPersistableColumn('submission_time'));
-			$objectTable->addColumn(new IcmsPersistablecolumn('date'));
-			$objectTable->addColumn(new IcmsPersistableColumn('federated', 'center', true));
+			$objectTable->addColumn(new icms_ipf_view_Column('submission_time'));
+			$objectTable->addColumn(new icms_ipf_view_Column('date'));
+			$objectTable->addColumn(new icms_ipf_view_Column('federated', 'center', true));
 			$objectTable->addFilter('source', 'source_filter');
 			$objectTable->addFilter('federated', 'federated_filter');
 			$objectTable->addFilter('rights', 'rights_filter');

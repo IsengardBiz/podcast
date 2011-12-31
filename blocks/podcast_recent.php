@@ -25,16 +25,16 @@ function podcast_recent_show($options) {
 		. '/include/common.php');
 	$podcast_soundtrack_handler = icms_getModuleHandler('soundtrack',
 		basename(dirname(dirname(__FILE__))), 'podcast');
-	$criteria = new CriteriaCompo();
+	$criteria = new icms_db_criteria_Compo();
 	$criteria->setStart(0);
 	$criteria->setLimit($options[1]);
 
 	// only include soundtracks that are set online
-	$criteria->add(new Criteria('status', true));
+	$criteria->add(new icms_db_criteria_Item('status', true));
 
 	// optionally filter track listing by programme
 	if (intval($options[0])) {
-		$criteria->add(new Criteria('source', $options[0]));
+		$criteria->add(new icms_db_criteria_Item('source', $options[0]));
 	}
 
 	$criteria->setSort('submission_time');

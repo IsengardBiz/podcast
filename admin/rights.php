@@ -99,9 +99,8 @@ if (in_array($clean_op,$valid_op,true)) {
 				}
 			}
 
-			include_once ICMS_ROOT_PATH."/kernel/icmspersistabletable.php";
-			$objectTable = new IcmsPersistableTable($podcast_rights_handler);
-			$objectTable->addColumn(new IcmsPersistableColumn('title'));
+			$objectTable = new icms_ipf_view_Table($podcast_rights_handler);
+			$objectTable->addColumn(new icms_ipf_view_Column('title'));
 			$objectTable->addIntroButton('addrights', 'rights.php?op=mod', _AM_PODCAST_RIGHTS_CREATE);
 			$icmsAdminTpl->assign('podcast_rights_table', $objectTable->fetch());
 			$icmsAdminTpl->display('db:podcast_admin_rights.html');
