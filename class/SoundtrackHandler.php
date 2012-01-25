@@ -49,22 +49,22 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 		$criteria->setOrder('DESC');
 
 		if ($userid != 0) {
-			$criteria->add(new icms_db_criteria_Item('submitter', $userid));
+			$criteria->add(new Criteria('submitter', $userid));
 		}
 		if ($queryarray) {
-			$criteriaKeywords = new icms_db_criteria_Compo();
+			$criteriaKeywords = new CriteriaCompo();
 			for ($i = 0; $i < count($queryarray); $i++) {
-				$criteriaKeyword = new icms_db_criteria_Compo();
-				$criteriaKeyword->add(new icms_db_criteria_Item('title', '%' . $queryarray[$i] . '%',
+				$criteriaKeyword = new CriteriaCompo();
+				$criteriaKeyword->add(new Criteria('title', '%' . $queryarray[$i] . '%',
 					'LIKE'), 'OR');
-				$criteriaKeyword->add(new icms_db_criteria_Item('description', '%' . $queryarray[$i]
+				$criteriaKeyword->add(new Criteria('description', '%' . $queryarray[$i]
 					. '%', 'LIKE'), 'OR');
 				$criteriaKeywords->add($criteriaKeyword, $andor);
 				unset ($criteriaKeyword);
 			}
 			$criteria->add($criteriaKeywords);
 		}
-		$criteria->add(new icms_db_criteria_Item('status', true));
+		$criteria->add(new Criteria('status', true));
 		return $this->getObjects($criteria, true, false);
 	}
 
@@ -102,8 +102,8 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 		global $xoopsDB;
 		$moduleMimetypes = array();
 		$hiddenMimetypes = array('png', 'gif', 'jpg', 'jpeg', 'm3u');
-		$criteria = new icms_db_criteria_Compo();
-		$criteria->add(new icms_db_criteria_Item('dirname', '%' . basename(dirname(dirname(__FILE__)))
+		$criteria = new CriteriaCompo();
+		$criteria->add(new Criteria('dirname', '%' . basename(dirname(dirname(__FILE__)))
 			. '%', 'LIKE'));
 		$sql = 'SELECT mimetypeid, dirname, extension FROM '
 			. $xoopsDB->prefix('system_mimetype');
@@ -135,7 +135,7 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 		$sort_order = false) {
 		global $icmsUser;
 
-		$criteria = new icms_db_criteria_Compo();
+		$criteria = new CriteriaCompo();
 		if ($start) {
 			$criteria->setStart($start);
 		}
@@ -143,7 +143,7 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 			$criteria->setLimit(intval($limit));
 		}
 		if ($programme_id) {
-			$criteria->add(new icms_db_criteria_Item('source', $programme_id));
+			$criteria->add(new Criteria('source', $programme_id));
 		}
 		$criteria->setSort('date');
 		if ($sort_order) {
@@ -225,7 +225,7 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 
 		// use the distinct mimetype ids to get the relevant mimetype objects
 		$system_mimetype_handler = icms_getModuleHandler('mimetype', 'system');
-		$criteria = new icms_db_criteria_Compo();
+		$criteria = new CriteriaCompo();
 		$criteria->setSort('extension');
 		$criteria->setOrder('ASC');
 		$sql = 'SELECT * FROM ' . $xoopsDB->prefix('system_mimetype') . $mimetype_id_string;
@@ -365,7 +365,7 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 			"lg"=>"Ganda",
 			"ka"=>"Georgian",
 			"de"=>"German",
-			"gn"=>"GuaranÃ­",
+			"gn"=>"Guaraní",
 			"gu"=>"Gujarati",
 			"ht"=>"Haitian, Haitian Creole",
 			"ha"=>"Hausa",
@@ -425,7 +425,7 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 			"nd"=>"North Ndebele",
 			"se"=>"Northern Sami",
 			"no"=>"Norwegian",
-			"nb"=>"Norwegian BokmÃ¥l",
+			"nb"=>"Norwegian Bokmål",
 			"nn"=>"Norwegian Nynorsk",
 			"oc"=>"Occitan (after 1500)",
 			"oj"=>"Ojibwa",
@@ -483,7 +483,7 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 			"uz"=>"Uzbek",
 			"ve"=>"Venda",
 			"vi"=>"Vietnamese",
-			"vo"=>"VolapÃ¼k",
+			"vo"=>"Volapük",
 			"wa"=>"Walloon",
 			"cy"=>"Welsh",
 			"fy"=>"Western Frisian",
