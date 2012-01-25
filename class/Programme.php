@@ -137,10 +137,10 @@ class PodcastProgramme extends icms_ipf_seo_Object {
 	 */
 	public function sendNotifProgrammePublished() {
 		$item_id = $this->id();
-		$module_handler = xoops_getHandler('module');
+		$module_handler = icms::handler('icms_module');
 		$module = $module_handler->getByDirname(basename(dirname(dirname(__FILE__))));
 		$module_id = $module->getVar('mid');
-		$notification_handler = xoops_getHandler ('notification');
+		$notification_handler = icms::handler('icms_data_notification');
 
 		$tags = array();
 		$tags['ITEM_TITLE'] = $this->title();

@@ -361,7 +361,7 @@ function podcast_getLinkedUnameFromId($userid, $name = false, $users = array (),
 	if ($userid > 0) {
 		if ($users == array()) {
 			//fetching users
-			$member_handler = & xoops_gethandler('member');
+			$member_handler = icms::handler('icms_member');
 			$user = & $member_handler->getUser($userid);
 		} else {
 			if (!isset($users[$userid])) {

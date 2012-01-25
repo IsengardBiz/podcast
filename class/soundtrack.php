@@ -13,12 +13,6 @@
 
 if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
 
-// including the IcmsPersistableSeoObject
-include_once ICMS_ROOT_PATH . '/kernel/icmspersistableseoobject.php';
-include_once ICMS_ROOT_PATH . '/kernel/icmspersistablecontroller.php';
-include_once(ICMS_ROOT_PATH . '/modules/' . basename(dirname(dirname(__FILE__)))
-	. '/include/functions.php');
-
 class PodcastSoundtrack extends icms_ipf_seo_Object {
 
 	/**
@@ -354,7 +348,7 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 
 		$user_link = '';
 		
-		$member_handler = & xoops_gethandler('member');
+		$member_handler = icms::handler('icms_member');
 		$user = & $member_handler->getUser($this->getVar('submitter', 'e'));
 
 		return $user->getVar('uname');
@@ -381,10 +375,10 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 	public function sendNotifSoundtrackPublished() {
 		$item_id = $this->id();
 		$source_id = $this->getVar('source', 'e');
-		$module_handler = xoops_getHandler('module');
+		$module_handler = icms::handler('icms_module');
 		$module = $module_handler->getByDirname(basename(dirname(dirname(__FILE__))));
 		$module_id = $module->getVar('mid');
-		$notification_handler = xoops_getHandler ('notification');
+		$notification_handler = icms::handler('icms_data_notification');
 
 		$tags = array();
 		$tags['ITEM_TITLE'] = $this->title();
@@ -923,8 +917,8 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 	 */
 	protected function afterDelete(& $obj) {
 		global $icmsModule;
-		$notification_handler =& xoops_gethandler('notification');
-		$module_handler = xoops_getHandler('module');
+		$notification_handler = icms::handler('icms_data_notification');
+		$module_handler = icms::handler('icms_module');
 		$module = $module_handler->getByDirname(basename(dirname(dirname(__FILE__))));
 		$module_id = $module->getVar('mid');
 		$category = 'global';

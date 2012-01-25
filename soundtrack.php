@@ -110,7 +110,7 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 		// useless assignment
 
 		// generating meta information for this page
-		$icms_metagen = new IcmsMetagen($soundtrackObj->getVar('title'),
+		$icms_metagen = new icms_ipf_Metagen($soundtrackObj->getVar('title'),
 			$soundtrackObj->getVar('meta_keywords','n'),
 			$soundtrackObj->getVar('meta_description', 'n'));
 		$icms_metagen->createMetaTags();

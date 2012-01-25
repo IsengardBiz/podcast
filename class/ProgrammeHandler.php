@@ -111,8 +111,8 @@ class PodcastProgrammeHandler extends icms_ipf_Handler {
 	 */
 	protected function afterDelete(& $obj) {
 		global $icmsModule;
-		$notification_handler =& xoops_gethandler('notification');
-		$module_handler = xoops_getHandler('module');
+		$notification_handler = icms::handler('icms_data_notification');
+		$module_handler = icms::handler('icms_module');
 		$module = $module_handler->getByDirname(basename(dirname(dirname(__FILE__))));
 		$module_id = $module->getVar('mid');
 		$category = 'programme';
