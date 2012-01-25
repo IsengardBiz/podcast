@@ -314,7 +314,7 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		// pagination
 		include_once ICMS_ROOT_PATH . '/class/pagenav.php';
 		$programme_count = $podcast_programme_handler->getCount();
-		$pagenav = new XoopsPageNav($programme_count, $podcastConfig['number_programmes_per_page'],
+		$pagenav = new icms_view_PageNav($programme_count, $podcastConfig['number_programmes_per_page'],
 			$clean_start, 'start');
 		$icmsTpl->assign('podcast_navbar', $pagenav->renderNav());
 	}

@@ -40,7 +40,7 @@ $clean_start = isset($_GET['start']) ? intval($_GET['start']) : false;
 $clean_limit = isset($_GET['limit']) ? intval($_GET['limit']) : false;
 
 include_once ICMS_ROOT_PATH . '/modules/' . basename(dirname(__FILE__))
-	. '/class/icmsfeed.php';
+	. '/class/IcmsFeed.php';
 $podcast_feed = new IcmsFeed();
 $podcast_soundtrack_handler = 
 	icms_getModuleHandler('soundtrack', basename(dirname(__FILE__)), 'podcast');
@@ -140,7 +140,7 @@ foreach($soundtrackArray as $soundtrack) {
 
 // validation issue:
 // single and double quotes in programme title generate no-html-recommended warnings
-// (although feed is valid). it looks like the quotes are converted to html entities during
+// (although feed is valid). It looks like the quotes are converted to html entities during
 // template assignment which is downstream of this file - can this behaviour be overridden?
 
 $podcast_feed->render();
