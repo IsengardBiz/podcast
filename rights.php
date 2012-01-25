@@ -27,7 +27,7 @@ if ($rightsObj && !$rightsObj->isNew()) {
 	$icmsTpl->assign('podcast_rights', $rightsObj->toArray());
 
 	// generating meta information for this page
-	$icms_metagen = new IcmsMetagen($rightsObj->getVar('title'),
+	$icms_metagen = new icms_ipf_Metagen($rightsObj->getVar('title'),
 		$rightsObj->getVar('meta_keywords','n'),
 		$rightsObj->getVar('meta_description', 'n'));
 	$icms_metagen->createMetaTags();

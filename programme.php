@@ -128,7 +128,7 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		$xoTheme->addLink('alternate', $rss_link, $rss_attributes);
 
 		// generating meta information for this page
-		$icms_metagen = new IcmsMetagen($programmeObj->getVar('title'),
+		$icms_metagen = new icms_ipf_Metagen($programmeObj->getVar('title'),
 			$programmeObj->getVar('meta_keywords','n'), $programmeObj->getVar('meta_description', 'n'));
 		$icms_metagen->createMetaTags();
 
@@ -236,7 +236,7 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		$criteria->add(new icms_db_criteria_Item('status', true));
 		$soundtrack_count = $podcast_soundtrack_handler->getCount($criteria);
 		$extra_arg = 'programme_id=' . $programmeObj->id();
-		$pagenav = new XoopsPageNav($soundtrack_count,
+		$pagenav = new icms_view_PageNav($soundtrack_count,
 			$podcastConfig['number_soundtracks_per_page'], $clean_start, 'start', $extra_arg);
 		$icmsTpl->assign('podcast_navbar', $pagenav->renderNav());
 	}
