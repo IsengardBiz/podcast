@@ -69,8 +69,8 @@ if ($podcastConfig['podcast_enable_archive'] == 0) {
 		echo _CO_PODCAST_ARCHIVE_MUST_CREATE;
 	}
 
-	// IMPORTANT: need to disable the xoopsLogger because it breaks XML responses
-	$xoopsLogger->disableLogger();
+	// IMPORTANT: need to disable the logger because it breaks XML responses
+	icms::$logger->disableLogger();
 
 	// directs response to incoming requests
 	switch ($verb) {

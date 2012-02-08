@@ -85,7 +85,7 @@ if (empty($clean_programme_id)) {
 	$podcast_feed->description = $programme_description;
 	$podcast_feed->language = $podcastConfig['default_language'];
 	$podcast_feed->charset = _CHARSET;
-	$podcast_feed->category = $podcastModule->name();
+	$podcast_feed->category = $podcastModule->getVar('name');
 
 	$url = $programmeObj->getImageDir() . $programmeObj->getVar('cover');
 	$podcast_feed->image = array('title' => $podcast_feed->title, 'url' => $url,
