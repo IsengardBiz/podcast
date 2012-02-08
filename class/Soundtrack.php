@@ -163,9 +163,9 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 				. '/admin/soundtrack.php?soundtrack_id=' . $this->getVar('soundtrack_id')
 				. '&amp;op=changeStatus">';
 		if ($status == false) {
-			$button .= '<img src="../images/button_cancel.png" alt="Offline" title="Offline" /></a>';
+			$button .= '<img src="' . ICMS_IMAGES_SET_URL . '/actions/button_cancel.png" alt="' . _INVISIBLE . '"/></a>';
 		} else {
-			$button .= '<img src="../images/button_ok.png" alt="Online" title="Online" /></a>';
+			$button .= '<img src="' . ICMS_IMAGES_SET_URL . '/actions/button_ok.png" alt="' . _VISIBLE . '"/></a>';
 		}
 		return $button;
 	}
@@ -182,9 +182,9 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 				. '/admin/soundtrack.php?soundtrack_id=' . $this->getVar('soundtrack_id')
 				. '&amp;op=changeFederated">';
 		if ($federated == false) {
-			$button .= '<img src="../images/button_cancel.png" alt="Offline" title="Not Federated" /></a>';
+			$button .= '<img src="' . ICMS_IMAGES_SET_URL . '/actions/button_cancel.png" alt="' . _INVISIBLE . '"/></a>';
 		} else {
-			$button .= '<img src="../images/button_ok.png" alt="Online" title="Federated" /></a>';
+			$button .= '<img src="' . ICMS_IMAGES_SET_URL . '/actions/button_ok.png" alt="' . _VISIBLE . '"/></a>';
 		}
 		return $button;
 	}
