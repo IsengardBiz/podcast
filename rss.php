@@ -19,6 +19,8 @@
 include_once 'header.php';
 include_once ICMS_ROOT_PATH.'/header.php';
 
+global $icmsConfig;
+
 /**
  * Ensures that entities are encoded to ensure feed compliance with RSS specification
  *
@@ -31,7 +33,6 @@ function encode_entities($field) {
 	return $field;
 }
 
-global $podcastConfig;
 $clean_programme_id = $sort_order = '';
 $podcastModule = icms_getModuleInfo(basename(dirname(__FILE__)));
 
@@ -40,8 +41,9 @@ $clean_start = isset($_GET['start']) ? intval($_GET['start']) : false;
 $clean_limit = isset($_GET['limit']) ? intval($_GET['limit']) : false;
 
 include_once ICMS_ROOT_PATH . '/modules/' . basename(dirname(__FILE__))
-	. '/class/IcmsFeed.php';
-$podcast_feed = new IcmsFeed();
+	. '/class/CustomPodcastFeed.php';
+
+$podcast_feed = new CustomPodcastFeed();
 $podcast_soundtrack_handler = 
 	icms_getModuleHandler('soundtrack', basename(dirname(__FILE__)), 'podcast');
 $podcast_programme_handler = 
@@ -55,14 +57,14 @@ if (empty($clean_programme_id)) {
 	$podcast_feed->title = $site_name . ' - ' . _CO_PODCAST_NEW;
 	$podcast_feed->url = PODCAST_URL . 'new.php';
 	$podcast_feed->description = _CO_PODCAST_NEW_DSC . $site_name . '.';
-	$podcast_feed->language = $podcastConfig['default_language'];
+	$podcast_feed->language = icms::$module->config['default_language'];
 	$podcast_feed->charset = _CHARSET;
-	$podcast_feed->category = $podcastModule->name();
+	$podcast_feed->category = icms::$module->getVar('name');
 
 	$url = ICMS_URL . '/images/logo.gif';
 	$podcast_feed->image = array('title' => $podcast_feed->title, 'url' => $url,
 			'link' => PODCAST_URL . 'new.php');
-	$width = $podcastConfig['screenshot_width'];
+	$width = icms::$module->config['screenshot_width'];
 	if ($width > 144) {
 		$width = 144;
 	}
@@ -83,14 +85,14 @@ if (empty($clean_programme_id)) {
 	$podcast_feed->title = $site_name . ' - ' . $programme_title;
 	$podcast_feed->url = PODCAST_URL . 'programme.php?programme_id=' . $programmeObj->id();
 	$podcast_feed->description = $programme_description;
-	$podcast_feed->language = $podcastConfig['default_language'];
+	$podcast_feed->language = icms::$module->config['default_language'];
 	$podcast_feed->charset = _CHARSET;
 	$podcast_feed->category = $podcastModule->getVar('name');
 
 	$url = $programmeObj->getImageDir() . $programmeObj->getVar('cover');
 	$podcast_feed->image = array('title' => $podcast_feed->title, 'url' => $url,
 			'link' => PODCAST_URL . 'programme.php?programme_id=' . $programmeObj->id());
-	$width = $podcastConfig['screenshot_width'];
+	$width = icms::$module->config['screenshot_width'];
 	if ($width > 144) {
 		$width = 144;
 	}
@@ -103,7 +105,7 @@ if ($programmeObj) {
 }
 
 if (empty($clean_limit)) {
-	$clean_limit = $podcastConfig['new_items'];
+	$clean_limit = icms::$module->config['new_items'];
 }
 
 $soundtrackArray = $podcast_soundtrack_handler->getProgrammeSoundtracks($clean_start,
