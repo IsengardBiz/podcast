@@ -35,7 +35,7 @@ global $icmsConfig;
 
 $podcastModule = icms_getModuleInfo(basename(dirname(dirname(__FILE__))));
 
-if (isset($podcastModule)) {
+if (icms_get_module_status("podcast")) {
 
 	$i = 0;
 
@@ -67,4 +67,9 @@ if (isset($podcastModule)) {
 	$headermenu[$i]['title'] = _MODABOUT_ABOUT;
 	$headermenu[$i]['link'] = ICMS_URL . '/modules/' . $podcastModule->getVar('dirname')
 		. '/admin/about.php';
+	
+	$i++;
+	$headermenu[$i]['title'] = _MI_PODCAST_MANUAL;
+	$headermenu[$i]['link'] = ICMS_URL . "/modules/" . $podcastModule->getVar("dirname") 
+		. "/extras/podcast_manual.pdf";
 }

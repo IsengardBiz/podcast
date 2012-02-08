@@ -134,3 +134,4 @@ define("_MI_PODCAST_PROGRAMME_SOUNDTRACK_PUBLISHED_NOTIFY_SBJ",
 
 define("_MI_PODCAST_FINAL", "Use this module at your own risk. And read the manual (in the extras "
 	. "folder) before you play with it.");
+define("_MI_PODCAST_MANUAL", "Manual");
