@@ -230,7 +230,6 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		$icmsTpl->assign('podcast_programme_soundtracks', $soundtrack_array);
 
 		// pagination
-		include_once ICMS_ROOT_PATH . '/class/pagenav.php';
 		$criteria = new icms_db_criteria_Compo();
 		$criteria->add(new icms_db_criteria_Item('source', $programmeObj->id()));
 		$criteria->add(new icms_db_criteria_Item('status', true));
@@ -312,7 +311,6 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		$programmeArray[] = $programme;
 
 		// pagination
-		include_once ICMS_ROOT_PATH . '/class/pagenav.php';
 		$programme_count = $podcast_programme_handler->getCount();
 		$pagenav = new icms_view_PageNav($programme_count, $podcastConfig['number_programmes_per_page'],
 			$clean_start, 'start');

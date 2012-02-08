@@ -23,7 +23,6 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 	public function __construct(& $handler) {
 		global $icmsConfig;
 		global $podcastConfig;
-		global $icmsUser;
 
 		parent::__construct($handler);
 
@@ -237,7 +236,7 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 	public function get_mimetype() {
 		// there is a core file that has a nice list of mimetypes
 		// however some podcast clients don't observe the standard
-		$mimetype_list = include ICMS_ROOT_PATH . '/class/mimetypes.inc.php';
+		$mimetype_list = icms_Utils::mimetypes();
 
 		// lookup the format extension using the system_mimetype id
 		$format_extension = $this->format();

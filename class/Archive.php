@@ -244,7 +244,6 @@ class PodcastArchive extends icms_ipf_seo_Object {
 	/**
 	 * Returns multiple records (headers only), supports selective harvesting based on time ranges
 	 *
-	 * @global mixed $xoopsDB
 	 * @param string $metadataPrefix
 	 * @param string $from
 	 * @param string $until
@@ -454,7 +453,6 @@ class PodcastArchive extends icms_ipf_seo_Object {
 	/**
 	 * Returns multiple records (harvest entire repository, or within specified time range)
 	 *
-	 * @global mixed $xoopsDB
 	 * @param string $metadataPrefix
 	 * @param string $from
 	 * @param string $until
@@ -498,7 +496,7 @@ class PodcastArchive extends icms_ipf_seo_Object {
 			$mimetypeObjArray = $system_mimetype_handler->getObjects(null, true);
 
 			// include the build in mimetype lookup list
-			$mimetype_list = include ICMS_ROOT_PATH . '/class/mimetypes.inc.php';
+			$mimetype_list = icms_Utils::mimetypes();
 
 			// process each publication and generate XML output
 			foreach($soundtrackArray as $soundtrackObj) {
@@ -588,7 +586,6 @@ class PodcastArchive extends icms_ipf_seo_Object {
 	/**
 	 * Retrieves soundtrack objects within search parameters, used byListIdentifiers() and ListRecords()
 	 *
-	 * @global object $xoopsDB
 	 * @param string $requestVerb
 	 * @param string $response
 	 * @param string $metadataPrefix
@@ -711,7 +708,6 @@ class PodcastArchive extends icms_ipf_seo_Object {
 			$podcast_soundtrack_handler = icms_getModuleHandler('soundtrack',
 					basename(dirname(dirname(__FILE__))), 'podcast');
 			$sql = $rows = $fields = '';
-			global $xoopsDB;
 
 			if ($requestVerb == 'ListRecords') {
 				$fields = '*';
@@ -719,7 +715,7 @@ class PodcastArchive extends icms_ipf_seo_Object {
 				$fields = '`oai_identifier`,`submission_time`';
 			}
 
-			$sql = "SELECT " . $fields . " from " . $xoopsDB->prefix('podcast_soundtrack') . " WHERE";
+			$sql = "SELECT " . $fields . " from " . icms::$xoopsDB->prefix('podcast_soundtrack') . " WHERE";
 			if (!empty($from) || !empty($until)) {
 				if (!empty($from)) {
 					$sql .= " `submission_time` >= '" . $from . "'";

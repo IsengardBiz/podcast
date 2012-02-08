@@ -41,29 +41,29 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
      * @return array
 	 */
 	public function getSoundtracksForSearch($queryarray, $andor, $limit, $offset, $userid) {
-		$criteria = new CriteriaCompo();
+		$criteria = new icms_db_criteria_Compo();
 		$criteria->setStart($offset);
 		$criteria->setLimit($limit);
 		$criteria->setSort('date');
 		$criteria->setOrder('DESC');
 
 		if ($userid != 0) {
-			$criteria->add(new Criteria('submitter', $userid));
+			$criteria->add(new icms_db_criteria_Item('submitter', $userid));
 		}
 		if ($queryarray) {
-			$criteriaKeywords = new CriteriaCompo();
+			$criteriaKeywords = new icms_db_criteria_Compo();
 			for ($i = 0; $i < count($queryarray); $i++) {
-				$criteriaKeyword = new CriteriaCompo();
-				$criteriaKeyword->add(new Criteria('title', '%' . $queryarray[$i] . '%',
+				$criteriaKeyword = new icms_db_criteria_Compo();
+				$criteriaKeyword->add(new icms_db_criteria_Item('title', '%' . $queryarray[$i] . '%',
 					'LIKE'), 'OR');
-				$criteriaKeyword->add(new Criteria('description', '%' . $queryarray[$i]
+				$criteriaKeyword->add(new icms_db_criteria_Item('description', '%' . $queryarray[$i]
 					. '%', 'LIKE'), 'OR');
 				$criteriaKeywords->add($criteriaKeyword, $andor);
 				unset ($criteriaKeyword);
 			}
 			$criteria->add($criteriaKeywords);
 		}
-		$criteria->add(new Criteria('status', true));
+		$criteria->add(new icms_db_criteria_Item('status', true));
 		return $this->getObjects($criteria, true, false);
 	}
 
@@ -92,20 +92,17 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 	 * mimetypes required to upload album art) need to be manually removed. It's a bit ugly
 	 * but it works, so long as the admin has made sensible choices about what mimetypes the
 	 * module is authorised to use.
-
-	 * @global type $xoopsDB
 	 * 
 	 * @return string 
 	 */
 	public function getModuleMimeTypes() {
-		global $xoopsDB;
 		$moduleMimetypes = array();
 		$hiddenMimetypes = array('png', 'gif', 'jpg', 'jpeg', 'm3u');
 		$criteria = new  icms_db_criteria_Compo();
 		$criteria->add(new  icms_db_criteria_Item('dirname', '%' . basename(dirname(dirname(__FILE__)))
 			. '%', 'LIKE'));
 		$sql = 'SELECT mimetypeid, dirname, extension FROM '
-			. $xoopsDB->prefix('system_mimetype');
+			. icms::$xoopsDB->prefix('system_mimetype');
 		$rows = $this->query($sql, $criteria);
 		if (count($rows) > 0) {
 			foreach($rows as $row) {
@@ -122,7 +119,6 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 
 	/**
 	 * Filters searches for soundtracks
-	 * @global int $icmsUser
 	 * @param int $start
 	 * @param int $limit
 	 * @param int $programme_id
@@ -132,9 +128,8 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 	 */
 	public function getPodcastCriteria($start = 0, $limit = 10, $programme_id = false,
 		$sort_order = false) {
-		global $icmsUser;
 
-		$criteria = new CriteriaCompo();
+		$criteria = new icms_db_criteria_Compo();
 		if ($start) {
 			$criteria->setStart($start);
 		}
@@ -142,7 +137,7 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 			$criteria->setLimit(intval($limit));
 		}
 		if ($programme_id) {
-			$criteria->add(new Criteria('source', $programme_id));
+			$criteria->add(new icms_db_criteria_Item('source', $programme_id));
 		}
 		$criteria->setSort('date');
 		if ($sort_order) {
@@ -200,7 +195,6 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 	/**
 	 * Returns an array of mimetype extensions for the admin side format filter, using the id as key
 	 *
-	 * @global object $xoopsDB
 	 * @return array 
 	 */
 	public function format_filter() {
@@ -208,8 +202,6 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 		$mimetype_id_string = $sql = $rows = '';
 		$mimetypeArray = array();
 		$criteria = null;
-
-		global $xoopsDB;
 
 		$sql = 'SELECT DISTINCT `format` FROM ' . $this->table;
 		$rows = $this->query($sql, $criteria);
@@ -224,10 +216,10 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 
 		// use the distinct mimetype ids to get the relevant mimetype objects
 		$system_mimetype_handler = icms_getModuleHandler('mimetype', 'system');
-		$criteria = new CriteriaCompo();
+		$criteria = new icms_db_criteria_Compo();
 		$criteria->setSort('extension');
 		$criteria->setOrder('ASC');
-		$sql = 'SELECT * FROM ' . $xoopsDB->prefix('system_mimetype') . $mimetype_id_string;
+		$sql = 'SELECT * FROM ' . icms::$xoopsDB->prefix('system_mimetype') . $mimetype_id_string;
 		$rows = $this->query($sql, $criteria);
 		foreach($rows as $row) {
 			$mimetypeArray[$row['mimetypeid']] = $row['extension'];

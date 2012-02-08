@@ -56,15 +56,14 @@ function podcast_recent_show($options) {
 function podcast_recent_edit($options) {
 	include_once(ICMS_ROOT_PATH . '/modules/' . basename(dirname(dirname(__FILE__)))
 		. '/include/common.php');
-	include_once(ICMS_ROOT_PATH . '/class/xoopsform/formselect.php');
 	$podcast_programme_handler = icms_getModuleHandler('programme',
 		basename(dirname(dirname(__FILE__))), 'podcast');
 
 	$form = '<table><tr>';
 	// optionally display results from a single programme
 	$form .= '<td>' . _MB_PODCAST_PODCAST_RECENT_PROGRAMME . '</td>';
-	// Parameters XoopsFormSelect: ($caption, $name, $value = null, $size = 1, $multiple = false)
-	$form_select = new XoopsFormSelect('', 'options[]', $options[0], '1', false);
+	// Parameters icms_form_elements_Select: ($caption, $name, $value = null, $size = 1, $multiple = false)
+	$form_select = new icms_form_elements_Select('', 'options[]', $options[0], '1', false);
 	$programme_list = $podcast_programme_handler->getList();
 	$programme_list = array(0 => 'All') + $programme_list;
 	$form_select->addOptionArray($programme_list);

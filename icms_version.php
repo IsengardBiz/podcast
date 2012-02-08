@@ -213,13 +213,17 @@ $modversion['config'][] = array(
 	'valuetype' => 'int',
 	'default' =>  '1');
 
-// prepare language options
 $language_options = '';
-$podcast_soundtrack_handler = icms_getModuleHandler('soundtrack', basename(dirname(__FILE__)),
-	'podcast');
-$language_options = $podcast_soundtrack_handler->getLanguage();
-// the preference system displays keys rather than values for some reason, so lets flip it
-$language_options = array_flip($language_options);
+
+// Prepare language options - but only if module is installed, otherwise it will cause an error
+if (icms_get_module_status("podcast"))
+{
+	$podcast_soundtrack_handler = icms_getModuleHandler('soundtrack', basename(dirname(__FILE__)),
+		'podcast');
+	$language_options = $podcast_soundtrack_handler->getLanguage();
+	// The preference system displays keys rather than values for some reason, so lets flip it
+	$language_options = array_flip($language_options);
+}
 
 $modversion['config'][] = array(
 	'name' => 'default_language',

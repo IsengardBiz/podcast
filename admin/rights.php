@@ -65,15 +65,13 @@ if (in_array($clean_op,$valid_op,true)) {
 			editrights($clean_rights_id);
 			break;
 		case "addrights":
-			include_once ICMS_ROOT_PATH."/kernel/icmspersistablecontroller.php";
-			$controller = new IcmsPersistableController($podcast_rights_handler);
+			$controller = new icms_ipf_Controller($podcast_rights_handler);
 			$controller->storeFromDefaultForm(_AM_PODCAST_RIGHTS_CREATED, _AM_PODCAST_RIGHTS_MODIFIED);
 
 			break;
 
 		case "del":
-			include_once ICMS_ROOT_PATH."/kernel/icmspersistablecontroller.php";
-			$controller = new IcmsPersistableController($podcast_rights_handler);
+			$controller = new icms_ipf_Controller($podcast_rights_handler);
 			$controller->handleObjectDeletion();
 
 			break;

@@ -66,15 +66,13 @@ if (in_array($clean_op,$valid_op,true)) {
 			editarchive($clean_archive_id);
 			break;
 		case "addarchive":
-			include_once ICMS_ROOT_PATH."/kernel/icmspersistablecontroller.php";
-			$controller = new IcmsPersistableController($podcast_archive_handler);
+			$controller = new icms_ipf_Controller($podcast_archive_handler);
 			$controller->storeFromDefaultForm(_AM_PODCAST_ARCHIVE_CREATED, _AM_PODCAST_ARCHIVE_MODIFIED);
 
 			break;
 
 		case "del":
-			include_once ICMS_ROOT_PATH."/kernel/icmspersistablecontroller.php";
-			$controller = new IcmsPersistableController($podcast_archive_handler);
+			$controller = new icms_ipf_Controller($podcast_archive_handler);
 			$controller->handleObjectDeletion();
 
 			break;

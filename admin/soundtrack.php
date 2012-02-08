@@ -18,7 +18,7 @@
  * @param int $soundtrack_id Soundtrackid to be edited
  */
 function editsoundtrack($soundtrack_id = 0) {
-	global $podcast_soundtrack_handler, $icmsUser, $icmsAdminTpl;
+	global $podcast_soundtrack_handler, $icmsAdminTpl;
 
 	$podcastModule = icms_getModuleInfo(basename(dirname(dirname(__FILE__))));
 
@@ -29,7 +29,7 @@ function editsoundtrack($soundtrack_id = 0) {
 		$sform = $soundtrackObj->getForm(_AM_PODCAST_SOUNDTRACK_EDIT, 'addsoundtrack');
 		$sform->assign($icmsAdminTpl);
 	} else {
-		$soundtrackObj->setVar("submitter", $icmsUser->getVar('uid'));
+		$soundtrackObj->setVar("submitter", icms::$user->getVar('uid'));
 		$podcastModule->displayAdminMenu(0, _AM_PODCAST_SOUNDTRACKS . " > " . _CO_ICMS_CREATINGNEW);
 		$sform = $soundtrackObj->getForm(_AM_PODCAST_SOUNDTRACK_CREATE, 'addsoundtrack');
 		$sform->assign($icmsAdminTpl);
@@ -37,8 +37,6 @@ function editsoundtrack($soundtrack_id = 0) {
 	$icmsAdminTpl->display('db:podcast_admin_soundtrack.html');
 }
 include_once("admin_header.php");
-
-global $icmsUser;
 
 $podcast_soundtrack_handler = icms_getModuleHandler('soundtrack', 
 	basename(dirname(dirname(__FILE__))), 'podcast');
@@ -66,16 +64,14 @@ if (in_array($clean_op,$valid_op,true)) {
 			editsoundtrack($clean_soundtrack_id);
 			break;
 		case "addsoundtrack":
-			include_once ICMS_ROOT_PATH."/kernel/icmspersistablecontroller.php";
-			$controller = new IcmsPersistableController($podcast_soundtrack_handler);
+			$controller = new icms_ipf_Controller($podcast_soundtrack_handler);
 			$controller->storeFromDefaultForm(_AM_PODCAST_SOUNDTRACK_CREATED,
 				_AM_PODCAST_SOUNDTRACK_MODIFIED);
 
 			break;
 
 		case "del":
-			include_once ICMS_ROOT_PATH."/kernel/icmspersistablecontroller.php";
-			$controller = new IcmsPersistableController($podcast_soundtrack_handler);
+			$controller = new icms_ipf_Controller($podcast_soundtrack_handler);
 			$controller->handleObjectDeletion();
 
 			break;

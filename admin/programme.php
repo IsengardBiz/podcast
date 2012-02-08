@@ -64,16 +64,14 @@ if (in_array($clean_op,$valid_op,true)) {
 			editprogramme($clean_programme_id);
 			break;
 		case "addprogramme":
-			include_once ICMS_ROOT_PATH."/kernel/icmspersistablecontroller.php";
-			$controller = new IcmsPersistableController($podcast_programme_handler);
+			$controller = new icms_ipf_Controller($podcast_programme_handler);
 			$controller->storeFromDefaultForm(_AM_PODCAST_PROGRAMME_CREATED,
 				_AM_PODCAST_PROGRAMME_MODIFIED);
 
 			break;
 
 		case "del":
-			include_once ICMS_ROOT_PATH."/kernel/icmspersistablecontroller.php";
-			$controller = new IcmsPersistableController($podcast_programme_handler);
+			$controller = new icms_ipf_Controller($podcast_programme_handler);
 			$controller->handleObjectDeletion();
 
 			break;
@@ -99,7 +97,6 @@ if (in_array($clean_op,$valid_op,true)) {
 			}
 
 			// display a summary table
-			include_once ICMS_ROOT_PATH."/kernel/icmspersistabletable.php";
 			$objectTable = new icms_ipf_view_Table($podcast_programme_handler);
 			$objectTable->addColumn(new icms_ipf_view_Column('title'));
 			$objectTable->addColumn(new icms_ipf_view_Column('date'));

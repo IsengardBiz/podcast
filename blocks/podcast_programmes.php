@@ -44,7 +44,6 @@ function podcast_programmes_show($options) {
 function podcast_programmes_edit($options) {
 	include_once(ICMS_ROOT_PATH . '/modules/' . basename(dirname(dirname(__FILE__)))
 		. '/include/common.php');
-	include_once(ICMS_ROOT_PATH . '/class/xoopsform/formselect.php');
 
 	// select number of recent soundtracks to display in the block
 	$form = '<table><tr>';

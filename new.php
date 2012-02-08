@@ -166,7 +166,6 @@ if (empty($soundtrack_object_array)) {
 	$xoTheme->addLink('alternate', $rss_link, $rss_attributes);
 
 	// pagination
-	include_once ICMS_ROOT_PATH . '/class/pagenav.php';
 	$soundtrack_count = $podcast_soundtrack_handler->getCount();
 	$pagenav = new icms_view_PageNav($soundtrack_count, $podcastConfig['new_items'], $clean_start, 'start');
 	$icmsTpl->assign('podcast_navbar', $pagenav->renderNav());

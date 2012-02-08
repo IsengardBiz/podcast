@@ -26,18 +26,3 @@ be ready to go.
 The module is designed to be zero configuration; you can start publishing soundtracks immediately
 on install, though of course you will probably want to customise the programmes/albums to suit
 your own purpose.
-
-Improving image loading speed (optional extra)
-==============================================
-
-Podcast uses the resize_image Smarty plugin to dynamically resize images when you change the image
-size display preferences. Resized images are cached in /cache/uploads/podcast/, but the current
-version of this plugin doesn't accessed the cached copies, it rebuilds images on each page load.
-
-A fixed version of the plugin by Nachenko is included in the /modules/podcast/extras folder. Install
-this file (function.resized_image.php) in the folder below, overwriting the old version, and the
-cache problem will be resolved:
-
-/libraries/smarty/icms_plugins/
-
-The fixed version of the plugin has been committed and will appear in a future release of ICMS.
