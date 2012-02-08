@@ -25,7 +25,7 @@
     <div class="podcast_separator"></div>
     <{if $podcast_soundtrack.cover_path}>
         <div style="float:left; padding: 0px 10px 5px 0px;">
-            <{if $podcast_soundtrack.cover_link}>
+            <{if $podcast_soundtrack.cover_link && $podcast_soundtrack.cover_path}>
                 <a href="<{$podcast_soundtrack.cover_link}>">
                     <{resized_image file=$podcast_soundtrack.cover_path
                         width=$podcast_soundtrack.cover_width height="800" fit="inside"}></a>

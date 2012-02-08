@@ -53,8 +53,11 @@ if (empty($soundtrack_object_array)) {
 		$script_name);
 
 	foreach($programme_object_array as $programmeObj) {
-		$programme_cover_array[$programmeObj->id()] = $document_root . 'uploads/' . $directory_name
-			. '/' . $programmeObj->getVar('cover');
+		if (($programmeObj->getVar('cover', 'e')))
+		{
+			$programme_cover_array[$programmeObj->id()] = $document_root . 'uploads/' . $directory_name
+				. '/' . $programmeObj->getVar('cover');
+		}
 	}
 
 	// isolate the most recent soundtrack to use as the page highlight

@@ -51,8 +51,12 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 			exit();
 		}
 	} else { // display a single soundtrack
-		// increment hit counter
-		$podcast_soundtrack_handler->updateCounter($soundtrackObj);
+		
+		// Update hit counter
+		if (!icms_userIsAdmin(icms::$module->getVar('dirname')))
+		{
+			$podcast_soundtrack_handler->updateCounter($soundtrackObj);
+		}
 
 		// prepare soundtrack data for template
 		$soundtrackArray = $soundtrackObj->toArray();

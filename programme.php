@@ -30,9 +30,16 @@ $programmeObj = $podcast_programme_handler->get($clean_programme_id);
 // check pagination
 $clean_start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 
-//display one programme or play (stream) it
+/////////////////////////////////////////////////////
+////////// DISPLAY OR STREAM ONE PROGRAMME //////////
+/////////////////////////////////////////////////////
+
 if ($programmeObj && !$programmeObj->isNew()) {
-	// stream the soundtrack by offering the user's browser an m3u playlist file
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	////////// Stream the soundtrack by offering the user's browser an m3u playlist file //////////
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	
 	if ($clean_m3u_flag == 1) {
 		$playlist = '';
 		$soundtrackArray = '';
@@ -89,8 +96,16 @@ if ($programmeObj && !$programmeObj->isNew()) {
 			exit();
 		}
 	} else {
-		// increment hit counter
-		$podcast_programme_handler->updateCounter($programmeObj);
+		
+		////////////////////////////////////////////////
+		////////// Display a single programme //////////
+		////////////////////////////////////////////////
+		
+		// Update hit counter
+		if (!icms_userIsAdmin(icms::$module->getVar('dirname')))
+		{
+			$podcast_programme_handler->updateCounter($programmeObj);
+		}
 
 		$programme = $programmeObj->toArray();
 		$programme['counter'] = $programme['counter'] + 1; // for accuracy of user-side data
@@ -117,9 +132,6 @@ if ($programmeObj && !$programmeObj->isNew()) {
 				. $programmeObj->getVar('cover');
 			$programme['cover_width'] = $podcastConfig['screenshot_width'];
 		}
-
-		// prepare the play all button
-		$programme['play_all_button'] = $programmeObj->get_play_all_button();
 
 		// prepare the RSS autodiscovery link, which is inserted in the module header
 		global $xoTheme;
@@ -185,6 +197,12 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		
 		$soundtrack_objects = $podcast_soundtrack_handler->getObjects($criteria);
 		unset($criteria);
+		
+		// prepare the play all button (only if there are some soundtracks)
+		if (!empty($soundtrack_objects))
+		{
+			$programme['play_all_button'] = $programmeObj->get_play_all_button();
+		}
 
 		// prepare this programme's soundtracks for display
 		foreach($soundtrack_objects as $soundtrack) {
@@ -240,7 +258,11 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		$icmsTpl->assign('podcast_navbar', $pagenav->renderNav());
 	}
 } else {
-	// display a list of programmes
+	
+	/////////////////////////////////////////////
+	////////// DISPLAY PROGRAMME INDEX //////////
+	/////////////////////////////////////////////
+	
 	$icmsTpl->assign('podcast_title', _MD_PODCAST_ALL_PROGRAMMES);
 	$icmsTpl->assign('podcast_programme_view', 'multiple');
 
@@ -295,14 +317,17 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		// prepare the RSS button
 		$programme['rss_button'] = $programmeObject->get_rss_button();
 
-		// prepare the play all button
-		$programme['play_all_button'] = $programmeObject->get_play_all_button();
-
 		// calculate the number of soundtracks in the podcast
 		$criteria = new icms_db_criteria_Compo();
 		$criteria->add(new icms_db_criteria_Item('source', $programmeObject->id()));
 		$criteria->add(new icms_db_criteria_Item('status', true));
 		$programme['track_count'] = $podcast_soundtrack_handler->getCount($criteria);
+		
+		// prepare the play all button (only if there are some soundtracks)
+		if ($programme['track_count'] > 0)
+		{
+			$programme['play_all_button'] = $programmeObject->get_play_all_button();
+		}
 
 		// check display preferences and unset unwanted fields
 		$programme = podcast_programme_display_preferences($programme);

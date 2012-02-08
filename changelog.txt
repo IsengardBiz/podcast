@@ -14,3 +14,10 @@ Version 1.21
 ------------
 * 1.3 compatibility fix: Include icmspersistablecontroller.php in class/soundtrack.php
 * Fixed broken logo in recent soundtracks RSS feed.
+
+Version 1.3
+-----------
+* Update code to ImpressCMS 1.3/2.0 spec. The module is no longer compatible with the 1.2 series.
+* Fix warning on new.php when programme doesn't have cover art.
+* Fix display of streaming icon on programmes that don't have any content.
+* Fix counters to not increment on admin page views
