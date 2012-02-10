@@ -31,7 +31,7 @@ function podcast_search($queryarray, $andor, $limit, $offset, $userid) {
 	$ret = array();
 
 	foreach ($soundtrackArray as $soundtrack) {
-		$item['image'] = "images/stream.png";
+		$item['image'] = "images/soundtrack.png";
 		$item['link'] = str_replace(PODCAST_URL, '', $soundtrack['itemUrl']);
 		$item['title'] = $soundtrack['title'];
 		$item['time'] = strtotime($soundtrack['submission_time']);
