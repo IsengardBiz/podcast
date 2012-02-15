@@ -112,6 +112,7 @@ define("_CO_PODCAST_PROGRAMME_COUNTER", "view");
 define("_CO_PODCAST_PROGRAMME_DOWNLOAD", "Download");
 define("_CO_PODCAST_PROGRAMME_STREAM", "Play");
 define("_CO_PODCAST_PROGRAMME_SOUNDTRACKS", "Soundtracks");
+define("_CO_PODCAST_PROGRAMME_PROGRAMMES", "Programmes");
 
 // rights
 define("_CO_PODCAST_RIGHTS_TITLE", "Title");

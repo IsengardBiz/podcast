@@ -178,5 +178,6 @@ if (empty($soundtrack_object_array)) {
 $icmsTpl->assign('podcast_new_compact_view', $podcastConfig['new_view_mode']);
 $icmsTpl->assign('podcast_module_home', podcast_getModuleName(true, true));
 $icmsTpl->assign('podcast_display_breadcrumb', $podcastConfig['display_breadcrumb']);
+$icmsTpl->assign('podcast_category_path', _CO_PODCAST_NEW);
 
 include_once 'footer.php';

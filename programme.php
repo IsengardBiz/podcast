@@ -346,5 +346,6 @@ if ($programmeObj && !$programmeObj->isNew()) {
 
 $icmsTpl->assign('podcast_module_home', podcast_getModuleName(true, true));
 $icmsTpl->assign('podcast_display_breadcrumb', $podcastConfig['display_breadcrumb']);
+$icmsTpl->assign('podcast_category_path', _CO_PODCAST_PROGRAMME_PROGRAMMES);
 
 include_once 'footer.php';
