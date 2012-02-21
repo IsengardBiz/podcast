@@ -24,7 +24,15 @@ $rightsObj = $podcast_rights_handler->get($clean_rights_id);
 
 // display one rights object
 if ($rightsObj && !$rightsObj->isNew()) {
-	$icmsTpl->assign('podcast_rights', $rightsObj->toArray());
+	$rights = $rightsObj->toArray();
+	
+	// Add SEO friendly string to URL
+	if (!empty($rights['short_url']))
+	{
+		$rights['itemUrl'] .= "&amp;title=" . $rights['short_url'];
+	}
+	
+	$icmsTpl->assign('podcast_rights', $rights);
 
 	// generating meta information for this page
 	$icms_metagen = new icms_ipf_Metagen($rightsObj->getVar('title'),
@@ -38,7 +46,7 @@ if ($rightsObj && !$rightsObj->isNew()) {
 
 	$objectTable = new icms_ipf_view_Table($podcast_rights_handler, $criteria = null, array(), true);
 	$objectTable->isForUserSide();
-	$objectTable->addColumn(new icms_ipf_view_Column('title'));
+	$objectTable->addColumn(new icms_ipf_view_Column("title", _GLOBAL_LEFT, FALSE, addSEOStringToItemUrl));
 	$icmsTpl->assign('podcast_rights_table', $objectTable->fetch());
 }
 

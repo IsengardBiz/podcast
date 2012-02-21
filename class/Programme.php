@@ -109,7 +109,26 @@ class PodcastProgramme extends icms_ipf_seo_Object {
 		$sort_options = $this->handler->getSortOptions();
 		return $sort_options[$sort_order];
 	}
-
+	
+	/**
+	 * Customise object URLs in IPF tables to append the SEO-friendly string.
+	 */
+	public function addSEOStringToItemUrl()
+	{
+		$short_url = $this->short_url();
+		if (!empty($short_url))
+		{
+			$seo_url = '<a href="' . $this->getItemLink(TRUE) . '&amp;title=' . $this->short_url() 
+					. '">' . $this->getVar('title', 'e') . '</a>';
+		}
+		else
+		{
+			$seo_url = $this->getItemLink(FALSE);
+		}
+		
+		return $seo_url;
+	}
+	
 	/**
 	 * Returns a html snippet for inserting an RSS feed button/link into a smarty template variable
 	 *

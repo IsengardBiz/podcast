@@ -50,4 +50,23 @@ class PodcastRights extends icms_ipf_seo_Object {
 		}
 		return parent :: getVar($key, $format);
 	}
+	
+	/**
+	 * Customise object URLs in IPF tables to append the SEO-friendly string.
+	 */
+	public function addSEOStringToItemUrl()
+	{
+		$short_url = $this->short_url();
+		if (!empty($short_url))
+		{
+			$seo_url = '<a href="' . $this->getItemLink(TRUE) . '&amp;title=' . $this->short_url() 
+					. '">' . $this->getVar('title', 'e') . '</a>';
+		}
+		else
+		{
+			$seo_url = $this->getItemLink(FALSE);
+		}
+		
+		return $seo_url;
+	}
 }

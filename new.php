@@ -72,6 +72,13 @@ if (empty($soundtrack_object_array)) {
 		$programme_cover = $programmeObj = '';
 		$programmeObj = $programme_object_array[$feature_item_object->getVar('source', 'e')];
 		$programme = $programmeObj->toArray();
+		
+		// Add SEO friendly string to URL
+		if (!empty($programme['short_url']))
+		{
+			$programme['itemUrl'] .= "&amp;title=" . $programme['short_url'];
+		}
+	
 		$programme_cover = $programmeObj->getVar('cover');
 		if (!empty($programme_cover)) {
 			$feature_item['cover_path'] = $programme_cover_array[$programmeObj->getVar('programme_id')];
@@ -80,13 +87,13 @@ if (empty($soundtrack_object_array)) {
 		}
 
 		// convert rights to human readable, do lookup from buffer
-		$feature_item['rights'] = $rightsObjArray[$feature_item['rights']]->getItemLink();
+		$feature_item['rights'] = $rightsObjArray[$feature_item['rights']]->addSEOStringToItemUrl();
 
 		// convert format to human readable, do lookup from buffer
 		$feature_item['format'] = '.' . $mimetypeObjArray[$feature_item['format']]->getVar('extension');
 
-		// convert source to human readable
-		$feature_item['source'] = $programme['itemLink'];
+		// convert source to human readable and add SEO link to URL
+		$feature_item['source'] = $programmeObj->addSEOStringToItemUrl();
 
 		// prepare latest tracks RSS button
 		$latest_release_rss_button = '<a href="' . PODCAST_URL . 'rss.php" title="'
@@ -130,17 +137,17 @@ if (empty($soundtrack_object_array)) {
 			$soundtrack['format'] = '.' . $mimetypeObj->getVar('extension');
 
 			// convert rights to human readable, lookup value from buffer
-			$soundtrack['rights'] = $rightsObjArray[$soundtrack['rights']]->getItemLink();
+			$soundtrack['rights'] = $rightsObjArray[$soundtrack['rights']]->addSEOStringToItemUrl();
 
 			// convert source to human readable, lookup value from buffer
-			$soundtrack['source'] = $programme_object_array[$soundtrack['source']]->getItemLink();
+			$soundtrack['source'] = $programme_object_array[$soundtrack['source']]->addSEOStringToItemUrl();
 
 			// prepare cover - if you wanted to have big covers for these, change thumbnail_width
 			// to screenshot_width
 			if (!empty($programme_cover_array[$soundtrack_object->getVar('source', 'e')])) {
 				$soundtrack['cover_path'] = $programme_cover_array[$soundtrack_object->getVar('source', 'e')];
 				$soundtrack['cover_width'] = $podcastConfig['thumbnail_width'];
-				$soundtrack['cover_link'] = $soundtrack['itemUrl'];
+				$soundtrack['cover_link'] = $soundtrack_object->addSEOStringToItemUrl();
 			}
 
 			// add download link
