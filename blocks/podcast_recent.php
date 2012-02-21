@@ -39,9 +39,9 @@ function podcast_recent_show($options) {
 
 	$criteria->setSort('submission_time');
 	$criteria->setOrder('DESC');
-	$block['soundtracks'] = $podcast_soundtrack_handler->getObjects($criteria, true, false);
+	$block['soundtracks'] = $podcast_soundtrack_handler->getObjects($criteria, true, true);
 	foreach($block['soundtracks'] as $key => &$value) {
-		$value = $value['itemLink'] . ' (' . $value['date'] . ')';
+		$value = $value->addSEOStringToItemUrl() . ' (' . $value->getVar('date') . ')';
 	}
 	// also need to consider permissions and status
 	return $block;
