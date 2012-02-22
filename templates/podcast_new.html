@@ -2,18 +2,20 @@
 
 <{includeq file='db:podcast_header.html'}>
 
+<div>
+	<h2><{if $podcast_latest_release_rss_button}><{$podcast_latest_release_rss_button}> <{/if}><{$smarty.const._CO_PODCAST_NEW_ITEMS}></h2>
+</div>
+
 <{if $podcast_feature || $podcast_programme_soundtracks}>
+
 <div>
 
 	<!-- most recent soundtrack is featured on the page -->
 
 	<{if $podcast_feature}>
-	<div>
-		<h2><{if $podcast_latest_release_rss_button}><{$podcast_latest_release_rss_button}> <{/if}><{$smarty.const._CO_PODCAST_NEW_ITEMS}></h2>
-	</div>
-	<{foreach item=podcast_soundtrack from = $podcast_feature}>
-	<{include file="db:podcast_soundtrack_extended.html"}>
-	<{/foreach}>
+		<{foreach item=podcast_soundtrack from = $podcast_feature}>
+		<{include file="db:podcast_soundtrack_extended.html"}>
+		<{/foreach}>
 	<{/if}>
 
 	<!-- list other recent soundtracks across all programmes -->
