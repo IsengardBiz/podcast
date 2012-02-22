@@ -23,3 +23,9 @@
 
 /* Item metadata (author, date etc) */
 .podcast_info {font-size: 1em; margin-top:1em; margin-bottom:1em;}
+
+/* Prevents contents being pushed down by floated divs */
+.podcast_auto_overflow
+{
+	overflow:auto;
+}
