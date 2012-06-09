@@ -12,5 +12,5 @@
  * @version		$Id$
  */
 
-header('location: soundtrack.php');
+include('soundtrack.php');
 exit;
