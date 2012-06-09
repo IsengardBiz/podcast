@@ -1,10 +1,10 @@
 /**
-* Specific CSS for the module (RTL)
+* Specific CSS for the module
 *
 * @copyright	http://smartfactory.ca The SmartFactory
 * @license		http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License (GPL)
-* @since		1.1
-* @author	    Sina Asghari (aka stranger) <pesian_stranger@users.sourceforge.net>
+* @since		1.0
+* @author		marcan aka Marc-André Lanciault <marcan@smartfactory.ca>
 * @author		Madfish <simon@isengard.biz>
 * @version		$Id$
 */
@@ -23,3 +23,9 @@
 
 /* Item metadata (author, date etc) */
 .podcast_info {font-size: 1em; margin-top:1em; margin-bottom:1em;}
+
+/* Prevents contents being pushed down by floated divs */
+.podcast_auto_overflow
+{
+	overflow:auto;
+}

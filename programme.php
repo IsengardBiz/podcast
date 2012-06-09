@@ -108,13 +108,6 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		}
 
 		$programme = $programmeObj->toArray();
-		
-		// Add SEO friendly string to URL
-		if (!empty($programme['short_url']))
-		{
-			$programme['itemUrl'] .= "&amp;title=" . $programme['short_url'];
-		}
-		
 		$programme['counter'] = $programme['counter'] + 1; // for accuracy of user-side data
 
 		$icmsTpl->assign('podcast_programme_view', 'single');
@@ -218,15 +211,9 @@ if ($programmeObj && !$programmeObj->isNew()) {
 			// but draw values from buffers to reduce DB queries associated with getVar() overrides
 			$track = '';
 			$track = $soundtrack->toArrayWithoutOverrides();
-			
-			// Add SEO friendly string to URL
-			if (!empty($soundtrack['short_url']))
-			{
-				$soundtrack['itemUrl'] .= "&amp;title=" . $soundtrack['short_url'];
-			}
-			
-			$track['source'] = $programmeObj->addSEOStringToItemUrl();
+			$track['source'] = $programme['itemLink'];
 			$track['format'] = $mimetypeObjArray[$track['format']]->getVar('extension');
+			$track['rights'] = $rightsObjArray[$track['rights']]->getItemLink();
 
 			// add download link
 			$track['download'] = '<a href="' . $track['identifier'] . '" title="'
@@ -244,7 +231,8 @@ if ($programmeObj && !$programmeObj->isNew()) {
 
 			// convert rights to human readable
 			$rightsObj = $rightsObjArray[$soundtrack->getVar('rights', 'e')];
-			$track['rights'] = $rightsObj->addSEOStringToItemUrl();
+			$rights = $rightsObj->toArray();
+			$track['rights'] = $rights['itemLink'];
 
 			// unset unwanted / uneeded fields
 			unset($track['source']);
@@ -311,12 +299,6 @@ if ($programmeObj && !$programmeObj->isNew()) {
 	foreach($programmeObjectArray as $programmeObject) {
 		// convert object to array for easy template assignment
 		$programme = $programmeObject->toArray();
-		
-		// Add SEO friendly string to URL
-		if (!empty($programme['short_url']))
-		{
-			$programme['itemUrl'] .= "&amp;title=" . $programme['short_url'];
-		}
 
 		// prepare cover for display, dynamically resized by smarty plugin according to
 		// screenshot_size preference - NB: requires absolute path from *web root* folder
@@ -328,7 +310,8 @@ if ($programmeObj && !$programmeObj->isNew()) {
 			$programme['cover_path'] = '/uploads/' . $podcastModule->getVar('dirname') . '/'
 				. $programmeObject->getVar('cover');
 			$programme['cover_width'] = $podcastConfig['thumbnail_width'];
-			$programme['cover_link'] = $programme['itemUrl'];
+			$programme['cover_link'] = PODCAST_URL . 'programme.php?programme_id='
+				. $programmeObject->id();
 		}
 
 		// prepare the RSS button

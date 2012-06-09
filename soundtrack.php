@@ -60,13 +60,6 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 
 		// prepare soundtrack data for template
 		$soundtrackArray = $soundtrackObj->toArray();
-		
-		// Add SEO friendly string to URL
-		if (!empty($soundtrackArray['short_url']))
-		{
-			$soundtrackArray['itemUrl'] .= "&amp;title=" . $soundtrackArray['short_url'];
-		}
-		
 		$soundtrackArray['counter'] = $soundtrackArray['counter'] +1;
 		$icmsTpl->assign('podcast_soundtrack_view', 'single');
 
@@ -99,12 +92,6 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 				. $programmeObj->getVar('cover');
 			$soundtrackArray['cover_width'] = $podcastConfig['screenshot_width'];
 			$soundtrackArray['cover_link'] = $programme['itemUrl'];
-			
-			// Add SEO friendly string to URL
-			if (!empty($programme['short_url']))
-			{
-				$soundtrackArray['cover_link'] .= "&amp;title=" . $programme['short_url'];
-			}
 		}
 
 		// change some fields to human readable
@@ -148,7 +135,7 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 	$objectTable = new icms_ipf_view_Table($podcast_soundtrack_handler, $criteria, array(), true);
 	$objectTable->isForUserSide();
 	$objectTable->addColumn(new icms_ipf_view_Column('date'));
-	$objectTable->addColumn(new icms_ipf_view_Column("title", _GLOBAL_LEFT, FALSE, addSEOStringToItemUrl));
+	$objectTable->addColumn(new icms_ipf_view_Column('title'));
 	$objectTable->addColumn(new icms_ipf_view_Column('source', _GLOBAL_LEFT, false,
 		'source', $sources));
 	$objectTable->addColumn(new icms_ipf_view_Column('format', _GLOBAL_LEFT, false,

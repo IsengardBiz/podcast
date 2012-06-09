@@ -34,7 +34,7 @@ $modversion = array(
 	/**  Development information */
 	'status_version'=> "1.3 Beta",
 	'status'=> "Beta",
-	'date'=> "8/2/2012",
+	'date'=> "9/6/2012",
 	'author_word'=> "Thanks to the makers of IPF and ImBuilding.",
 
 	/** Contributors */

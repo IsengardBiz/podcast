@@ -30,17 +30,12 @@ function podcast_programmes_show($options) {
 	$criteria->setSort('title');
 	$criteria->setOrder('ASC');
 	// would it be better to get objects as array or toArray() and make use of the itemLink?
-	$block['programmes'] = $podcast_programme_handler->getObjects($criteria, true, false);
+	$block['programmes'] = $podcast_programme_handler->getList($criteria, true, false);
 
 	// ids are the keys of the array;
 	foreach($block['programmes'] as $key => &$value) {
-		$url = PODCAST_URL . 'programme.php?programme_id=' . $key;
-		if (!empty($value->getVar('short_url')))
-		{
-			$url .= "&amp;title=" . $value->getVar('short_url');
-		}
-		
-		$value = '<a href="' . $url . '">' . $value->getVar('title', 'e') . '</a>';
+		$value = '<a href="' . PODCAST_URL . 'programme.php?programme_id='
+			. $key . '">' . $value . '</a>';
 	}
 	// also need to consider item permissions and status
 	return $block;
