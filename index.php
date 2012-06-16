@@ -10,11 +10,12 @@
  * @version		$Id$
  */
 
-include_once "../../mainfile.php";
+include_once "../../mainfile.php";  
+include_once ICMS_ROOT_PATH . "/header.php"; 
 
 // Read module preferences to determine what to use as the start page
 $start_options = array(0 => 'soundtrack.php', 1 => 'programme.php', 2 => 'rights.php',
 	3 => 'new.php');
 $location = $start_options[icms::$module->config['podcast_start_page']];
-include($location);
+header('location: ' . $location);
 exit;
