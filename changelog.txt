@@ -25,3 +25,8 @@ Version 1.3
 * Fix new releases page to display page title when there are no soundtracks.
 * Improve CSS to stop content being pushed down by floating divs (remove clear).
 * Fix slow index page load when gzip enabled on ICMS 1.3.2.
+
+Version 1.31
+------------
+
+* Revert to use of the theme changer block bugfix.
