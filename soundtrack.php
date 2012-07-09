@@ -46,8 +46,6 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 			// less widely recognised m3u8 alternative playlist format for utf-8:
 			// header ('Content-Type: audio/x-mpegurl audio/mpeg-url application/x-winamp-playlist audio/scpls audio/x-scpls; charset=utf-8');
 			// header("Content-Disposition:inline;filename=stream_soundtrack.m3u8");
-
-			echo $identifier;
 			exit();
 		}
 	} else { // display a single soundtrack
