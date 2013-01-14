@@ -30,3 +30,7 @@ Version 1.31
 ------------
 
 * Revert to use of the theme changer block bugfix.
+
+1.32 trunk changes
+------------------
+* Update language files (remove outdated warning about Chrome not displaying xml tree).

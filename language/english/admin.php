@@ -175,8 +175,8 @@ define("_AM_PODCAST_TEST_OAIPMH",
 		"<h1>Testing OAIPMH responses</h1>
 <p>The OAIPMH protocol specifies a number of requests that external metadata harvesters can use
 to retrieve metadata from your site. The links below allow you to see the XML response of the
-Podcast module to incoming OAIPMH requests. This is best viewed in Firefox, which will show you the
-document tree (do not view with Chrome as it does not parse XML).</p>
+Podcast module to incoming OAIPMH requests. This is best viewed in Firefox or Chrome, which will
+show you the document tree.</p>
 ");
 
 define("_AM_PODCAST_TEST_MORE_INFO",
