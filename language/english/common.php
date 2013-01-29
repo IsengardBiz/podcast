@@ -40,8 +40,8 @@ define("_CO_PODCAST_SOUNDTRACK_FORMAT_DSC", " You can add more audio formats to 
 define("_CO_PODCAST_SOUNDTRACK_FILE_SIZE", "File size");
 define("_CO_PODCAST_SOUNDTRACK_FILE_SIZE_DSC", "Enter in BYTES, it will be converted to human
     readable automatically");
-define("_CO_PODCAST_SOUNDTRACK_IDENTIFIER", "URL");
-define("_CO_PODCAST_SOUNDTRACK_IDENTIFIER_DSC", " The link to download the audio file, make sure
+define("_CO_PODCAST_SOUNDTRACK_IDENTIFIER", "Soundtrack URL");
+define("_CO_PODCAST_SOUNDTRACK_IDENTIFIER_DSC", " The link to download an AUDIO file, make sure
     you test it.");
 define("_CO_PODCAST_SOUNDTRACK_SOURCE", "Programme");
 define("_CO_PODCAST_SOUNDTRACK_SOURCE_DSC", " Name of the album, conference or event at which the
@@ -182,3 +182,9 @@ define("_CO_PODCAST_ARCHIVE_MUST_CREATE", "Error: An archive object must be crea
 
 // new
 define("_CO_PODCAST_NEW_ITEMS", "Latest release");
+
+// Added in version 1.32
+define("_CO_PODCAST_SOUNDTRACK_VIDEO_IDENTIFIER", "Video URL");
+define("_CO_PODCAST_SOUNDTRACK_VIDEO_IDENTIFIER_DSC", "The link to download a VIDEO file, make sure 
+	you test it. Ensure you have enabled the appropriate mimetypes in the system control panel. MP4 
+	is NOT enabled by default!");

@@ -29,6 +29,7 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 		$this->quickInitVar('soundtrack_id', XOBJ_DTYPE_INT, true);
 		$this->quickInitVar('title', XOBJ_DTYPE_TXTBOX, true);
 		$this->quickInitVar('identifier', XOBJ_DTYPE_TXTBOX, true);
+		$this->quickInitVar('video_identifier', XOBJ_DTYPE_TXTBOX, TRUE);
 		$this->quickInitVar('creator', XOBJ_DTYPE_TXTBOX, true);
 		$this->quickInitVar('description', XOBJ_DTYPE_TXTAREA, false);
 		$this->quickInitVar('format', XOBJ_DTYPE_TXTBOX, true);
