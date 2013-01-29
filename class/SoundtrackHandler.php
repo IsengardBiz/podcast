@@ -503,7 +503,7 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 	/**
 	 * Triggers notifications, called when a soundtrack is inserted or updated
 	 *
-	 * @param object $obj PodcastSoundtrack objectt
+	 * @param object $obj PodcastSoundtrack object
 	 * @return bool
 	 */
 	protected function afterSave(& $obj) {

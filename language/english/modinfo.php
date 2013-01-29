@@ -135,3 +135,9 @@ define("_MI_PODCAST_PROGRAMME_SOUNDTRACK_PUBLISHED_NOTIFY_SBJ",
 define("_MI_PODCAST_FINAL", "Use this module at your own risk. And read the manual (in the extras "
 	. "folder) before you play with it.");
 define("_MI_PODCAST_MANUAL", "Manual");
+
+// Added in version 1.3.2
+define("_MI_PODCAST_ENABLE_JWPLAYER", "Enable JW Player for video content?");
+define("_MI_PODCAST_ENABLE_JWPLAYERDSC", "Optional. You must download and install the JW Player separately from http://www.longtailvideo.com/");
+define("_MI_PODCAST_JWPLAYER_KEY", "JW Player key");
+define("_MI_PODCAST_JWPLAYER_KEYDSC", "Optional. JW Player offer a key that gives you (and presumably, them) access to free tracking analytics.");

@@ -17,7 +17,7 @@ if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
 /**  General Information  */
 $modversion = array(
 	'name'=> _MI_PODCAST_MD_NAME,
-	'version'=> 1.31,
+	'version'=> 1.32,
 	'description'=> _MI_PODCAST_MD_DESC,
 	'author'=> "Madfish",
 	'credits'=> "Thanks to Phoenyx and UnderDog for assistance rendered.",
@@ -32,9 +32,9 @@ $modversion = array(
 	'image'=> "images/icon_big.png", /* for backward compatibility */
 
 	/**  Development information */
-	'status_version'=> "1.31 Final",
-	'status'=> "Final",
-	'date'=> "9/6/2012",
+	'status_version'=> "1.32 TRUNK",
+	'status'=> "UNRELEASED",
+	'date'=> "29/1/2013",
 	'author_word'=> "Thanks to the makers of IPF and ImBuilding.",
 
 	/** Contributors */
@@ -593,6 +593,22 @@ $modversion['config'][] = array(
 	'formtype' => 'yesno',
 	'valuetype' => 'int',
 	'default' =>  '1');
+
+// Optional support for JW-Player
+$modversion['config'][] = array(
+	'name' => 'enable_jw_player',
+	'title' => '_MI_PODCAST_ENABLE_JWPLAYER',
+	'description' => '_MI_PODCAST_ENABLE_JWPLAYERDSC',
+	'formtype' => 'yesno',
+	'valuetype' => 'int',
+	'default' =>  '0');
+
+$modversion['config'][] = array(
+	'name' => 'jw_player_key',
+	'title' => '_MI_PODCAST_JWPLAYER_KEY',
+	'description' => '_MI_PODCAST_JWPLAYER_KEYDSC',
+	'formtype' => 'textbox',
+	'valuetype' => 'text');
 
 /** Comments information */
 $modversion['hasComments'] = 1;
