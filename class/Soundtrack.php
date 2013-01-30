@@ -29,11 +29,12 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 		$this->quickInitVar('soundtrack_id', XOBJ_DTYPE_INT, true);
 		$this->quickInitVar('title', XOBJ_DTYPE_TXTBOX, true);
 		$this->quickInitVar('identifier', XOBJ_DTYPE_TXTBOX, true);
-		$this->quickInitVar('video_identifier', XOBJ_DTYPE_TXTBOX, TRUE);
-		$this->quickInitVar('creator', XOBJ_DTYPE_TXTBOX, true);
-		$this->quickInitVar('description', XOBJ_DTYPE_TXTAREA, false);
 		$this->quickInitVar('format', XOBJ_DTYPE_TXTBOX, true);
 		$this->quickInitVar('file_size', XOBJ_DTYPE_INT, true);
+		$this->quickInitVar('inline_identifier', XOBJ_DTYPE_TXTBOX, FALSE);
+		$this->quickInitVar('poster_image', XOBJ_DTYPE_IMAGE, FALSE);
+		$this->quickInitVar('creator', XOBJ_DTYPE_TXTBOX, true);
+		$this->quickInitVar('description', XOBJ_DTYPE_TXTAREA, false);
 		$this->quickInitVar('date', XOBJ_DTYPE_LTIME, false);
 		$this->quickInitVar('publisher', XOBJ_DTYPE_TXTBOX, false);
 		$this->quickInitVar('source', XOBJ_DTYPE_TXTBOX, false);
@@ -51,6 +52,11 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 		$this->initCommonVar('dohtml', false, 1);
 		$this->initCommonVar('dobr');
 		$this->quickInitVar ('soundtrack_notification_sent', XOBJ_DTYPE_INT);
+		
+		$this->setControl('poster_image', array('name' => 'image'));
+		$url = ICMS_URL . '/uploads/' . basename(dirname(dirname(__FILE__))) . '/';
+		$path = ICMS_ROOT_PATH . '/uploads/' . basename(dirname(dirname(__FILE__))) . '/';
+		$this->setImageDir($url, $path);
 
 		$this->setControl('description', 'dhtmltextarea');
 
@@ -84,8 +90,18 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 		$this->doHideFieldFromForm('dohtml');
 
 		// hide the notification status field, its for internal use only
-		$this->hideFieldFromForm ('soundtrack_notification_sent');
-		$this->hideFieldFromSingleView ('soundtrack_notification_sent');
+		$this->hideFieldFromForm('soundtrack_notification_sent');
+		$this->hideFieldFromSingleView('soundtrack_notification_sent');
+		
+		// Only display the secondary identifier (URL) field if JW Player is installed and enabled
+		$has_video = $jw_player = $jw_player_enabled = $video_width = $video_height = FALSE;
+		
+		$jw_player = is_dir(XOOPS_ROOT_PATH . '/jwplayer');
+		$jw_player_enabled = icms_getConfig('enable_jw_player', 'podcast');
+		
+		if (!$jw_player || !$jw_player_enabled) {
+			$this->doHideFieldFromForm('inline_identifier');
+		}
 
 		// make the oai_identifier read only for OAIPMH archive integrity purposes
 		// since external sites may harvest this data, the identifier has to remain

@@ -23,7 +23,7 @@ define("_CO_PODCAST_SOUNDTRACK_TITLE", "Title");
 define("_CO_PODCAST_SOUNDTRACK_TITLE_DSC", " Title of the soundtrack.");
 define("_CO_PODCAST_SOUNDTRACK_CREATOR", "Author");
 define("_CO_PODCAST_SOUNDTRACK_CREATOR_DSC", " Separate multiple authors with a pipe '|' character.
-    Use a convention for consistency, eg. John Smith|Jane Doe");
+    Use a convention for consistency, eg. John Smith|Jane Doe.");
 define("_CO_PODCAST_SOUNDTRACK_DESCRIPTION", "Description");
 define("_CO_PODCAST_SOUNDTRACK_DESCRIPTION_DSC", " Description of the soundtrack. This is of most
     use in podcasts where it is common to provide a summary of the content, but for music albums
@@ -34,15 +34,10 @@ define("_CO_PODCAST_SOUNDTRACK_PUBLISHER_DSC", " Publisher of the soundtrack.");
 define("_CO_PODCAST_SOUNDTRACK_DATE", "Date");
 define("_CO_PODCAST_SOUNDTRACK_DATE_DSC", " ");
 define("_CO_PODCAST_SOUNDTRACK_FORMAT", "Format");
-define("_CO_PODCAST_SOUNDTRACK_FORMAT_DSC", " You can add more audio formats to this list by 
-    authorising Podcast to use them in <a href=\"" . ICMS_URL
-		. "/modules/system/admin.php?fct=mimetype\">System => Mimetypes</a>.");
 define("_CO_PODCAST_SOUNDTRACK_FILE_SIZE", "File size");
 define("_CO_PODCAST_SOUNDTRACK_FILE_SIZE_DSC", "Enter in BYTES, it will be converted to human
-    readable automatically");
+    readable automatically.");
 define("_CO_PODCAST_SOUNDTRACK_IDENTIFIER", "Soundtrack URL");
-define("_CO_PODCAST_SOUNDTRACK_IDENTIFIER_DSC", " The link to download an AUDIO file, make sure
-    you test it.");
 define("_CO_PODCAST_SOUNDTRACK_SOURCE", "Programme");
 define("_CO_PODCAST_SOUNDTRACK_SOURCE_DSC", " Name of the album, conference or event at which the
     recording was made.");
@@ -53,10 +48,10 @@ define("_CO_PODCAST_SOUNDTRACK_RIGHTS_DSC", " The license under which this recor
     In most countries, artistic works are copyright (even if you don't declare it) unless you
     specify another license.");
 define("_CO_PODCAST_SOUNDTRACK_STATUS", "Status");
-define("_CO_PODCAST_SOUNDTRACK_STATUS_DSC", "Toggle this soundtrack online or offline");
+define("_CO_PODCAST_SOUNDTRACK_STATUS_DSC", "Toggle this soundtrack online or offline.");
 define("_CO_PODCAST_SOUNDTRACK_FEDERATED", "Federated");
 define("_CO_PODCAST_SOUNDTRACK_FEDERATED_DSC", "Syndicate this soundtrack's metadata with other
-    sites (cross site search) via the Open Archives Initiative Protocol for Metadata Harvesting");
+    sites (cross site search) via the Open Archives Initiative Protocol for Metadata Harvesting.");
 define("_CO_PODCAST_SOUNDTRACK_SUBMISSION_TIME", "Submission time");
 define("_CO_PODCAST_SOUNDTRACK_SUBMITTER", "Submitter");
 define("_CO_PODCAST_SOUNDTRACK_YES", "Yes");
@@ -183,8 +178,25 @@ define("_CO_PODCAST_ARCHIVE_MUST_CREATE", "Error: An archive object must be crea
 // new
 define("_CO_PODCAST_NEW_ITEMS", "Latest release");
 
+// Edited in version 1.32
+define("_CO_PODCAST_SOUNDTRACK_IDENTIFIER_DSC", " The URL for your <strong>primary</strong> audio or 
+	video file. This file will be the target of download and streaming links and attached in RSS 
+	feeds. Make sure you test it.");
+define("_CO_PODCAST_SOUNDTRACK_FORMAT_DSC", " You can add more audio or video formats to this list by 
+    authorising Podcast to use them in <a href=\"" . ICMS_URL
+		. "/modules/system/admin.php?fct=mimetype\">System => Mimetypes</a>. <strong>Note</strong>: 
+			The MP4 mimetype is NOT enabled by default! If you want to play MP4 videos you need 
+			to add it and authorise Podcast to use it.");
+
 // Added in version 1.32
-define("_CO_PODCAST_SOUNDTRACK_VIDEO_IDENTIFIER", "Video URL");
-define("_CO_PODCAST_SOUNDTRACK_VIDEO_IDENTIFIER_DSC", "The link to download a VIDEO file, make sure 
-	you test it. Ensure you have enabled the appropriate mimetypes in the system control panel. MP4 
-	is NOT enabled by default!");
+define("_CO_PODCAST_SOUNDTRACK_INLINE_IDENTIFIER", "Inline media URL");
+define("_CO_PODCAST_SOUNDTRACK_INLINE_IDENTIFIER_DSC", " Optional. You can enter the URL of a 
+	<strong>secondary</strong> audio or video file here, which can be played inline if you have 
+	installed and enabled JW Player. You could, for example, use an audio recording as your main 
+	 podcast / downloadable resource, but make a video recording of the same event available for 
+	 viewing inline on your site. Or vice versa!");
+define("_CO_PODCAST_SOUNDTRACK_POSTER_IMAGE", "Poster image");
+define("_CO_PODCAST_SOUNDTRACK_POSTER_IMAGE_DSC", "The poster image is displayed on the JW Player 
+	player box when the page loads. Take a nice screenshot of your video and crop it down to the 
+	<strong>same size as the player</strong> (as set in module preferences). If you do not upload a 
+	poster image, the player will display a black, empty box by default.");

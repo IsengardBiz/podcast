@@ -141,3 +141,7 @@ define("_MI_PODCAST_ENABLE_JWPLAYER", "Enable JW Player for video content?");
 define("_MI_PODCAST_ENABLE_JWPLAYERDSC", "Optional. You must download and install the JW Player separately from http://www.longtailvideo.com/");
 define("_MI_PODCAST_JWPLAYER_KEY", "JW Player key");
 define("_MI_PODCAST_JWPLAYER_KEYDSC", "Optional. JW Player offer a key that gives you (and presumably, them) access to free tracking analytics.");
+define("_MI_PODCAST_JWPLAYER_WIDTH", "JW Player video width (pixels)");
+define("_MI_PODCAST_JWPLAYER_WIDTHDSC", "The width at which the inline video player will be displayed at.");
+define("_MI_PODCAST_JWPLAYER_HEIGHT", "JW Player video height (pixels)");
+define("_MI_PODCAST_JWPLAYER_HEIGHTDSC", "The height at which the inline video player will be displayed at.");

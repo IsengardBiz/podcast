@@ -99,6 +99,52 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 		$soundtrackArray['format'] = $soundtrackObj->format();
 		$soundtrackArray['rights'] = $soundtrackObj->rights();
 		$soundtrackArray['source'] = $programme['itemLink'];
+		
+		///////////////////////////////////////////////////
+		//////////////////// JW PLAYER ////////////////////
+		///////////////////////////////////////////////////
+		
+		// JW Player is an inline media player, which must be downloaded separately. See the 
+		// Podcast manual for details (it's in the extras folder).
+		$media = $jw_player = $jw_player_enabled = $player_width = $player_height = FALSE;
+		
+		$media = $soundtrackObj->getVar('inline_identifier', 'e');
+		if (!$media) {
+			$media = $soundtrackObj->getVar('identifier', 'e');
+		}
+		$jw_player = is_dir(XOOPS_ROOT_PATH . '/jwplayer');
+		$jw_player_enabled = icms_getConfig('enable_jw_player', 'podcast');
+		$player_width = icms_getConfig('jw_player_width', 'podcast');
+		$player_height = icms_getConfig('jw_player_height', 'podcast');
+		$poster = $soundtrackObj->getImageDir(FALSE) . $soundtrackObj->getVar('poster_image', 'e');
+		
+		if ($media && $jw_player && $jw_player_enabled)
+		{
+			// Add JW Player script to module header. You should also create key.js, containing
+			// your JWPlayer key, eg. <script>jwplayer.key="yourKeyGoesHere"</script> and put it
+			// in the jwplayer directory referenced below
+			global $xoTheme;
+			$xoTheme->addScript(ICMS_URL . '/jwplayer/jwplayer.js');
+			$xoTheme->addScript(ICMS_URL . '/jwplayer/key.js');
+			
+			// Add player code to template
+			$soundtrackArray['jw_player'] = "<div id='my-video'></div>
+					<script type='text/javascript'>
+						jwplayer('my-video').setup({
+							file: '" . $media . "',
+							width: '" . $player_width . "',
+							height: '" . $player_height . "',
+							poster: '" . $poster . "'
+						});
+					</script>";
+			
+			// Flag player enabled in template
+			$soundtrackArray['video_enabled'] == TRUE;
+		}
+		
+		/////////////////////////////////////////////////////////////////////
+		//////////////////// End JW Player configuration ////////////////////
+		/////////////////////////////////////////////////////////////////////
 
 		// unset unwanted / uneeded fields
 		$soundtrackArray = podcast_soundtrack_display_preferences($soundtrackArray);
@@ -111,7 +157,6 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 			$icmsTpl->assign('podcast_soundtrack_comment', true);
 			include_once ICMS_ROOT_PATH . '/include/comment_view.php';
 		}
-		// useless assignment
 
 		// generating meta information for this page
 		$icms_metagen = new icms_ipf_Metagen($soundtrackObj->getVar('title'),
