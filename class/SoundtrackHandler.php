@@ -139,6 +139,7 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 		if ($programme_id) {
 			$criteria->add(new icms_db_criteria_Item('source', $programme_id));
 		}
+		$criteria->add(new icms_db_criteria_Item('status', '1'));
 		$criteria->setSort('date');
 		if ($sort_order) {
 			$criteria->setOrder('ASC');
