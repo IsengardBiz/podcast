@@ -159,7 +159,7 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 							width: '" . $player_width . "',
 							height: '" . $player_height . "'";
 			if ($image) {
-				$soundtrackArray['jw_player'] .= "','" . $poster . "'";
+				$soundtrackArray['jw_player'] .= ", image:'" . $poster . "'";
 			}
 			$soundtrackArray['jw_player'] .= "});
 				</script>";
