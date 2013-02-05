@@ -107,20 +107,22 @@ define("_AM_PODCAST_ARCHIVE_OFFLINE","<strong>Archive status: <span style=\"colo
 
 define("_AM_PODCAST_INSTRUCTIONS_DSC",
 "<h1>Read the manual!</h1>
-<p>An <a href=\"" . ICMS_URL . "/modules/" . basename(dirname(dirname(dirname(__FILE__)))) 
+<p>An <a href=\"" . ICMS_URL . "/modules/" . basename(dirname(dirname(dirname(__FILE__)))) // EDITED IN 1.3.3
 	. "/extras/podcast_manual.pdf\">instruction manual</a> is available in the extras folder of
 the podcast module. Please read it.<p>
 <h2>Purpose</h2>
-<p>The Podcast module allows you to publish audio and video files via RSS, streaming and download. You can use it to publish:</p>
+<p>The Podcast module allows you to publish audio and video files via RSS, streaming, download and 
+inline via JW Player (installed separately). You can use it to publish:</p>
 <ul><li>Podcast programmes (both audio and video).</li>
 <li>Music albums.</li>
 <li>Talks from one-off events such as conferences.</li>
-<li>Other collections of sound files.</li></ul>
+<li>Other collections of sound or video files.</li></ul>
 <h2>Features</h2>
 <ul><li>Publication of multiple podcasts, albums or collections of sound/video.</li>
 <li>Streaming of audio and video files, including entire programmes/albums.</li>
 <li>Individual RSS feeds with media enclosures for each programme (W3C validated).</li>
 <li>Configurable compact/extended views for albums/podcasts.</li>
+<li>Optional inline video/audio player via JW Player (dual support for HTML 5 and Flash).</li>
 <li>Configurable rights (license) management system and per-track rights control.</li>
 <li>Configurable user-side metadata display - choose what fields you want to show.</li>
 <li>Two blocks - recent soundtracks and list of programmes.</li>

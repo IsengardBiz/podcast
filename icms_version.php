@@ -32,9 +32,9 @@ $modversion = array(
 	'image'=> "images/icon_big.png", /* for backward compatibility */
 
 	/**  Development information */
-	'status_version'=> "1.32 TRUNK",
-	'status'=> "UNRELEASED",
-	'date'=> "29/1/2013",
+	'status_version'=> "1.32",
+	'status'=> "BETA",
+	'date'=> "5/2/2013",
 	'author_word'=> "Thanks to the makers of IPF and ImBuilding.",
 
 	/** Contributors */

@@ -37,7 +37,6 @@ define("_CO_PODCAST_SOUNDTRACK_FORMAT", "Format");
 define("_CO_PODCAST_SOUNDTRACK_FILE_SIZE", "File size");
 define("_CO_PODCAST_SOUNDTRACK_FILE_SIZE_DSC", "Enter in BYTES, it will be converted to human
     readable automatically.");
-define("_CO_PODCAST_SOUNDTRACK_IDENTIFIER", "Soundtrack URL");
 define("_CO_PODCAST_SOUNDTRACK_SOURCE", "Programme");
 define("_CO_PODCAST_SOUNDTRACK_SOURCE_DSC", " Name of the album, conference or event at which the
     recording was made.");
@@ -179,6 +178,7 @@ define("_CO_PODCAST_ARCHIVE_MUST_CREATE", "Error: An archive object must be crea
 define("_CO_PODCAST_NEW_ITEMS", "Latest release");
 
 // Edited in version 1.32
+define("_CO_PODCAST_SOUNDTRACK_IDENTIFIER", "Primary media URL");
 define("_CO_PODCAST_SOUNDTRACK_IDENTIFIER_DSC", " The URL for your <strong>primary</strong> audio or 
 	video file. This file will be the target of download and streaming links and attached in RSS 
 	feeds. Make sure you test it.");
@@ -189,7 +189,7 @@ define("_CO_PODCAST_SOUNDTRACK_FORMAT_DSC", " You can add more audio or video fo
 			to add it and authorise Podcast to use it.");
 
 // Added in version 1.32
-define("_CO_PODCAST_SOUNDTRACK_INLINE_IDENTIFIER", "Inline media URL");
+define("_CO_PODCAST_SOUNDTRACK_INLINE_IDENTIFIER", "Secondary media URL");
 define("_CO_PODCAST_SOUNDTRACK_INLINE_IDENTIFIER_DSC", " Optional. You can enter the URL of a 
 	<strong>secondary</strong> audio or video file here, which can be played inline if you have 
 	installed and enabled JW Player. You could, for example, use an audio recording as your main 
