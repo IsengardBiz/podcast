@@ -100,9 +100,9 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 		$soundtrackArray['rights'] = $soundtrackObj->rights();
 		$soundtrackArray['source'] = $programme['itemLink'];
 		
-		///////////////////////////////////////////////////
-		//////////////////// JW PLAYER ////////////////////
-		///////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////
+		//////////////////// OPTIONAL JW PLAYER SUPPORT ////////////////////
+		////////////////////////////////////////////////////////////////////
 		
 		// JW Player is an inline media player, which must be downloaded separately. See the 
 		// Podcast manual for details (it's in the extras folder).
@@ -134,7 +134,7 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 							file: '" . $media . "',
 							width: '" . $player_width . "',
 							height: '" . $player_height . "',
-							poster: '" . $poster . "'
+							image: '" . $poster . "'
 						});
 					</script>";
 			
