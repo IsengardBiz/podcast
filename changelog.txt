@@ -33,4 +33,7 @@ Version 1.31
 
 1.32 trunk changes
 ------------------
-* Update language files (remove outdated warning about Chrome not displaying xml tree).
+* Update language files (remove outdated warning about Chrome not displaying xml tree, generalise to include video podcasts).
+* Fix bug where soundtracks marked offline were still being included in RSS feeds.
+* Add inline media support via JW Player.
+* Updated the manual.
