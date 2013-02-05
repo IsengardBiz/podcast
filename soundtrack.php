@@ -104,21 +104,36 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 		//////////////////// OPTIONAL JW PLAYER SUPPORT ////////////////////
 		////////////////////////////////////////////////////////////////////
 		
-		// JW Player is an inline media player, which must be downloaded separately. See the 
-		// Podcast manual for details (it's in the extras folder).
-		$media = $jw_player = $jw_player_enabled = $player_width = $player_height = FALSE;
+		// JW Player is an inline media player, which must be downloaded and installed separately. 
+		// See the Podcast manual for details (it's in the extras folder).
+		$media = $jw_player = $jw_player_enabled = $player_width = $player_height = $image = $valid_mimetype = FALSE;
 		
+		// Use secondary media as the 'playable' one, but drop back to the primary if there is only 
+		// one media resource.
 		$media = $soundtrackObj->getVar('inline_identifier', 'e');
 		if (!$media) {
 			$media = $soundtrackObj->getVar('identifier', 'e');
 		}
+		
+		// Check the media file is compatible with JW Player. Acceptable mimetypes are:
+		// Video: MP4 (H.264/AAC), FLV (VP6/MP3), WebM (VP8/Vorbis)
+		// Audio: AAC, MP3, Vorbis
+		// This is a simple check based on extension. It would be more robust to use fileinfo(), 
+		// but that would create problems (or at least, delays) with remotely hosted files.
+		$valid_extensions = array('mp4', 'flv', 'webm', 'aac', 'mp3', 'ogg');
+		$extension = substr($media, strrpos($media, '.')+1);
+		if (in_array($extension, $valid_extensions)) {
+			$valid_mimetype = TRUE;
+		}
+		
 		$jw_player = is_dir(XOOPS_ROOT_PATH . '/jwplayer');
 		$jw_player_enabled = icms_getConfig('enable_jw_player', 'podcast');
 		$player_width = icms_getConfig('jw_player_width', 'podcast');
 		$player_height = icms_getConfig('jw_player_height', 'podcast');
-		$poster = $soundtrackObj->getImageDir(FALSE) . $soundtrackObj->getVar('poster_image', 'e');
+		$image = $soundtrackObj->getVar('poster_image', 'e');
+		$poster = $soundtrackObj->getImageDir(FALSE) . $image;
 		
-		if ($media && $jw_player && $jw_player_enabled)
+		if ($media && $valid_mimetype && $jw_player && $jw_player_enabled)
 		{
 			// Add JW Player script to module header. You should also create key.js, containing
 			// your JWPlayer key, eg. <script>jwplayer.key="yourKeyGoesHere"</script> and put it
@@ -127,26 +142,39 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 			$xoTheme->addScript(ICMS_URL . '/jwplayer/jwplayer.js');
 			$xoTheme->addScript(ICMS_URL . '/jwplayer/key.js');
 			
+			// If there is no poster image AND the file is audio only, display player in audio mode
+			// This prevents a huge ugly black box being displayed for which there is no content.
+			if (!$image) {
+				if ($extension == 'aac' || $extension == 'mp3' || $extension == 'ogg') {
+					$player_width = 320;
+					$player_height = 30;
+				}
+			}
+			
 			// Add player code to template
 			$soundtrackArray['jw_player'] = "<div id='my-video'></div>
 					<script type='text/javascript'>
 						jwplayer('my-video').setup({
 							file: '" . $media . "',
 							width: '" . $player_width . "',
-							height: '" . $player_height . "',
-							image: '" . $poster . "'
-						});
-					</script>";
+							height: '" . $player_height . "'";
+			if ($image) {
+				$soundtrackArray['jw_player'] .= "','" . $poster . "'";
+			}
+			$soundtrackArray['jw_player'] .= "});
+				</script>";
 			
 			// Flag player enabled in template
-			$soundtrackArray['video_enabled'] == TRUE;
+			$soundtrackArray['video_enabled'] = TRUE;
+		} else {
+			$soundtrackArray['video_enabled'] = FALSE;
 		}
 		
 		/////////////////////////////////////////////////////////////////////
 		//////////////////// End JW Player configuration ////////////////////
 		/////////////////////////////////////////////////////////////////////
 
-		// unset unwanted / uneeded fields
+		// unset unwanted / unneeded fields
 		$soundtrackArray = podcast_soundtrack_display_preferences($soundtrackArray);
 
 		// assign to template

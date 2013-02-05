@@ -23,7 +23,7 @@
         </p>
     </div>
     <div class="podcast_separator"></div>
-    <{if $podcast_soundtrack.cover_path}>
+    <{if $podcast_soundtrack.cover_path && $podcast_soundtrack.video_enabled != TRUE}>
         <div style="float:left; padding: 0px 10px 5px 0px;">
             <{if $podcast_soundtrack.cover_link && $podcast_soundtrack.cover_path}>
                 <a href="<{$podcast_soundtrack.cover_link}>">
@@ -37,6 +37,9 @@
     <{/if}>
     <div class="podcast_separator">
         <p><{$podcast_soundtrack.description}></p>
+		<{if $podcast_soundtrack.jw_player}>
+			<div class="podcast_separator"><{$podcast_soundtrack.jw_player}></div>
+		<{/if}>
     </div>
     <div class="podcast_info">
         <p style="clear:left;">
