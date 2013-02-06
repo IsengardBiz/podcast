@@ -29,10 +29,11 @@ function podcast_search($queryarray, $andor, $limit, $offset, $userid) {
 		$limit, $offset, $userid);
 
 	$ret = array();
+	$podcastUrl = ICMS_URL . '/modules/' . basename(dirname(dirname(__FILE__))) . '/';
 
 	foreach ($soundtrackArray as $soundtrack) {
 		$item['image'] = "images/soundtrack.png";
-		$item['link'] = str_replace(PODCAST_URL, '', $soundtrack['itemUrl']);
+		$item['link'] = str_replace($podcastUrl, '', $soundtrack['itemUrl']);
 		$item['title'] = $soundtrack['title'];
 		$item['time'] = strtotime($soundtrack['submission_time']);
 		$item['uid'] = $soundtrack['submitter'];
