@@ -33,10 +33,10 @@ function podcast_search($queryarray, $andor, $limit, $offset, $userid) {
 
 	foreach ($soundtrackArray as $soundtrack) {
 		$item['image'] = "images/soundtrack.png";
-		$item['link'] = str_replace($podcastUrl, '', $soundtrack['itemUrl']);
-		$item['title'] = $soundtrack['title'];
-		$item['time'] = strtotime($soundtrack['submission_time']);
-		$item['uid'] = $soundtrack['submitter'];
+		$item['link'] = $soundtrack->getItemLink(TRUE);
+		$item['title'] = $soundtrack->getVar("title");
+		$item['time'] = strtotime($soundtrack->getVar("submission_time", "e"));
+		$item['uid'] = $soundtrack->getVar('submitter', 'e');
 		$ret[] = $item;
 		unset($item);
 	}

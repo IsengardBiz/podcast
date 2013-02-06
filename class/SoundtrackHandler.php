@@ -64,7 +64,7 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 			$criteria->add($criteriaKeywords);
 		}
 		$criteria->add(new icms_db_criteria_Item('status', true));
-		return $this->getObjects($criteria, true, false);
+		return $this->getObjects($criteria, TRUE, TRUE);
 	}
 
 	/**
