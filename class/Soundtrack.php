@@ -75,7 +75,7 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 		
 		$this->setControl('poster_image', array('name' => 'image'));
 		
-		// Only display the tag field if the sprockets module is installed
+		// Only display the tag and rights fields if the sprockets module is installed
 		$sprocketsModule = icms_getModuleInfo('sprockets');
 		if (icms_get_module_status("sprockets"))
 		{
@@ -84,15 +84,17 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 			'itemHandler' => 'tag',
 			'method' => 'getTags',
 			'module' => 'sprockets'));
+			
+			$this->setControl('rights', array(
+			'itemHandler' => 'rights',
+			'method' => 'getRights',
+			'module' => 'sprockets'));			
 		} else {
 			$this->hideFieldFromForm('tag');
 			$this->hideFieldFromSingleView ('tag');
+			$this->hideFieldFromForm('rights');
+			$this->hideFieldFromSingleView ('rights');
 		}
-
-		$this->setControl('rights', array(
-			'itemHandler' => 'rights',
-			'method' => 'getRights',
-			'module' => 'podcast'));
 
 		$this->setControl('source', array(
 			'itemHandler' => 'programme',
@@ -349,9 +351,8 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 	 */
 	public function rights($oaipmh_request = false) {
 		$rights_id = $this->getVar('rights', 'e');
-		$podcast_rights_handler = icms_getModuleHandler('rights',
-			basename(dirname(dirname(__FILE__))), 'podcast');
-		$rights_object = $podcast_rights_handler->get($rights_id);
+		$sprockets_rights_handler = icms_getModuleHandler('rights', 'sprockets', 'sprockets');
+		$rights_object = $sprockets_rights_handler->get($rights_id);
 		$rights = $rights_object->toArray();
 		if ($oaipmh_request) {
 			return $rights['title'];

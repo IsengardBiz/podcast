@@ -308,9 +308,8 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 	 * @return array 
 	 */
 	public function rights_filter() {
-		$podcast_rights_handler = icms_getModuleHandler('rights',
-			basename(dirname(dirname(__FILE__))), 'podcast');
-		$rights_array = $podcast_rights_handler->getList();
+		$sprockets_rights_handler = icms_getModuleHandler('rights', 'sprockets', 'sprockets');
+		$rights_array = $sprockets_rights_handler->getList();
 		return $rights_array;
 	}
 

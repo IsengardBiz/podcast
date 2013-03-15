@@ -59,7 +59,6 @@ $modversion['adminmenu'] = "admin/menu.php";
 /** Database information */
 $modversion['object_items'][1] = 'soundtrack';
 $modversion['object_items'][] = 'programme';
-$modversion['object_items'][] = 'rights';
 $modversion["tables"] = icms_getTablesArray($modversion['dirname'], $modversion['object_items']);
 
 /** Install and update informations */
@@ -84,8 +83,6 @@ $i++;
 $modversion['sub'][$i]['name'] = _MI_PODCAST_SOUNDTRACKS;
 $modversion['sub'][$i]['url'] = "soundtrack.php";
 $i++;
-$modversion['sub'][$i]['name'] = _MI_PODCAST_RIGHTSS;
-$modversion['sub'][$i]['url'] = "rights.php";
 
 /** Blocks information */
 

@@ -53,17 +53,6 @@ define("_AM_PODCAST_PROGRAMME_VIEW", "Programme info");
 define("_AM_PODCAST_PROGRAMME_VIEW_DSC", "Here is the info about this programme.");
 
 // Rights
-define("_AM_PODCAST_RIGHTSS", "Rights");
-define("_AM_PODCAST_RIGHTSS_DSC", "All rights in the module");
-define("_AM_PODCAST_RIGHTS_CREATE", "Add a license (rights)");
-define("_AM_PODCAST_RIGHTS", "Rights");
-define("_AM_PODCAST_RIGHTS_CREATE_INFO", "Fill-out the following form to create a new rights.");
-define("_AM_PODCAST_RIGHTS_EDIT", "Edit this rights");
-define("_AM_PODCAST_RIGHTS_EDIT_INFO", "Fill-out the following form in order to edit this rights.");
-define("_AM_PODCAST_RIGHTS_MODIFIED", "The rights was successfully modified.");
-define("_AM_PODCAST_RIGHTS_CREATED", "The rights has been successfully created.");
-define("_AM_PODCAST_RIGHTS_VIEW", "Rights info");
-define("_AM_PODCAST_RIGHTS_VIEW_DSC", "Here is the info about this rights.");
 define("_AM_PODCAST_NO_UPLOAD_DIRECTORY", "<p><strong>Warning</strong>: The directory 
     <strong>/uploads/podcast</strong> does not exist. Please create it manually to allow programme
     logos and cover art to be stored.</p>");

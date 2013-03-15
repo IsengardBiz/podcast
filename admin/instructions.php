@@ -16,7 +16,7 @@ icms_cp_header();
 
 $podcastModule = icms_getModuleInfo(basename(dirname(dirname(__FILE__))));
 
-$podcastModule->displayAdminMenu(4, _AM_PODCAST_SOUNDTRACKS);
+$podcastModule->displayAdminMenu(2, _AM_PODCAST_SOUNDTRACKS);
 
 // This is a big chunk of text explaining what the module does, how to set it up and use it
 // It could be improved

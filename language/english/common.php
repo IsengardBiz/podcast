@@ -108,23 +108,6 @@ define("_CO_PODCAST_PROGRAMME_STREAM", "Play");
 define("_CO_PODCAST_PROGRAMME_SOUNDTRACKS", "Soundtracks");
 define("_CO_PODCAST_PROGRAMME_PROGRAMMES", "Programmes");
 
-// rights
-define("_CO_PODCAST_RIGHTS_TITLE", "Title");
-define("_CO_PODCAST_RIGHTS_TITLE_DSC", " Name of the license.");
-define("_CO_PODCAST_RIGHTS_DESCRIPTION", "Summary");
-define("_CO_PODCAST_RIGHTS_DESCRIPTION_DSC", " A formal description of the license terms, eg. All 
-    Rights Reserved. For other licenses (eg. Creative Commons) it is best to copy the terms from
-    the official source.");
-define("_CO_PODCAST_RIGHTS_IDENTIFIER", "License terms");
-define("_CO_PODCAST_RIGHTS_IDENTIFIER_DSC", " Enter a link to the definitive license if available. 
-    For example, the full GNU GPL and Creative Commons licenses are published online by their
-    respective foundations.");
-define("_CO_PODCAST_RIGHTS_FULL_TERMS", "View the full terms of this license.");
-define("_CO_PODCAST_RIGHT_ABOUT_RIGHTS", "The works displayed on this site may be subject to
-    different terms and conditions regarding their use and redistribution. The licenses supported
-    by this site are listed below. Please check the licensing agreement for each work individually
-    to see which applies.");
-
 // new
 define("_CO_PODCAST_NEW_ITEMS", "Latest release");
 

@@ -20,10 +20,6 @@ $adminmenu[$i]['title'] = _MI_PODCAST_PROGRAMMES;
 $adminmenu[$i]['link'] = 'admin/programme.php';
 
 $i++;
-$adminmenu[$i]['title'] = _MI_PODCAST_RIGHTSS;
-$adminmenu[$i]['link'] = 'admin/rights.php';
-
-$i++;
 $adminmenu[$i]['title'] = _MI_PODCAST_INSTRUCTIONS;
 $adminmenu[$i]['link'] = 'admin/instructions.php';
 
