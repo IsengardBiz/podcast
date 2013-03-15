@@ -200,3 +200,7 @@ define("_CO_PODCAST_SOUNDTRACK_POSTER_IMAGE_DSC", "The poster image is displayed
 	player box when the page loads. Take a nice screenshot of your video and crop it down to the 
 	<strong>same size as the player</strong> (as set in module preferences). If you do not upload a 
 	poster image, the player will display a black, empty box by default.");
+
+// Added in version 1.33
+define("_CO_PODCAST_SOUNDTRACK_TYPE", "Type");
+define("_CO_PODCAST_SOUNDTRACK_TYPE_DSC", "Specify whether this is an audio or video file.");

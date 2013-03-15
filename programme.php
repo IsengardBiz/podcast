@@ -49,7 +49,7 @@ if ($programmeObj && !$programmeObj->isNew()) {
 			basename(dirname(__FILE__)), 'podcast');
 		$criteria = new icms_db_criteria_Compo();
 		$criteria->add(new icms_db_criteria_Item('source', $programmeObj->id()));
-		$criteria->add(new icms_db_criteria_Item('status', true));
+		$criteria->add(new icms_db_criteria_Item('online_status', true));
 
 		// set the soundtrack sort order for this programme
 		$sort_order = $programmeObj->getVar('sort_order', 'e');
@@ -150,7 +150,7 @@ if ($programmeObj && !$programmeObj->isNew()) {
 			basename(dirname(__FILE__)), 'podcast');
 		$criteria = new icms_db_criteria_Compo();
 		$criteria->add(new icms_db_criteria_Item('source', $programmeObj->id()));
-		$criteria->add(new icms_db_criteria_Item('status', true));
+		$criteria->add(new icms_db_criteria_Item('online_status', true));
 
 		// count the soundtracks before proceed
 		$soundtrack_count = $podcast_soundtrack_handler->getCount($criteria);
@@ -250,7 +250,7 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		// pagination
 		$criteria = new icms_db_criteria_Compo();
 		$criteria->add(new icms_db_criteria_Item('source', $programmeObj->id()));
-		$criteria->add(new icms_db_criteria_Item('status', true));
+		$criteria->add(new icms_db_criteria_Item('online_status', true));
 		$soundtrack_count = $podcast_soundtrack_handler->getCount($criteria);
 		$extra_arg = 'programme_id=' . $programmeObj->id();
 		$pagenav = new icms_view_PageNav($soundtrack_count,
@@ -320,7 +320,7 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		// calculate the number of soundtracks in the podcast
 		$criteria = new icms_db_criteria_Compo();
 		$criteria->add(new icms_db_criteria_Item('source', $programmeObject->id()));
-		$criteria->add(new icms_db_criteria_Item('status', true));
+		$criteria->add(new icms_db_criteria_Item('online_status', true));
 		$programme['track_count'] = $podcast_soundtrack_handler->getCount($criteria);
 		
 		// prepare the play all button (only if there are some soundtracks)

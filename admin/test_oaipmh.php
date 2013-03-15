@@ -33,7 +33,7 @@ echo _AM_PODCAST_TEST_OAIPMH . '<br />';
 // check if any soundtracks have been entered, throw warnings if not
 // if there is, take the identifier of the first records as an example
 $criteria = new icms_db_criteria_Compo();
-$criteria->add(new icms_db_criteria_Item('status', '1'));
+$criteria->add(new icms_db_criteria_Item('online_status', '1'));
 $criteria->add(new icms_db_criteria_Item('federated', '1'));
 $criteria->setLimit(1);
 $podcast_soundtrack_handler = icms_getModuleHandler('soundtrack', 

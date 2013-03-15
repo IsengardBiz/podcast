@@ -31,7 +31,7 @@ $criteria->setStart($clean_start);
 $criteria->setLimit($podcastConfig['new_items']); // important for pagination
 $criteria->setSort('date');
 $criteria->setOrder('DESC');
-$criteria->add(new icms_db_criteria_Item('status', true));
+$criteria->add(new icms_db_criteria_Item('online_status', true));
 $soundtrack_object_array = $podcast_soundtrack_handler->getObjects($criteria);
 
 if (empty($soundtrack_object_array)) {

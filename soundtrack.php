@@ -26,7 +26,7 @@ $clean_m3u_flag = isset($_GET['m3u_flag']) ? intval($_GET['m3u_flag']) : 0;
 $soundtrackObj = $podcast_soundtrack_handler->get($clean_soundtrack_id);
 
 // check if the soundtrack status is set as offline and torch it if so
-if ($soundtrackObj->getVar('status') == false) {
+if ($soundtrackObj->getVar('online_status', 'e') == false) {
 	unset($soundtrackObj);
 }
 
@@ -204,7 +204,7 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 	$icmsTpl->assign('podcast_title', _MD_PODCAST_ALL_SOUNDTRACKS);
 
 	$criteria = new icms_db_criteria_Compo();
-	$criteria->add(new icms_db_criteria_Item('status', true));
+	$criteria->add(new icms_db_criteria_Item('online_status', true));
 	$objectTable = new icms_ipf_view_Table($podcast_soundtrack_handler, $criteria, array(), true);
 	$objectTable->isForUserSide();
 	$objectTable->addColumn(new icms_ipf_view_Column('date'));

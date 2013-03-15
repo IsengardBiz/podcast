@@ -30,7 +30,7 @@ function podcast_recent_show($options) {
 	$criteria->setLimit($options[1]);
 
 	// only include soundtracks that are set online
-	$criteria->add(new icms_db_criteria_Item('status', true));
+	$criteria->add(new icms_db_criteria_Item('online_status', true));
 
 	// optionally filter track listing by programme
 	if (intval($options[0])) {

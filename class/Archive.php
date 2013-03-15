@@ -207,7 +207,7 @@ class PodcastArchive extends icms_ipf_seo_Object {
 			$podcast_soundtrack_handler = icms_getModuleHandler('soundtrack',
 				basename(dirname(dirname(__FILE__))), 'podcast');
 			$criteria = icms_buildCriteria(array('oai_identifier' => $identifier,
-				'status' => '1', 'federated' => '1'));
+				'online_status' => '1', 'federated' => '1'));
 
 			// this should return an array with only one publication object
 			$soundtrack_array = $podcast_soundtrack_handler->getObjects($criteria);
@@ -369,7 +369,7 @@ class PodcastArchive extends icms_ipf_seo_Object {
 
 			// only select records that are marked as online AND federated
 			$criteria = icms_buildCriteria(array('oai_identifier' => $identifier,
-				'status' => '1', 'federated' => '1'));
+				'online_status' => '1', 'federated' => '1'));
 
 			// this should return an array with only one publication object, because the
 			// identifier is unique
@@ -728,7 +728,7 @@ class PodcastArchive extends icms_ipf_seo_Object {
 				}
 				$sql .= " AND";
 			}
-			$sql .= " `federated` = '1' AND `status` = '1' ";
+			$sql .= " `federated` = '1' AND `online_status` = '1' ";
 
 			$soundtrackArray = array();
 

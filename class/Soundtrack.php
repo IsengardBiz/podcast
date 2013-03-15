@@ -27,6 +27,7 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 		parent::__construct($handler);
 
 		$this->quickInitVar('soundtrack_id', XOBJ_DTYPE_INT, true);
+		$this->quickInitVar("type", XOBJ_DTYPE_TXTBOX, TRUE);
 		$this->quickInitVar('title', XOBJ_DTYPE_TXTBOX, true);
 		$this->quickInitVar('identifier', XOBJ_DTYPE_TXTBOX, true);
 		$this->quickInitVar('format', XOBJ_DTYPE_TXTBOX, true);
@@ -41,7 +42,7 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 		$this->quickInitVar('language', XOBJ_DTYPE_TXTBOX, false, false, false,
 			$podcastConfig['default_language']);
 		$this->quickInitVar('rights', XOBJ_DTYPE_TXTBOX, true);
-		$this->quickInitVar('status', XOBJ_DTYPE_INT, true, false, false, 1);
+		$this->quickInitVar('online_status', XOBJ_DTYPE_INT, true, false, false, 1);
 		$this->quickInitVar('federated', XOBJ_DTYPE_INT, true, false, false,
 			$podcastConfig['podcast_default_federation']);
 		$this->quickInitVar('submission_time', XOBJ_DTYPE_LTIME, true);
@@ -53,10 +54,16 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 		$this->initCommonVar('dobr');
 		$this->quickInitVar ('soundtrack_notification_sent', XOBJ_DTYPE_INT);
 		
-		$this->setControl('poster_image', array('name' => 'image'));
 		$url = ICMS_URL . '/uploads/' . basename(dirname(dirname(__FILE__))) . '/';
 		$path = ICMS_ROOT_PATH . '/uploads/' . basename(dirname(dirname(__FILE__))) . '/';
 		$this->setImageDir($url, $path);
+		
+		// Set controls		
+		$this->setControl('type', array(
+			'name' => 'select',
+			'itemHandler' => 'soundtrack',
+			'method' => 'getTypeOptions',
+			'module' => 'podcast'));
 
 		$this->setControl('description', 'dhtmltextarea');
 
@@ -64,6 +71,8 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 			'itemHandler' => 'soundtrack',
 			'method' => 'getModuleMimeTypes',
 			'module' => 'podcast'));
+		
+		$this->setControl('poster_image', array('name' => 'image'));
 
 		$this->setControl('rights', array(
 			'itemHandler' => 'rights',
@@ -82,7 +91,7 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 			'module' => 'podcast'));
 
 		$this->setControl('submitter', 'user');
-		$this->setControl('status', 'yesno');
+		$this->setControl('online_status', 'yesno');
 		$this->setControl('federated', 'yesno');
 
 		// force html and don't allow user to change; necessary for RSS feed integrity
@@ -122,7 +131,7 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 
 	public function getVar($key, $format = 's') {
 		if ($format == 's' && in_array($key, array ('creator', 'format', 'date', 'file_size', 'source',
-			'language', 'rights', 'status', 'federated', 'submitter'))) {
+			'language', 'rights', 'online_status', 'federated', 'submitter'))) {
 			return call_user_func(array ($this, $key));
 		}
 		return parent :: getVar($key, $format);
@@ -173,8 +182,8 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 	 *
 	 * @return string 
 	 */
-	public function status() {
-		$status = $this->getVar('status', 'e');
+	public function online_status() {
+		$status = $this->getVar('online_status', 'e');
 
 		$button = '<a href="' . ICMS_URL . '/modules/' . basename(dirname(dirname(__FILE__)))
 				. '/admin/soundtrack.php?soundtrack_id=' . $this->getVar('soundtrack_id')

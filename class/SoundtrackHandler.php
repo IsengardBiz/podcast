@@ -61,7 +61,7 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 			}
 			$criteria->add($criteriaKeywords);
 		}
-		$criteria->add(new icms_db_criteria_Item('status', true));
+		$criteria->add(new icms_db_criteria_Item('online_status', true));
 		
 		/*
 		 * Improving the efficiency of search
@@ -183,7 +183,7 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 		if ($programme_id) {
 			$criteria->add(new icms_db_criteria_Item('source', $programme_id));
 		}
-		$criteria->add(new icms_db_criteria_Item('status', '1'));
+		$criteria->add(new icms_db_criteria_Item('online_status', '1'));
 		$criteria->setSort('date');
 		if ($sort_order) {
 			$criteria->setOrder('ASC');
@@ -333,6 +333,21 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 		}
 		$this->insert($soundtrackObj, true);
 		return $visibility;
+	}
+	
+	/**
+	 * Returns a list of document types (subset of the Dublin Core Type Vocabulary)
+	 *
+	 * @return array mixed
+	 */
+	public function getTypeOptions()
+	{
+		$options = array(
+			'Sound' => 'Audio',
+			'MovingImage' => 'Video'
+		);
+		
+		return $options;
 	}
 
 	/**
@@ -553,7 +568,7 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 	 */
 	protected function afterSave(& $obj) {
 		// triggers notification event for subscribers
-		if (!$obj->getVar('soundtrack_notification_sent') && $obj->getVar ('status', 'e') == 1) {
+		if (!$obj->getVar('soundtrack_notification_sent') && $obj->getVar ('online_status', 'e') == 1) {
 			$obj->sendNotifSoundtrackPublished();
 			$obj->setVar('soundtrack_notification_sent', true);
 			$this->insert ($obj);

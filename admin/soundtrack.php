@@ -77,7 +77,7 @@ if (in_array($clean_op,$valid_op,true)) {
 			break;
 
 		case "changeStatus":
-			$status = $podcast_soundtrack_handler->change_status($clean_soundtrack_id, 'status');
+			$status = $podcast_soundtrack_handler->change_status($clean_soundtrack_id, 'online_status');
 			$ret = '/modules/' . basename(dirname(dirname(__FILE__))) . '/admin/soundtrack.php';
 			if ($status == 0) {
 				redirect_header(ICMS_URL . $ret, 2, _AM_PODCAST_SOUNDTRACK_OFFLINE);
@@ -124,7 +124,7 @@ if (in_array($clean_op,$valid_op,true)) {
 			$formats = $system_mimetype_handler->getObjects(null, true);
 
 			$objectTable = new icms_ipf_view_Table($podcast_soundtrack_handler);
-			$objectTable->addColumn(new icms_ipf_view_Column('status', 'center', true));
+			$objectTable->addColumn(new icms_ipf_view_Column('online_status', 'center', true));
 			$objectTable->addColumn(new icms_ipf_view_Column('title'));
 			$objectTable->addColumn(new icms_ipf_view_Column('format', _GLOBAL_LEFT, false,
 				'format', $formats));
@@ -136,7 +136,7 @@ if (in_array($clean_op,$valid_op,true)) {
 			$objectTable->addFilter('source', 'source_filter');
 			$objectTable->addFilter('federated', 'federated_filter');
 			$objectTable->addFilter('rights', 'rights_filter');
-			$objectTable->addFilter('status', 'status_filter');
+			$objectTable->addFilter('online_status', 'status_filter');
 			$objectTable->addQuickSearch('title');
 			$objectTable->addIntroButton('addsoundtrack', 'soundtrack.php?op=mod',
 				_AM_PODCAST_SOUNDTRACK_CREATE);
