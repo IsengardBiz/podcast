@@ -80,29 +80,6 @@ define("_AM_PODCAST_MUST_AUTHORISE_MIMETYPES", "<p><strong>Warning</strong>: You
     System => Mimetypes. Click the edit button on relevant entries (eg. MP3, WMA) and add Podcast
     to the list of modules allowed to use them.</p>");
 
-// Archive
-define("_AM_PODCAST_ARCHIVES", "Archives");
-define("_AM_PODCAST_ARCHIVES_DSC", "All archives in the module");
-define("_AM_PODCAST_ARCHIVE_CREATE", "Add a archive");
-define("_AM_PODCAST_ARCHIVE", "Archive");
-define("_AM_PODCAST_ARCHIVE_CREATE_INFO", "Fill-out the following form to create a new archive.");
-define("_AM_PODCAST_ARCHIVE_EDIT", "Edit this archive");
-define("_AM_PODCAST_ARCHIVE_EDIT_INFO", "Fill-out the following form in order to edit this
-    archive.");
-define("_AM_PODCAST_ARCHIVE_MODIFIED", "The archive was successfully modified.");
-define("_AM_PODCAST_ARCHIVE_CREATED", "The archive has been successfully created.");
-define("_AM_PODCAST_ARCHIVE_VIEW", "Archive info");
-define("_AM_PODCAST_ARCHIVE_VIEW_DSC", "Here is the info about this archive.");
-define("_AM_PODCAST_ARCHIVE_NO_ARCHIVE","<strong>Archive status: <span style=\"color:#red;\">None.
-    </span></strong> Create an Archive object below if you want to enable the Open Archives Initiative
-    Protocol for Metadata Harvesting.<br />");
-define("_AM_PODCAST_ARCHIVE_ONLINE", "<strong>Archive status: <span style=\"color:#green;\">Enabled.
-    </span></strong> Podcast has permission to serve metadata in response to incoming OAIPMH
-    requests.");
-define("_AM_PODCAST_ARCHIVE_OFFLINE","<strong>Archive status: <span style=\"color:#red;\"> Offline.
-    </span></strong> You must enable archive functionality in module preferences if you want
-    Podcast to serve metadata in response to incoming OAIPMH requests.");
-
 // Instructions
 
 define("_AM_PODCAST_INSTRUCTIONS_DSC",

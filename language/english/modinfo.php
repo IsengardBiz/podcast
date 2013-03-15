@@ -21,7 +21,6 @@ define("_MI_PODCAST_MD_DESC", "Publish podcasts and albums and stream audio reco
 define("_MI_PODCAST_SOUNDTRACKS", "Soundtracks");
 define("_MI_PODCAST_PROGRAMMES", "Programmes");
 define("_MI_PODCAST_RIGHTSS", "Rights");
-define("_MI_PODCAST_ARCHIVES", "Open Archive");
 define("_MI_PODCAST_START_PAGE", "Start page");
 define("_MI_PODCAST_START_PAGE_DSC", "What page do you want to use as the home page for this
     module?");

@@ -125,55 +125,6 @@ define("_CO_PODCAST_RIGHT_ABOUT_RIGHTS", "The works displayed on this site may b
     by this site are listed below. Please check the licensing agreement for each work individually
     to see which applies.");
 
-// archive
-define("_CO_PODCAST_ARCHIVE_ENABLED", "Archive online");
-define("_CO_PODCAST_ARCHIVE_ENABLED_DSC", "Toggle this archive online (yes) or offline (no).");
-define("_CO_PODCAST_ARCHIVE_TARGET_MODULE", "Target module");
-define("_CO_PODCAST_ARCHIVE_TARGET_MODULE_DSC", "Select the module you wish to enable the OAIPMH
-    (federation) service for. Currently only the Podcast module is supported.");
-define("_CO_PODCAST_ARCHIVE_METADATA_PREFIX", "Metadata prefix");
-define("_CO_PODCAST_ARCHIVE_METADATA_PREFIX_DSC", " Indicates the XML metadata schemes supported
-    by this archive. Presently only Dublin Core is supported (oai_dc).");
-define("_CO_PODCAST_ARCHIVE_NAMESPACE", "Namespace");
-define("_CO_PODCAST_ARCHIVE_NAMESPACE_DSC", "Used to construct unique identifiers for records. 
-    Default is to use your domain name. Changing this is not recommended as it helps people
-    identify your repository as the source of a record that has been shared with other archives.");
-define("_CO_PODCAST_ARCHIVE_GRANULARITY", "Granularity");
-define("_CO_PODCAST_ARCHIVE_GRANULARITY_DSC", " The granularity of datestamps. The OAIPMH permits 
-    two levels of granularity, this implementation supports the most fine grained option
-    (YYYY-MM-DDThh:mm:ssZ).");
-define("_CO_PODCAST_ARCHIVE_DELETED_RECORD", "Deleted record support");
-define("_CO_PODCAST_ARCHIVE_DELETED_RECORD_DSC", " Does the archive support tracking of deleted
-    records? This implementation does not currently support deleted records.");
-define("_CO_PODCAST_ARCHIVE_EARLIEST_DATE_STAMP", "Earliest date stamp");
-define("_CO_PODCAST_ARCHIVE_EARLIEST_DATE_STAMP_DSC", " The datestamp for the oldest record in
-    your archive.");
-define("_CO_PODCAST_ARCHIVE_ADMIN_EMAIL", "Admin email");
-define("_CO_PODCAST_ARCHIVE_ADMIN_EMAIL_DSC", " The email address for the administrator of this
-    archive. Be aware that this address is reported in response to incoming OAIPMH requests.");
-define("_CO_PODCAST_ARCHIVE_PROTOCOL_VERSION", "Protocol version");
-define("_CO_PODCAST_ARCHIVE_PROTOCOL_VERSION_DSC", " The OAIPMH protocol version implemented by
-    this repository. Currently only version 2.0 is supported.");
-define("_CO_PODCAST_ARCHIVE_REPOSITORY_NAME", "Repository name");
-define("_CO_PODCAST_ARCHIVE_REPOSITORY_NAME_DSC", " The name of your archive.");
-define("_CO_PODCAST_ARCHIVE_BASE_URL", "Base URL");
-define("_CO_PODCAST_ARCHIVE_BASE_URL_DSC", " The target URL to which incoming OAIPMH requests for
-    your archive should be sent.");
-define("_CO_PODCAST_ARCHIVE_COMPRESSION", "Compression");
-define("_CO_PODCAST_ARCHIVE_COMPRESSION_DSC", " Indicates what types of compression are supported
-    by this archive. Presently only gzip is supported.");
-define("_CO_PODCAST_ARCHIVE_ABOUT_THIS_ARCHIVE", "Our soundtrack collection is an Open Archive");
-define("_CO_PODCAST_ARCHIVE_OAIPMH_TARGET", "This website implements the 
-    <a href=\"http://www.openarchives.org/pmh/\">Open Archives Initiative Protocol for Metadata
-    Harvesting</a> (OAIPMH). Compliant harvesters can access our soundtrack metadata from the
-    OAIPMH target below. OAIPMH queries should be directed to the Base URL specified below.");
-define("_CO_PODCAST_ARCHIVE_NOT_AVAILABLE", "Sorry, Open Archive functionality is not enabled at
-    this time.");
-define("_CO_PODCAST_ARCHIVE_NOT_CONFIGURED", "Podcast is currently configured to refuse incoming
-    OAIPMH requests, sorry");
-define("_CO_PODCAST_ARCHIVE_MUST_CREATE", "Error: An archive object must be created before OAIPMH
-    requests can be handled. Please create one via the Open Archive tab in Podcast administration.");
-
 // new
 define("_CO_PODCAST_NEW_ITEMS", "Latest release");
 
