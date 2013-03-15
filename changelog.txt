@@ -38,3 +38,7 @@ Version 1.32 (20/2/2013)
 * Fix bug where soundtracks marked offline were still being included in RSS feeds.
 * Add inline media support via JW Player.
 * Updated the manual.
+
+Version 1.33 (unreleased)
+-------------------------
+* Fix format of URLs in <dc:relation> field of the OAIPMH service.
