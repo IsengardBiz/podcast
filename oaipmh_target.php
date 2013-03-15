@@ -158,7 +158,7 @@ function validate($input_var, $valid_vars) {
 }
 
 include_once 'header.php';
-$xoopsOption['template_main'] = 'library_publication.html';
+$xoopsOption['template_main'] = 'podcast_soundtrack.html';
 include_once ICMS_ROOT_PATH . '/header.php';
 
 // Initialise
@@ -217,7 +217,7 @@ $sprocketsModule = icms_getModuleInfo('sprockets');
 
 if (icms_get_module_status("sprockets"))
 {
-	$module_object_handler = icms_getModuleHandler('publication', $module->getVar('dirname'),
+	$module_object_handler = icms_getModuleHandler('soundtrack', $module->getVar('dirname'),
 			$module->getVar('dirname'));
 	$sprockets_archive_handler = icms_getModuleHandler('archive', $sprocketsModule->getVar('dirname'),
 		'sprockets');
@@ -231,7 +231,7 @@ if (icms_get_module_status("sprockets"))
 	// If no archive object has been created, issue a warning
 	if (!$archiveObj) {
 
-		echo _CO_LIBRARY_ARCHIVE_MUST_CREATE;
+		echo _CO_PODCAST_ARCHIVE_MUST_CREATE;
 
 	} else {
 
@@ -353,7 +353,7 @@ if (icms_get_module_status("sprockets"))
 			exit;
 		}
 	}
-	$icmsTpl->assign('archive_module_home', library_getModuleName(TRUE, TRUE));
+	$icmsTpl->assign('archive_module_home', podcast_getModuleName(TRUE, TRUE));
 }
 else { // Exit if Sprockets module is not installed and active
 	exit;

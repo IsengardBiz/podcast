@@ -35,6 +35,7 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 		$this->quickInitVar('inline_identifier', XOBJ_DTYPE_TXTBOX, FALSE);
 		$this->quickInitVar('poster_image', XOBJ_DTYPE_IMAGE, FALSE);
 		$this->quickInitVar('creator', XOBJ_DTYPE_TXTBOX, true);
+		$this->initNonPersistableVar('tag', XOBJ_DTYPE_INT, 'tag', FALSE, FALSE, FALSE, TRUE);
 		$this->quickInitVar('description', XOBJ_DTYPE_TXTAREA, false);
 		$this->quickInitVar('date', XOBJ_DTYPE_LTIME, false);
 		$this->quickInitVar('publisher', XOBJ_DTYPE_TXTBOX, false);
@@ -73,6 +74,20 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 			'module' => 'podcast'));
 		
 		$this->setControl('poster_image', array('name' => 'image'));
+		
+		// Only display the tag field if the sprockets module is installed
+		$sprocketsModule = icms_getModuleInfo('sprockets');
+		if (icms_get_module_status("sprockets"))
+		{
+			$this->setControl('tag', array(
+			'name' => 'selectmulti',
+			'itemHandler' => 'tag',
+			'method' => 'getTags',
+			'module' => 'sprockets'));
+		} else {
+			$this->hideFieldFromForm('tag');
+			$this->hideFieldFromSingleView ('tag');
+		}
 
 		$this->setControl('rights', array(
 			'itemHandler' => 'rights',
@@ -223,6 +238,25 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 	public function creator() {
 		$creator = $this->getVar('creator', 'e');
 		return str_replace("|", ", ",  $creator);
+	}
+	
+	/**
+	 * Load tags linked to this soundtrack
+	 *
+	 * @return void
+	 */
+	public function loadTags() {
+		
+		$ret = array();
+		
+		// Retrieve the tags for this object
+		$sprocketsModule = icms_getModuleInfo('sprockets');
+		if (icms_get_module_status("sprockets")) {
+			$sprockets_taglink_handler = icms_getModuleHandler('taglink',
+					$sprocketsModule->getVar('dirname'), 'sprockets');
+			$ret = $sprockets_taglink_handler->getTagsForObject($this->id(), $this->handler, '0'); // label_type = 0 means only return tags
+			$this->setVar('tag', $ret);
+		}
 	}
 
 	/**
