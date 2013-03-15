@@ -55,9 +55,11 @@ if ($podcastConfig['podcast_enable_archive'] == 0) {
 }
 
 // check archive object exists
-$podcast_archive_handler = icms_getModuleHandler('archive', 
-		basename(dirname(dirname (__FILE__))), 'podcast');
-$archive_exists = $podcast_archive_handler->getCount();
+$sprockets_archive_handler = icms_getModuleHandler('archive', 'sprockets', 'sprockets');
+$mid = $podcastModule->getVar('mid');
+$criteria = new icms_db_criteria_Compo();
+$criteria->add(new icms_db_criteria_Item('module_id', $mid));
+$archive_exists = $sprockets_archive_handler->getCount($criteria);
 if ($archive_exists == 0) {
 	echo '<p><strong><span style="color:#red;">' . _CO_PODCAST_ARCHIVE_MUST_CREATE
 		. '</span></strong></p><br />';

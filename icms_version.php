@@ -60,7 +60,6 @@ $modversion['adminmenu'] = "admin/menu.php";
 $modversion['object_items'][1] = 'soundtrack';
 $modversion['object_items'][] = 'programme';
 $modversion['object_items'][] = 'rights';
-$modversion['object_items'][] = 'archive';
 $modversion["tables"] = icms_getTablesArray($modversion['dirname'], $modversion['object_items']);
 
 /** Install and update informations */
@@ -162,10 +161,6 @@ $modversion['templates'][]= array(
 $modversion['templates'][]= array(
 	'file' => 'podcast_rights.html',
 	'description' => 'Rights Index');
-
-$modversion['templates'][]= array(
-	'file' => 'podcast_admin_archive.html',
-	'description' => 'Archive Admin Index');
 
 $modversion['templates'][]= array(
 	'file' => 'podcast_archive.html',
