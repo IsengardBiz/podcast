@@ -27,9 +27,9 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 		parent::__construct($handler);
 
 		$this->quickInitVar('soundtrack_id', XOBJ_DTYPE_INT, true);
-		$this->quickInitVar("type", XOBJ_DTYPE_TXTBOX, TRUE);
 		$this->quickInitVar('title', XOBJ_DTYPE_TXTBOX, true);
 		$this->quickInitVar('identifier', XOBJ_DTYPE_TXTBOX, true);
+		$this->quickInitVar("type", XOBJ_DTYPE_TXTBOX, TRUE);
 		$this->quickInitVar('format', XOBJ_DTYPE_TXTBOX, true);
 		$this->quickInitVar('file_size', XOBJ_DTYPE_INT, true);
 		$this->quickInitVar('inline_identifier', XOBJ_DTYPE_TXTBOX, FALSE);

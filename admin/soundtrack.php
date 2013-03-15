@@ -25,6 +25,7 @@ function editsoundtrack($soundtrack_id = 0) {
 	$soundtrackObj = $podcast_soundtrack_handler->get($soundtrack_id);
 
 	if (!$soundtrackObj->isNew()) {
+		$soundtrackObj->loadTags();
 		$podcastModule->displayAdminMenu(0, _AM_PODCAST_SOUNDTRACKS . " > " . _CO_ICMS_EDITING);
 		$sform = $soundtrackObj->getForm(_AM_PODCAST_SOUNDTRACK_EDIT, 'addsoundtrack');
 		$sform->assign($icmsAdminTpl);

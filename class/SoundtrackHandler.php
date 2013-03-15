@@ -559,14 +559,44 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 			$this->insert($soundtrackObj, true);
 		}
 	}
+	
+	/**
+	 * Adjust data before saving or updating
+	 * @param object $obj 
+	 */
+	protected function beforeSave(& $obj)
+	{		
+		// Strip non-numerical characters out of the file size field, so can paste in from Windows directly
+		$file_size = $obj->getVar('file_size', 'e');
+		if ($file_size) {
+			$file_size = preg_replace('/\D/', '', $file_size);
+			$obj->setVar('file_size', $file_size);
+		}
+		
+		return TRUE;
+	}
 
 	/**
-	 * Triggers notifications, called when a soundtrack is inserted or updated
+	 * Triggers notifications, tracks tags, called when a soundtrack is inserted or updated
 	 *
 	 * @param object $obj PodcastSoundtrack object
 	 * @return bool
 	 */
 	protected function afterSave(& $obj) {
+		// Track tags
+		$sprockets_taglink_handler = '';
+		$sprocketsModule = icms::handler("icms_module")->getByDirname("sprockets");
+		
+		// Only update the taglinks if the object is being updated from the add/edit form (POST).
+		// Database updates are not permitted from GET requests and will trigger an error
+		if ($_SERVER['REQUEST_METHOD'] == 'POST' && icms_get_module_status("sprockets")) {
+			$sprockets_taglink_handler = icms_getModuleHandler('taglink', 
+					$sprocketsModule->getVar('dirname'), $sprocketsModule->getVar('dirname'), 'sprockets');
+			
+			// Store tags
+			$sprockets_taglink_handler->storeTagsForObject($obj, 'tag', '0');
+		}
+		
 		// triggers notification event for subscribers
 		if (!$obj->getVar('soundtrack_notification_sent') && $obj->getVar ('online_status', 'e') == 1) {
 			$obj->sendNotifSoundtrackPublished();
@@ -598,6 +628,13 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 		// delete soundtrack bookmarks
 		$category = 'soundtrack';
 		$notification_handler->unsubscribeByItem($module_id, $category, $item_id);
+		
+		// Delete taglinks
+		if (icms_get_module_status("sprockets")) {
+			$sprockets_taglink_handler = icms_getModuleHandler('taglink',
+					$sprocketsModule->getVar('dirname'), 'sprockets');
+			$sprockets_taglink_handler->deleteAllForObject($obj);
+		}
 
 		return true;
 	}
