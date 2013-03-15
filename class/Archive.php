@@ -418,8 +418,8 @@ class PodcastArchive extends icms_ipf_seo_Object {
 					// prepare a list of related work URLs
 					$related = array();
 					foreach($relatedList as $key => $value) {
-						$related[] = basename(dirname(dirname(__FILE__)))
-							. 'soundtrack.php?soundtrack_id=' . $key;
+						$related[] = ICMS_URL . '/modules/' . basename(dirname(dirname(__FILE__)))
+							. '/soundtrack.php?soundtrack_id=' . $key;
 					}
 
 					$soundtrack['relation'] = $related;
