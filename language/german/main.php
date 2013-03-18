@@ -17,5 +17,4 @@ define('_MD_PODCAST_ADMIN_PAGE', ':: Admin page ::');
 
 define("_MD_PODCAST_ALL_SOUNDTRACKS", "Recent soundtracks");
 define("_MD_PODCAST_ALL_PROGRAMMES", "Programmes");
-define("_MD_PODCAST_ALL_RIGHTSS", "Rights");
 define("_MD_PODCAST_ALL_ARCHIVES", "All archives");

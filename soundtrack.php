@@ -97,7 +97,12 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 		// change some fields to human readable
 		$soundtrackArray['language'] = $soundtrackObj->getVar('language', 's');
 		$soundtrackArray['format'] = $soundtrackObj->format();
-		$soundtrackArray['rights'] = $soundtrackObj->rights();
+		if (icms_get_module_status("sprockets"))
+		{
+			$soundtrackArray['rights'] = $soundtrackObj->rights();
+		} else {
+			unset($soundtrackArray['rights']);
+		}
 		$soundtrackArray['source'] = $programme['itemLink'];
 		
 		////////////////////////////////////////////////////////////////////
@@ -214,7 +219,10 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 	$objectTable->addColumn(new icms_ipf_view_Column('format', _GLOBAL_LEFT, false,
 		'format', $formats));
 	$objectTable->addFilter('source', 'source_filter');
-	$objectTable->addFilter('rights', 'rights_filter');
+	if (icms_get_module_status("sprockets"))
+	{
+		$objectTable->addFilter('rights', 'rights_filter');
+	}
 	$objectTable->setDefaultSort('date');
 	$objectTable->setDefaultOrder('DESC');
 	$objectTable->addQuickSearch('title');

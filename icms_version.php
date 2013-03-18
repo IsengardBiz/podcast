@@ -152,14 +152,6 @@ $modversion['templates'][]= array(
 	'description' => 'Programme Index');
 
 $modversion['templates'][]= array(
-	'file' => 'podcast_admin_rights.html',
-	'description' => 'Rights Admin Index');
-
-$modversion['templates'][]= array(
-	'file' => 'podcast_rights.html',
-	'description' => 'Rights Index');
-
-$modversion['templates'][]= array(
 	'file' => 'podcast_archive.html',
 	'description' => 'Archive Index');
 
@@ -174,8 +166,7 @@ $modversion['templates'][]= array(
 /** Preferences information */
 
 // prepare start page options
-$start_options = array(0 => 'soundtrack.php', 1 => 'programme.php', 2 => 'rights.php',
-	3 => 'new.php');
+$start_options = array(0 => 'soundtrack.php', 1 => 'programme.php', 2 => 'new.php');
 $start_options = array_flip($start_options);
 
 // default start page for the module

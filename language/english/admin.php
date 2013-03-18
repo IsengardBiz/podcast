@@ -52,7 +52,6 @@ define("_AM_PODCAST_PROGRAMME_CREATED", "The programme has been successfully cre
 define("_AM_PODCAST_PROGRAMME_VIEW", "Programme info");
 define("_AM_PODCAST_PROGRAMME_VIEW_DSC", "Here is the info about this programme.");
 
-// Rights
 define("_AM_PODCAST_NO_UPLOAD_DIRECTORY", "<p><strong>Warning</strong>: The directory 
     <strong>/uploads/podcast</strong> does not exist. Please create it manually to allow programme
     logos and cover art to be stored.</p>");

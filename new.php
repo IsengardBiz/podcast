@@ -40,9 +40,11 @@ if (empty($soundtrack_object_array)) {
 	// prepare buffers to avoid repetitive queries, keys match object ids
 	$system_mimetype_handler = icms_getModuleHandler('mimetype', 'system');
 	$mimetypeObjArray = $system_mimetype_handler->getObjects(null, true);
-	$podcast_rights_handler = icms_getModuleHandler('rights', basename(dirname(__FILE__)),
-			'podcast');
-	$rightsObjArray = $podcast_rights_handler->getObjects(null, true);
+	if (icms_get_module_status("sprockets"))
+	{
+		$sprockets_rights_handler = icms_getModuleHandler('rights', 'sprockets', 'sprockets');
+		$rightsObjArray = $sprockets_rights_handler->getObjects(null, true);
+	}
 	$programme_object_array = $podcast_programme_handler->getObjects(null, true);
 	$programme_cover_array = array();
 	
@@ -80,7 +82,12 @@ if (empty($soundtrack_object_array)) {
 		}
 
 		// convert rights to human readable, do lookup from buffer
-		$feature_item['rights'] = $rightsObjArray[$feature_item['rights']]->getItemLink();
+		if (icms_get_module_status("sprockets"))
+		{
+			$feature_item['rights'] = $rightsObjArray[$feature_item['rights']]->getItemLink();
+		} else {
+			unset($reature_item['rights']);
+		}
 
 		// convert format to human readable, do lookup from buffer
 		$feature_item['format'] = '.' . $mimetypeObjArray[$feature_item['format']]->getVar('extension');
@@ -130,7 +137,12 @@ if (empty($soundtrack_object_array)) {
 			$soundtrack['format'] = '.' . $mimetypeObj->getVar('extension');
 
 			// convert rights to human readable, lookup value from buffer
-			$soundtrack['rights'] = $rightsObjArray[$soundtrack['rights']]->getItemLink();
+			if (icms_get_module_status("sprockets"))
+			{
+				$soundtrack['rights'] = $rightsObjArray[$soundtrack['rights']]->getItemLink();
+			} else {
+				unset($soundtrack['rights']);
+			}
 
 			// convert source to human readable, lookup value from buffer
 			$soundtrack['source'] = $programme_object_array[$soundtrack['source']]->getItemLink();

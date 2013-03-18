@@ -162,9 +162,11 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		// buffer some data to avoid repetitive queries
 		$system_mimetype_handler = icms_getModuleHandler('mimetype', 'system');
 		$mimetypeObjArray = $system_mimetype_handler->getObjects(null, true);
-		$podcast_rights_handler = icms_getModuleHandler('rights', basename(dirname(__FILE__)),
-			'podcast');
-		$rightsObjArray = $podcast_rights_handler->getObjects(null, true);
+		if (icms_get_module_status("sprockets"))
+		{
+			$sprockets_rights_handler = icms_getModuleHandler('rights', 'sprockets', 'sprockets');
+			$rightsObjArray = $sprockets_rights_handler->getObjects(null, true);
+		}
 
 		// retrieve the soundtracks
 		$playlist = '';
@@ -213,7 +215,12 @@ if ($programmeObj && !$programmeObj->isNew()) {
 			$track = $soundtrack->toArrayWithoutOverrides();
 			$track['source'] = $programme['itemLink'];
 			$track['format'] = $mimetypeObjArray[$track['format']]->getVar('extension');
-			$track['rights'] = $rightsObjArray[$track['rights']]->getItemLink();
+			if (icms_get_module_status("sprockets"))
+			{
+				$track['rights'] = $rightsObjArray[$track['rights']]->getItemLink();
+			} else {
+				unset($track['rights']);
+			}
 
 			// add download link
 			$track['download'] = '<a href="' . $track['identifier'] . '" title="'
@@ -230,9 +237,14 @@ if ($programmeObj && !$programmeObj->isNew()) {
 			$track['format'] = '.' . $mimetypeObj->getVar('extension');
 
 			// convert rights to human readable
-			$rightsObj = $rightsObjArray[$soundtrack->getVar('rights', 'e')];
-			$rights = $rightsObj->toArray();
-			$track['rights'] = $rights['itemLink'];
+			if (icms_get_module_status("sprockets"))
+			{
+				$rightsObj = $rightsObjArray[$soundtrack->getVar('rights', 'e')];
+				$rights = $rightsObj->toArray();
+				$track['rights'] = $rights['itemLink'];
+			} else {
+				unset($track['rights']);
+			}
 
 			// unset unwanted / uneeded fields
 			unset($track['source']);

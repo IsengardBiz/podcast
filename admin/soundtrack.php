@@ -136,7 +136,10 @@ if (in_array($clean_op,$valid_op,true)) {
 			$objectTable->addColumn(new icms_ipf_view_Column('federated', 'center', true));
 			$objectTable->addFilter('source', 'source_filter');
 			$objectTable->addFilter('federated', 'federated_filter');
-			$objectTable->addFilter('rights', 'rights_filter');
+			if (icms_get_module_status("sprockets"))
+			{
+				$objectTable->addFilter('rights', 'rights_filter');
+			}
 			$objectTable->addFilter('online_status', 'status_filter');
 			$objectTable->addQuickSearch('title');
 			$objectTable->addIntroButton('addsoundtrack', 'soundtrack.php?op=mod',
