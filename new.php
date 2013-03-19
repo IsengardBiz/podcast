@@ -86,7 +86,7 @@ if (empty($soundtrack_object_array)) {
 		{
 			$feature_item['rights'] = $rightsObjArray[$feature_item['rights']]->getItemLink();
 		} else {
-			unset($reature_item['rights']);
+			unset($feature_item['rights']);
 		}
 
 		// convert format to human readable, do lookup from buffer
