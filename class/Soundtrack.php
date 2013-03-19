@@ -352,12 +352,11 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 	public function rights($oaipmh_request = false) {
 		if (icms_get_module_status("sprockets"))
 		{
-			$sprockets_rights_handler = icms_getModuleHandler('rights', $sprocketsModule->getVar('dirname'), 'sprockets');		
+			$sprockets_rights_handler = icms_getModuleHandler('rights', 'sprockets', 'sprockets');		
 			$rights_id = $this->getVar('rights', 'e');
 			$rights_object = $sprockets_rights_handler->get($rights_id);
 			$rights = $rights_object->toArray();
-
-			return $rights;
+			return $rights['itemLink'];
 		} else {
 			return FALSE;
 		}
