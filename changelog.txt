@@ -43,3 +43,4 @@ Version 1.33 (unreleased)
 -------------------------
 * Fix format of URLs in <dc:relation> field of the OAIPMH service.
 * Adopt the Sprockets OAIPMH service (deprecate OAIPMH code in Podcast module).
+* Remove paragraph tags from template description field, should be entered in description itself.
