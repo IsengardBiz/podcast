@@ -45,3 +45,4 @@ Version 1.33 (unreleased)
 * Adopt the Sprockets OAIPMH service (deprecate OAIPMH code in Podcast module).
 * Remove paragraph tags from template description field, should be entered in description itself.
 * Fix bug in search function that was crashing profile views.
+* Fix date format in search function.
