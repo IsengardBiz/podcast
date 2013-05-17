@@ -48,13 +48,15 @@ function podcast_search($queryarray, $andor, $limit, $offset = 0, $userid = 0)
 	
 	// Process the actual soundtracks (not the padding)
 	for ($i = 0; $i < $number_to_process; $i++) {
-		$item['image'] = "images/soundtrack.png";
-		$item['link'] = $soundtracksArray[$i]->getItemLink(TRUE);
-		$item['title'] = $soundtracksArray[$i]->getVar("title");
-		$item['time'] = strtotime($soundtracksArray[$i]->getVar("submission_time", "e"));
-		$item['uid'] = $soundtracksArray[$i]->getVar('submitter', 'e');
-		$ret[] = $item;
-		unset($item);
+		if (is_object($soundtracksArray[$i])) { // Required to prevent crashing on profile view
+			$item['image'] = "images/soundtrack.png";
+			$item['link'] = $soundtracksArray[$i]->getItemLink(TRUE);
+			$item['title'] = $soundtracksArray[$i]->getVar("title");
+			$item['time'] = strtotime($soundtracksArray[$i]->getVar("submission_time", "e"));
+			$item['uid'] = $soundtracksArray[$i]->getVar('submitter', 'e');
+			$ret[] = $item;
+			unset($item);
+		}
 	}
 	
 	// Restore the padding (required for 'hits' information and pagination controls). The offset
