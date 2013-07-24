@@ -56,6 +56,8 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 					'LIKE'), 'OR');
 				$criteriaKeyword->add(new icms_db_criteria_Item('description', '%' . $queryarray[$i]
 					. '%', 'LIKE'), 'OR');
+				$criteriaKeyword->add(new icms_db_criteria_Item('publisher', '%' . $queryarray[$i]
+					. '%', 'LIKE'), 'OR');
 				$criteriaKeywords->add($criteriaKeyword, $andor);
 				unset ($criteriaKeyword);
 			}

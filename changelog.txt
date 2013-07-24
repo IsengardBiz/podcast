@@ -46,3 +46,7 @@ Version 1.33 (18/7/2013)
 * Remove paragraph tags from template description field, should be entered in description itself.
 * Fix bug in search function that was crashing profile views.
 * Fix date format in search function.
+
+Version 1.34 (24/7/2013)
+------------------------
+* Add publisher to searchable fields
