@@ -677,7 +677,13 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 	 * @return bool
 	 */
 	protected function afterDelete(& $obj) {
+		
+		$sprocketsModule = $notification_handler = $module_handler = $module = $module_id
+				= $category = $item_id = '';		
+		
 		global $icmsModule;
+		
+		$sprocketsModule = icms_getModuleInfo('sprockets');
 		$notification_handler = icms::handler('icms_data_notification');
 		$module_handler = icms::handler('icms_module');
 		$module = $module_handler->getByDirname(basename(dirname(dirname(__FILE__))));
@@ -695,6 +701,7 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 		
 		// Delete taglinks
 		if (icms_get_module_status("sprockets")) {
+			$sprocketsModule = 
 			$sprockets_taglink_handler = icms_getModuleHandler('taglink',
 					$sprocketsModule->getVar('dirname'), 'sprockets');
 			$sprockets_taglink_handler->deleteAllForObject($obj);
