@@ -33,6 +33,7 @@ class PodcastProgramme extends icms_ipf_seo_Object {
 		$this->quickInitVar('compact_view', XOBJ_DTYPE_INT, true, false, false, 0);
 		$this->quickInitVar('sort_order', XOBJ_DTYPE_TXTBOX, true, false, false, 0);
 		$this->quickInitVar('cover', XOBJ_DTYPE_IMAGE, false);
+		$this->quickInitVar('type', XOBJ_DTYPE_TXTBOX, TRUE, FALSE, FALSE, 'Text');
 		$this->quickInitVar('submission_time', XOBJ_DTYPE_LTIME, true);
 		$this->quickInitVar('oai_identifier', XOBJ_DTYPE_TXTBOX, true, false, false,
 		$this->handler->setOaiId());
