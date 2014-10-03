@@ -22,7 +22,6 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 	 */
 	public function __construct(& $handler) {
 		global $icmsConfig;
-		global $podcastConfig;
 
 		parent::__construct($handler);
 
@@ -41,11 +40,11 @@ class PodcastSoundtrack extends icms_ipf_seo_Object {
 		$this->quickInitVar('publisher', XOBJ_DTYPE_TXTBOX, false);
 		$this->quickInitVar('source', XOBJ_DTYPE_TXTBOX, false);
 		$this->quickInitVar('language', XOBJ_DTYPE_TXTBOX, false, false, false,
-			$podcastConfig['default_language']);
+			icms_getConfig('default_language', 'podcast'));
 		$this->quickInitVar('rights', XOBJ_DTYPE_TXTBOX, true);
 		$this->quickInitVar('online_status', XOBJ_DTYPE_INT, true, false, false, 1);
 		$this->quickInitVar('federated', XOBJ_DTYPE_INT, true, false, false,
-			$podcastConfig['podcast_default_federation']);
+			icms_getConfig('podcast_default_federation', 'podcast'));
 		$this->quickInitVar('submission_time', XOBJ_DTYPE_LTIME, true);
 		$this->quickInitVar('submitter', XOBJ_DTYPE_INT, true);
 		$this->quickInitVar('oai_identifier', XOBJ_DTYPE_TXTBOX, true, false, false,

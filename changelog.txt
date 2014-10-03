@@ -55,3 +55,4 @@ Version 1.34 (24/7/2013)
 Version 1.35 (unreleased)
 -------------------------
 * Add static 'type' field to identify programmes as "Text" resources.
+* Remove use of global $podcastConfig in favour of icms_getConfig() in class files.
