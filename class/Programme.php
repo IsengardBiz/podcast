@@ -28,7 +28,7 @@ class PodcastProgramme extends icms_ipf_seo_Object {
 		$this->quickInitVar('programme_id', XOBJ_DTYPE_INT, true);
 		$this->quickInitVar('title', XOBJ_DTYPE_TXTBOX, true);
 		$this->quickInitVar('publisher', XOBJ_DTYPE_TXTBOX, false);
-		$this->quickInitVar('date', XOBJ_DTYPE_TXTBOX, false);
+		$this->quickInitVar('date', XOBJ_DTYPE_LTIME, true);
 		$this->quickInitVar('description', XOBJ_DTYPE_TXTAREA, false);
 		$this->quickInitVar('compact_view', XOBJ_DTYPE_INT, true, false, false, 0);
 		$this->quickInitVar('sort_order', XOBJ_DTYPE_TXTBOX, true, false, false, 0);
