@@ -665,7 +665,7 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 		}
 		
 		// Clear cache
-		$this->clear_cache(& $obj);	
+		$this->clear_cache($obj);	
 		
 		return true;
 	}
@@ -708,7 +708,7 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 		}
 		
 		// Clear cache
-		$this->clear_cache(& $obj);	
+		$this->clear_cache($obj);	
 
 		return true;
 	}
