@@ -139,4 +139,10 @@ define("_CO_PODCAST_SOUNDTRACK_POSTER_IMAGE_DSC", "The poster image is displayed
 define("_CO_PODCAST_SOUNDTRACK_TYPE", "Type");
 define("_CO_PODCAST_SOUNDTRACK_TYPE_DSC", "Specify whether this is an audio or video file.");
 define("_CO_PODCAST_SOUNDTRACK_TAG", "Tags");
-define("_CO_PODCAST_SOUNDTRACK_TAG_DSC", "Select the tags (subjects) you wish to label this object with.");
+define("_CO_PODCAST_SOUNDTRACK_TAG_DSC", "Select the tags (subjects) you wish to label this soundtrack with.");
+define("_CO_PODCAST_PROGRAMME_TAG", "Tags");
+define("_CO_PODCAST_PROGRAMME_TAG_DSC", "Select the tags (subjects) you wish to label this programme with.");
+define("_CO_PODCAST_PROGRAMME_CREATOR", "Creator");
+define("_CO_PODCAST_PROGRAMME_CREATOR_DSC", "The author of this work, if any.");
+define("_CO_PODCAST_ALL_TAGS", "-- All tags --");
+define("_CO_PODCAST_PROGRAMME_UNTAGGED", "Untagged");

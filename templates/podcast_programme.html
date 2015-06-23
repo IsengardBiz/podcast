@@ -40,12 +40,11 @@
 	<{/if}>
 	<{/if}>
 </div>
-<{/if}>
 
 <!-- list programmes as summaries -->
-
-<{if $podcast_programme_table || $podcast_programme_array}>
+<{elseif $podcast_programme_table || $podcast_programme_array}>
 <h2><{$podcast_title}></h2>
+<{if $podcast_select_box}><{$podcast_select_box}><{/if}>
 <{$podcast_programme_table}>
 <{/if}>
 
@@ -55,6 +54,10 @@
 	<{include file='db:podcast_programme_description.html'}>
 	<{/foreach}>
 </div>
+
+<!-- no content to display -->
+<{else}>
+<{if $podcast_select_box}><{$podcast_select_box}><{/if}>
 <{/if}>
 
 <!-- pagination -->

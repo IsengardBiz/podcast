@@ -21,9 +21,15 @@ $podcast_programme_handler = icms_getModuleHandler('programme',
 // initialise
 $clean_programme = $clean_short_url = $sort_order = '';
 
-// use a naming convention that indicates the source of the content of the variable
 $clean_programme_id = isset($_GET['programme_id']) ? intval($_GET['programme_id']) : 0;
 $clean_m3u_flag = isset($_GET['m3u_flag']) ? intval($_GET['m3u_flag']) : 0;
+$untagged_content = FALSE;
+if (isset($_GET['tag_id'])) {
+	if ($_GET['tag_id'] == 'untagged') {
+		$untagged_content = TRUE;
+	}
+}
+$clean_tag_id = isset($_GET['tag_id']) ? intval($_GET['tag_id']) : 0 ;
 
 $programmeObj = $podcast_programme_handler->get($clean_programme_id);
 
@@ -268,6 +274,10 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		$pagenav = new icms_view_PageNav($soundtrack_count,
 			$podcastConfig['number_soundtracks_per_page'], $clean_start, 'start', $extra_arg);
 		$icmsTpl->assign('podcast_navbar', $pagenav->renderNav());
+		
+		// Breadcrumb
+		$icmsTpl->assign('podcast_category_path', '<a href="programme.php">' 
+					. _CO_PODCAST_PROGRAMME_PROGRAMMES . '</a>');
 	}
 } else {
 	
@@ -277,37 +287,102 @@ if ($programmeObj && !$programmeObj->isNew()) {
 	
 	$icmsTpl->assign('podcast_title', _MD_PODCAST_ALL_PROGRAMMES);
 	$icmsTpl->assign('podcast_programme_view', 'multiple');
-
-	// get a list of programmes considering pagination and preference requirements
+	
+	// Initialise
 	$programmeArray = $programmeObjectArray = array();
-	$podcast_programme_handler = icms_getModuleHandler('programme',
-		basename(dirname(__FILE__)), 'podcast');
-	$podcast_soundtrack_handler = icms_getModuleHandler('soundtrack',
-		basename(dirname(__FILE__)), 'podcast');
-	$criteria = new icms_db_criteria_Compo();
-	$criteria->setStart($clean_start);
-	$criteria->setLimit($podcastConfig['number_programmes_per_page']); // important for pagination
+	$podcast_programme_handler = icms_getModuleHandler('programme', basename(dirname(__FILE__)),
+			'podcast');
+	$podcast_soundtrack_handler = icms_getModuleHandler('soundtrack', basename(dirname(__FILE__)),
+			'podcast');
+	
+	// Optional tagging support (only if Sprockets module installed)
+	$sprocketsModule = icms::handler("icms_module")->getByDirname("sprockets");
+	$podcastModule = icms::handler("icms_module")->getByDirname("podcast");
+	if (icms_get_module_status("sprockets")) {
+		
+		// Prepare common Sprockets handlers and buffers
+		icms_loadLanguageFile("sprockets", "common");
+		$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
+				'sprockets');
+		$sprockets_taglink_handler = icms_getModuleHandler('taglink', 
+				$sprocketsModule->getVar('dirname'), 'sprockets');
+		$sprockets_tag_buffer = $sprockets_tag_handler->getTagBuffer(TRUE);
 
-	switch ($podcastConfig['programmes_sort_preference']) {
-		case "0": // sort programmes by title
-			$criteria->setSort('title');
-			$criteria->setOrder('ASC');
-			break;
-
-		case "1": // sort programmes by submission date (ascending)
-			$criteria->setSort('submission_time');
-			$criteria->setOrder('ASC');
-			break;
-
-		case "2": // sort programmes by submission date (descending)
-			$criteria->setSort('submission_time');
-			$criteria->setOrder('DESC');
-			break;
+		// Append the tag to the breadcrumb title
+		if (array_key_exists($clean_tag_id, $sprockets_tag_buffer) && ($clean_tag_id !== 0)) {
+			$podcast_tag_name = $sprockets_tag_buffer[$clean_tag_id]->getVar('title');
+			$icmsTpl->assign('podcast_tag_name', $podcast_tag_name);
+			$icmsTpl->assign('podcast_category_path', '<a href="programme.php">' 
+					. _CO_PODCAST_PROGRAMME_PROGRAMMES . '</a> &gt; ' 
+					. $sprockets_tag_buffer[$clean_tag_id]->getVar('title'));
+		} elseif ($untagged_content) {
+			$icmsTpl->assign('podcast_tag_name', _CO_PODCAST_PROGRAMME_UNTAGGED);
+			$icmsTpl->assign('podcast_category_path', '<a href="programme.php">' 
+					. _CO_PODCAST_PROGRAMME_PROGRAMMES . '</a> &gt; ' 
+					. _CO_PODCAST_PROGRAMME_UNTAGGED);
+		}
+		
+		// Prepare a tag select box
+		if (icms::$module->config['podcast_select_box'] == TRUE) {
+			if ($untagged_content) {
+				$tag_select_box = $sprockets_tag_handler->getTagSelectBox('programme.php', 
+						'untagged', _CO_PODCAST_ALL_TAGS, TRUE, 
+						icms::$module->getVar('mid'), 'programme', TRUE);
+			} else {
+				$tag_select_box = $sprockets_tag_handler->getTagSelectBox('programme.php', 
+						$clean_tag_id, _CO_PODCAST_ALL_TAGS, TRUE, 
+						icms::$module->getVar('mid'), 'programme', TRUE);
+			}
+			$icmsTpl->assign('podcast_select_box', $tag_select_box);
+		}
 	}
+	
+	// Retrieve programmes for a given tag
+	if (($clean_tag_id || $untagged_content) && icms_get_module_status("sprockets")) {
+		// Get a count for pagination purposes
+			$programme_count = $podcast_programme_handler->getProgrammeCountForTag($clean_tag_id);
+			
+			// Retrieve the objects
+			$programmeObjectArray = $podcast_programme_handler->getProgrammesForTag($clean_tag_id, 
+					$programme_count, $clean_start);
+			$icmsTpl->assign('podcast_programme_array', $programmeObjectArray);
 
-	$programmeObjectArray = $podcast_programme_handler->getObjects($criteria);
+			// Pagination control - adust for tag (and label_type), if present
+			if ($clean_tag_id) {
+				$extra_arg = 'tag_id=' . $clean_tag_id;
+			}
+			else {
+				$extra_arg = 'tag_id=' . 'untagged';
+			}
+			$pagenav = new icms_view_PageNav($programme_count, 
+				icms::$module->config['number_programmes_per_page'], $clean_start, 'start', $extra_arg);
+			$icmsTpl->assign('library_navbar', $pagenav->renderNav());
+	} else {
+		// Get an untagged list of programmes considering pagination and preference requirements
+		$criteria = new icms_db_criteria_Compo();
+		$criteria->setStart($clean_start);
+		$criteria->setLimit($podcastConfig['number_programmes_per_page']); // important for pagination
+		switch ($podcastConfig['programmes_sort_preference']) {
+			case "0": // sort programmes by title
+				$criteria->setSort('title');
+				$criteria->setOrder('ASC');
+				break;
+
+			case "1": // sort programmes by submission date (ascending)
+				$criteria->setSort('submission_time');
+				$criteria->setOrder('ASC');
+				break;
+
+			case "2": // sort programmes by submission date (descending)
+				$criteria->setSort('submission_time');
+				$criteria->setOrder('DESC');
+				break;
+		}
+		$programmeObjectArray = $podcast_programme_handler->getObjects($criteria);
+		$icmsTpl->assign('podcast_category_path', _CO_PODCAST_PROGRAMME_PROGRAMMES);
+	}
+	
 	$podcastModule = icms_getModuleInfo(basename(dirname(__FILE__)));
-
 	foreach($programmeObjectArray as $programmeObject) {
 		// convert object to array for easy template assignment
 		$programme = $programmeObject->toArray();
@@ -358,6 +433,5 @@ if ($programmeObj && !$programmeObj->isNew()) {
 
 $icmsTpl->assign('podcast_module_home', podcast_getModuleName(true, true));
 $icmsTpl->assign('podcast_display_breadcrumb', $podcastConfig['display_breadcrumb']);
-$icmsTpl->assign('podcast_category_path', _CO_PODCAST_PROGRAMME_PROGRAMMES);
 
 include_once 'footer.php';

@@ -143,3 +143,8 @@ define("_MI_PODCAST_JWPLAYER_WIDTH", "JW Player video width (pixels)");
 define("_MI_PODCAST_JWPLAYER_WIDTHDSC", "The width at which the inline video player will be displayed at.");
 define("_MI_PODCAST_JWPLAYER_HEIGHT", "JW Player video height (pixels)");
 define("_MI_PODCAST_JWPLAYER_HEIGHTDSC", "The height at which the inline video player will be displayed at.");
+
+// Added in version 1.3.4
+define("_MI_PODCAST_SELECT_BOX", "Enable tag select box?");
+define("_MI_PODCAST_SELECT_BOX_DSC", "Makes a tag select box visible on the Programme and "
+		. "Soundtrack pages. Only if Sprockets module installed.");

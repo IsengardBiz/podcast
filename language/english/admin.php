@@ -166,3 +166,7 @@ Guidelines for repository implementers</a></li>
 <li><a href=\"http://dublincore.org/documents/dces/\">
 Dublin Core Metadata Element Set Version 1.1</a></li></ul>
 ");
+
+// Added in V1.34
+define("_AM_PODCAST_PROGRAMME_ALL_PROGRAMMES", "-- All programmes --");
+define("_AM_PODCAST_PROGRAMME_FILTER_BY_TAG", "Filter by tag");

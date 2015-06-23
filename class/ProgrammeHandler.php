@@ -20,6 +20,94 @@ class PodcastProgrammeHandler extends icms_ipf_Handler {
 		parent::__construct($db, 'programme', 'programme_id', 'title',
 			'description', 'podcast', 'cover');
 	}
+	
+	/*
+	 * Counts the number of (online) programmes for a tag to support pagination controls
+	 */
+	public function getProgrammeCountForTag($tag_id)
+	{
+		// Sanitise the parameter
+		$clean_tag_id = isset($tag_id) ? (int)$tag_id : 0 ;
+		
+		$podcastModule = $this->getModuleInfo();
+		
+		$sprockets_taglink_handler = icms_getModuleHandler('taglink', 'sprockets', 'sprockets');
+		$group_query = "SELECT count(*) FROM " . $this->table . ", "
+				. $sprockets_taglink_handler->table
+				. " WHERE `programme_id` = `iid`"
+				. " AND `online_status` = '1'"
+				. " AND `tid` = '" . $clean_tag_id . "'"
+				. " AND `mid` = '" . $podcastModule->getVar('mid') . "'"
+				. " AND `item` = 'programme'";
+		$result = icms::$xoopsDB->query($group_query);
+		if (!$result) {
+			echo 'Error';
+			exit;
+		}
+		else {
+			while ($row = icms::$xoopsDB->fetchArray($result)) {
+				foreach ($row as $key => $count) {
+					$programme_count = $count;
+				}
+			}
+			return $programme_count;
+		}
+	}
+	
+	/*
+	 * Retrieves a list of programmes for a given tag, formatted for user-side display
+	 * 
+	 * @return array programmes
+	 */
+	public function getProgrammesForTag($tag_id, $count, $start)
+	{
+		// Sanitise the parameters
+		$clean_tag_id = isset($tag_id) ? (int)$tag_id : 0 ;
+		$programme_count = isset($count) ? (int)$count : 0 ;
+		$clean_start = isset($start) ? (int)$start : 0 ;
+			
+		$podcast_programme_summaries = array();
+		$podcastModule = $this->getModuleInfo();
+		
+		$query = $rows = '';
+		$linked_programme_ids = array();
+		$sprockets_taglink_handler = icms_getModuleHandler('taglink', 'sprockets', 'sprockets');
+		
+		// Build the query
+		$query = "SELECT * FROM " . $this->table . ", "
+				. $sprockets_taglink_handler->table
+				. " WHERE `programme_id` = `iid`"
+				. " AND `online_status` = '1'"
+				. " AND `tid` = '" . $clean_tag_id . "'"
+				. " AND `mid` = '" . $podcastModule->getVar('mid') . "'"
+				. " AND `item` = 'programme'";
+		switch ($podcastModule->config['programmes_sort_preference']) {
+			case "0": // sort programmes by title
+				$query .= " ORDER BY `title` ASC";
+				break;
+			case "1": // sort programmes by submission date (ascending)
+				$query .= " ORDER BY `submisstion_time` ASC";
+				break;
+			case "2": // sort programmes by submission date (descending)
+				$query .= " ORDER BY `submisstion_time` DESC";
+				break;
+		}
+		
+		// Execute thequery and process
+		$query .= " LIMIT " . $clean_start . ", " . $podcastModule->config['number_programmes_per_page'];
+		$result = icms::$xoopsDB->query($query);
+		if (!$result) {
+			echo 'Error';
+			exit;
+		} else {
+			// Retrieve programmes as objects, with id as key, and prepare for display
+			$rows = $this->convertResultSet($result, TRUE, TRUE);
+			foreach ($rows as $programme) {
+				$podcast_programme_summaries[$programme->getVar('programme_id')] = $programme;
+			}
+			return $podcast_programme_summaries;
+		}
+	}
 
 	/**
 	 * Returns a list of programmes
@@ -137,7 +225,8 @@ class PodcastProgrammeHandler extends icms_ipf_Handler {
 	}
 
 	/**
-	 * Sends notifications to subscribers, triggered after programme is inserted or updated
+	 * Sends notifications to subscribers, triggered after programme is inserted or updated, handles
+	 * taglinks
 	 *
 	 * @param obj $obj PodcastProgramme object
 	 * @return obj
@@ -149,14 +238,27 @@ class PodcastProgrammeHandler extends icms_ipf_Handler {
 			$this->insert ($obj);
 		}
 		
+		// Handle taglinks. Only update the taglinks if the object is being updated from the 
+		// add/edit form (POST). Database updates are not permitted from GET requests and will 
+		// trigger an error
+		$sprocketsModule = icms::handler("icms_module")->getByDirname("sprockets");
+		if ($_SERVER['REQUEST_METHOD'] == 'POST' && icms_get_module_status("sprockets")) {
+			$sprockets_taglink_handler = '';
+			 $sprockets_taglink_handler = icms_getModuleHandler('taglink',
+					 $sprocketsModule->getVar('dirname'), $sprocketsModule->getVar('dirname'), 
+					 'sprockets');
+			 // Store tags
+			 $sprockets_taglink_handler->storeTagsForObject($obj, 'tag', '0');
+		}
+		
 		// Clear cache
-		$this->clear_cache(& $obj);	
+		$this->clear_cache($obj);	
 		
 		return true;
 	}
 
 	/**
-	 * Deletes notification subscriptions after an object is deleted
+	 * Deletes taglinks and notification subscriptions after an object is deleted
 	 *
 	 * @global mixed $icmsModule
 	 * @param obj $obj PodcastProgramme object
@@ -170,12 +272,24 @@ class PodcastProgrammeHandler extends icms_ipf_Handler {
 		$module_id = $module->getVar('mid');
 		$category = 'programme';
 		$item_id = $obj->id();
+		
+		// Delete taglinks
+		$sprocketsModule = $notification_handler = $module_handler = $module = $module_id
+                    = $tag = $item_id = '';
+		$sprocketsModule = icms_getModuleInfo('sprockets');
+
+		// Delete taglinks
+		if (icms_get_module_status("sprockets")) {
+			 $sprockets_taglink_handler = icms_getModuleHandler('taglink',
+					   $sprocketsModule->getVar('dirname'), 'sprockets');
+			 $sprockets_taglink_handler->deleteAllForObject($obj);
+		}
 
 		// delete programme bookmarks
 		$notification_handler->unsubscribeByItem($module_id, $category, $item_id);
 		
 		// Clear cache
-		$this->clear_cache(& $obj);	
+		$this->clear_cache($obj);	
 
 		return true;
 	}

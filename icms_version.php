@@ -181,6 +181,14 @@ $modversion['config'][1] = array(
 	'default' =>  '1');
 
 $modversion['config'][] = array(
+	'name' => 'podcast_select_box',
+	'title' => '_MI_PODCAST_SELECT_BOX',
+	'description' => '_MI_PODCAST_SELECT_BOX_DSC',
+	'formtype' => 'yesno',
+	'valuetype' => 'int',
+	'default' =>  '1');
+
+$modversion['config'][] = array(
 	'name' => 'podcast_enable_archive',
 	'title' => '_MI_PODCAST_ENABLE_ARCHIVE',
 	'description' => '_MI_PODCAST_ENABLE_ARCHIVE_DSC',

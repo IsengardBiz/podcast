@@ -27,14 +27,17 @@ class PodcastProgramme extends icms_ipf_seo_Object {
 
 		$this->quickInitVar('programme_id', XOBJ_DTYPE_INT, true);
 		$this->quickInitVar('title', XOBJ_DTYPE_TXTBOX, true);
+		$this->quickInitVar('creator', XOBJ_DTYPE_TXTBOX, true);
 		$this->quickInitVar('publisher', XOBJ_DTYPE_TXTBOX, false);
 		$this->quickInitVar('date', XOBJ_DTYPE_LTIME, true);
+		$this->initNonPersistableVar('tag', XOBJ_DTYPE_INT, 'tag', FALSE, FALSE, FALSE, TRUE);
 		$this->quickInitVar('description', XOBJ_DTYPE_TXTAREA, false);
 		$this->quickInitVar('compact_view', XOBJ_DTYPE_INT, true, false, false, 0);
 		$this->quickInitVar('sort_order', XOBJ_DTYPE_TXTBOX, true, false, false, 0);
 		$this->quickInitVar('cover', XOBJ_DTYPE_IMAGE, false);
 		$this->quickInitVar('type', XOBJ_DTYPE_TXTBOX, TRUE, FALSE, FALSE, 'Text');
 		$this->quickInitVar('submission_time', XOBJ_DTYPE_LTIME, true);
+		$this->quickInitVar('online_status', XOBJ_DTYPE_INT, TRUE, FALSE, FALSE, 1);
 		$this->quickInitVar('oai_identifier', XOBJ_DTYPE_TXTBOX, true, false, false,
 		$this->handler->setOaiId());
 		$this->initCommonVar('counter');
@@ -44,7 +47,27 @@ class PodcastProgramme extends icms_ipf_seo_Object {
 		$this->quickInitVar ('programme_notification_sent', XOBJ_DTYPE_INT);
 
 		$this->IcmsPersistableSeoObject();
-
+		
+		// Only display the tag fields if the sprockets module is installed
+		$sprocketsModule = icms_getModuleInfo('sprockets');
+		if (icms_get_module_status("sprockets"))
+		{
+			 $this->setControl('tag', array(
+			 'name' => 'selectmulti',
+			 'itemHandler' => 'tag',
+			 'method' => 'getTags',
+			 'module' => 'sprockets'));
+		}
+		else
+		{
+			 $this->hideFieldFromForm('tag');
+			 $this->hideFieldFromSingleView ('tag');
+		}
+		
+		// Hide the online_status field, as it is always on for this object (at least for now)
+		$this->hideFieldFromForm('online_status');
+		$this->hideFieldFromSingleView('online_status');
+		
 		$this->setControl('description', 'dhtmltextarea');
 
 		$this->setControl('cover', array('name' => 'image'));
@@ -84,6 +107,23 @@ class PodcastProgramme extends icms_ipf_seo_Object {
 		}
 		return parent :: getVar($key, $format);
 	}
+	
+	/**
+     * Load tags linked to this programme
+     *
+     * @return void
+     */
+     public function loadTags() {
+          
+          $ret = array();
+          $sprocketsModule = icms_getModuleInfo('sprockets');
+          if (icms_get_module_status("sprockets")) {
+               $sprockets_taglink_handler = icms_getModuleHandler('taglink',
+                         $sprocketsModule->getVar('dirname'), 'sprockets');
+               $ret = $sprockets_taglink_handler->getTagsForObject($this->id(), $this->handler, '0'); // label_type = 0 means only return tags
+               $this->setVar('tag', $ret);
+          }
+     }
 
 	/**
 	 * Converts the programme compact view switch to a human readable value
@@ -97,7 +137,6 @@ class PodcastProgramme extends icms_ipf_seo_Object {
 			return 'Yes';
 		}
 	}
-
 
 	/**
 	 * Converts programme sort_order into a human readable value

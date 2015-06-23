@@ -25,6 +25,7 @@ function editprogramme($programme_id = 0) {
 	$programmeObj = $podcast_programme_handler->get($programme_id);
 
 	if (!$programmeObj->isNew()) {
+		$programmeObj->loadTags();
 		$podcastModule->displayAdminMenu(1, _AM_PODCAST_PROGRAMMES . " > " . _CO_ICMS_EDITING);
 		$sform = $programmeObj->getForm(_AM_PODCAST_PROGRAMME_EDIT, 'addprogramme');
 		$sform->assign($icmsAdminTpl);
@@ -50,6 +51,13 @@ $valid_op = array ('mod','changedField','addprogramme','del','');
 
 if (isset($_GET['op'])) $clean_op = htmlentities($_GET['op']);
 if (isset($_POST['op'])) $clean_op = htmlentities($_POST['op']);
+$untagged_content = FALSE;
+if (isset($_GET['tag_id'])) {
+	if ($_GET['tag_id'] == 'untagged') {
+		$untagged_content = TRUE;
+	}
+}
+$clean_tag_id = isset($_GET['tag_id']) ? intval($_GET['tag_id']) : 0 ;
 
 /** Again, use a naming convention that indicates the source of the content of the variable */
 $clean_programme_id = isset($_GET['programme_id']) ? (int) $_GET['programme_id'] : 0 ;
@@ -95,9 +103,62 @@ if (in_array($clean_op,$valid_op,true)) {
 					$programmeObj->displaySingleObject();
 				}
 			}
+			
+			// display a tag select filter (if the Sprockets module is installed)
+			$podcastModule = icms_getModuleInfo(basename(dirname(dirname(__FILE__))));
+			$sprocketsModule = icms_getModuleInfo('sprockets');
+
+			if (icms_get_module_status("sprockets")) {
+				$tag_select_box = '';
+				$taglink_array = $tagged_programme_list = array();
+				$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
+					'sprockets');
+				$sprockets_taglink_handler = icms_getModuleHandler('taglink',
+						$sprocketsModule->getVar('dirname'), 'sprockets');
+				if ($untagged_content) {
+					$tag_select_box = $sprockets_tag_handler->getTagSelectBox('programme.php', 
+							'untagged', _AM_PODCAST_PROGRAMME_ALL_PROGRAMMES, FALSE, 
+							icms::$module->getVar('mid'), 'programme', TRUE);
+				} else {
+					$tag_select_box = $sprockets_tag_handler->getTagSelectBox('programme.php', 
+							$clean_tag_id, _AM_PODCAST_PROGRAMME_ALL_PROGRAMMES, FALSE, 
+							icms::$module->getVar('mid'), 'programme', TRUE);
+				}
+				if (!empty($tag_select_box)) {
+					echo '<h3>' . _AM_PODCAST_PROGRAMME_FILTER_BY_TAG . '</h3>';
+					echo $tag_select_box;
+				}
+
+				if ($untagged_content || $clean_tag_id) {
+
+					// get a list of programme IDs belonging to this tag
+					$criteria = new icms_db_criteria_Compo();
+					if ($untagged_content) {
+						$criteria->add(new icms_db_criteria_Item('tid', 0));
+					} else {
+						$criteria->add(new icms_db_criteria_Item('tid', $clean_tag_id));
+					}
+					$criteria->add(new icms_db_criteria_Item('mid', $podcastModule->getVar('mid')));
+					$criteria->add(new icms_db_criteria_Item('item', 'programme'));
+					$taglink_array = $sprockets_taglink_handler->getObjects($criteria);
+					foreach ($taglink_array as $taglink) {
+						$tagged_programme_list[] = $taglink->getVar('iid');
+					}
+					$tagged_programme_list = "('" . implode("','", $tagged_programme_list) . "')";
+
+					// use the list to filter the persistable table
+					$criteria = new icms_db_criteria_Compo();
+					$criteria->add(new icms_db_criteria_Item('programme_id', $tagged_programme_list, 'IN'));
+				}
+			}
+			
+			// Clear criteria associated with any taglist, if it is empty
+			if (empty($criteria)) {
+				$criteria = null;
+			}
 
 			// display a summary table
-			$objectTable = new icms_ipf_view_Table($podcast_programme_handler);
+			$objectTable = new icms_ipf_view_Table($podcast_programme_handler, $criteria);
 			$objectTable->addColumn(new icms_ipf_view_Column('title'));
 			$objectTable->addColumn(new icms_ipf_view_Column('date'));
 			$objectTable->addColumn(new icms_ipf_view_Column('publisher'));
