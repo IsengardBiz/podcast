@@ -105,7 +105,6 @@ if (in_array($clean_op,$valid_op,true)) {
 			}
 			
 			// display a tag select filter (if the Sprockets module is installed)
-			$podcastModule = icms_getModuleInfo(basename(dirname(dirname(__FILE__))));
 			$sprocketsModule = icms_getModuleInfo('sprockets');
 
 			if (icms_get_module_status("sprockets")) {

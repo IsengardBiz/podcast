@@ -54,6 +54,14 @@ if (isset($_POST['op'])) $clean_op = htmlentities($_POST['op']);
 
 /** Again, use a naming convention that indicates the source of the content of the variable */
 $clean_soundtrack_id = isset($_GET['soundtrack_id']) ? (int) $_GET['soundtrack_id'] : 0 ;
+if (isset($_POST['op'])) $clean_op = htmlentities($_POST['op']);
+$untagged_content = FALSE;
+if (isset($_GET['tag_id'])) {
+	if ($_GET['tag_id'] == 'untagged') {
+		$untagged_content = TRUE;
+	}
+}
+$clean_tag_id = isset($_GET['tag_id']) ? intval($_GET['tag_id']) : 0 ;
 
 if (in_array($clean_op,$valid_op,true)) {
 	switch ($clean_op) {
@@ -123,8 +131,61 @@ if (in_array($clean_op,$valid_op,true)) {
 			$system_mimetype_handler = icms_getModuleHandler('mimetype', 'system');
 			$sources = $podcast_programme_handler->getObjects(null, true);
 			$formats = $system_mimetype_handler->getObjects(null, true);
+			
+			// display a tag select filter (if the Sprockets module is installed)
+			$sprocketsModule = icms_getModuleInfo('sprockets');
 
-			$objectTable = new icms_ipf_view_Table($podcast_soundtrack_handler);
+			if (icms_get_module_status("sprockets")) {
+				$tag_select_box = '';
+				$taglink_array = $tagged_soundtrack_list = array();
+				$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
+					'sprockets');
+				$sprockets_taglink_handler = icms_getModuleHandler('taglink',
+						$sprocketsModule->getVar('dirname'), 'sprockets');
+				if ($untagged_content) {
+					$tag_select_box = $sprockets_tag_handler->getTagSelectBox('soundtrack.php', 
+							'untagged', _AM_PODCAST_SOUNDTRACK_ALL_SOUNDTRACKS, FALSE, 
+							icms::$module->getVar('mid'), 'soundtrack', TRUE);
+				} else {
+					$tag_select_box = $sprockets_tag_handler->getTagSelectBox('soundtrack.php', 
+							$clean_tag_id, _AM_PODCAST_SOUNDTRACK_ALL_SOUNDTRACKS, FALSE, 
+							icms::$module->getVar('mid'), 'soundtrack', TRUE);
+				}
+				if (!empty($tag_select_box)) {
+					echo '<h3>' . _AM_PODCAST_PROGRAMME_FILTER_BY_TAG . '</h3>';
+					echo $tag_select_box;
+				}
+
+				if ($untagged_content || $clean_tag_id) {
+
+					// get a list of soundtrack IDs belonging to this tag
+					$criteria = new icms_db_criteria_Compo();
+					if ($untagged_content) {
+						$criteria->add(new icms_db_criteria_Item('tid', 0));
+					} else {
+						$criteria->add(new icms_db_criteria_Item('tid', $clean_tag_id));
+					}
+					$criteria->add(new icms_db_criteria_Item('mid', $podcastModule->getVar('mid')));
+					$criteria->add(new icms_db_criteria_Item('item', 'soundtrack'));
+					$taglink_array = $sprockets_taglink_handler->getObjects($criteria);
+					foreach ($taglink_array as $taglink) {
+						$tagged_soundtrack_list[] = $taglink->getVar('iid');
+					}
+					$tagged_soundtrack_list = "('" . implode("','", $tagged_soundtrack_list) . "')";
+
+					// use the list to filter the persistable table
+					$criteria = new icms_db_criteria_Compo();
+					$criteria->add(new icms_db_criteria_Item('soundtrack_id', $tagged_soundtrack_list, 'IN'));
+				}
+			}
+			
+			// Clear criteria associated with any taglist, if it is empty
+			if (empty($criteria)) {
+				$criteria = null;
+			}
+			
+			// Display a summary table
+			$objectTable = new icms_ipf_view_Table($podcast_soundtrack_handler, $criteria);
 			$objectTable->addColumn(new icms_ipf_view_Column('online_status', 'center', true));
 			$objectTable->addColumn(new icms_ipf_view_Column('title'));
 			$objectTable->addColumn(new icms_ipf_view_Column('format', _GLOBAL_LEFT, false,
