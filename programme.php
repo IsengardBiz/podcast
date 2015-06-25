@@ -294,13 +294,13 @@ if ($programmeObj && !$programmeObj->isNew()) {
 			'podcast');
 	$podcast_soundtrack_handler = icms_getModuleHandler('soundtrack', basename(dirname(__FILE__)),
 			'podcast');
+	$podcastModule = icms::handler("icms_module")->getByDirname("podcast");
 	
 	// Optional tagging support (only if Sprockets module installed)
-	$sprocketsModule = icms::handler("icms_module")->getByDirname("sprockets");
-	$podcastModule = icms::handler("icms_module")->getByDirname("podcast");
 	if (icms_get_module_status("sprockets")) {
 		
 		// Prepare common Sprockets handlers and buffers
+		$sprocketsModule = icms::handler("icms_module")->getByDirname("sprockets");
 		icms_loadLanguageFile("sprockets", "common");
 		$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
 				'sprockets');

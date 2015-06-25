@@ -22,6 +22,13 @@ $podcast_soundtrack_handler = icms_getModuleHandler('soundtrack',
 /** Use a naming convention that indicates the source of the content of the variable */
 $clean_soundtrack_id = isset($_GET['soundtrack_id']) ? intval($_GET['soundtrack_id']) : 0 ;
 $clean_m3u_flag = isset($_GET['m3u_flag']) ? intval($_GET['m3u_flag']) : 0;
+$untagged_content = FALSE;
+if (isset($_GET['tag_id'])) {
+	if ($_GET['tag_id'] == 'untagged') {
+		$untagged_content = TRUE;
+	}
+}
+$clean_tag_id = isset($_GET['tag_id']) ? intval($_GET['tag_id']) : 0 ;
 
 $soundtrackObj = $podcast_soundtrack_handler->get($clean_soundtrack_id);
 
@@ -198,17 +205,82 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 		$icms_metagen->createMetaTags();
 	}
 } else {
-	// list soundtracks
+	// List soundtracks
+
+	// Optional tagging support (only if Sprockets module installed)
+	if (icms_get_module_status("sprockets")) {
+		$sprocketsModule = icms::handler("icms_module")->getByDirname("sprockets");
+		$sprockets_tag_handler = icms_getModuleHandler("tag", "sprockets", "sprockets");
+		$sprockets_taglink_handler = icms_getModuleHandler("taglink", "sprockets", "sprockets");
+		
+		// Prepare common Sprockets handlers and buffers
+		icms_loadLanguageFile("sprockets", "common");
+		$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
+				'sprockets');
+		$sprockets_taglink_handler = icms_getModuleHandler('taglink', 
+				$sprocketsModule->getVar('dirname'), 'sprockets');
+		$sprockets_tag_buffer = $sprockets_tag_handler->getTagBuffer(TRUE);
+		
+		// Display a tag select box
+		if (icms::$module->config['podcast_select_box'] == TRUE) {
+			if ($untagged_content) {
+				$tag_select_box = $sprockets_tag_handler->getTagSelectBox('soundtrack.php', 
+						'untagged', _CO_PODCAST_ALL_TAGS, TRUE, 
+						icms::$module->getVar('mid'), 'soundtrack', TRUE);
+			} else {
+				$tag_select_box = $sprockets_tag_handler->getTagSelectBox('soundtrack.php', 
+						$clean_tag_id, _CO_PODCAST_ALL_TAGS, TRUE, 
+						icms::$module->getVar('mid'), 'soundtrack', TRUE);
+			}
+			
+			// Append the tag to the breadcrumb title
+			if (array_key_exists($clean_tag_id, $sprockets_tag_buffer) && ($clean_tag_id !== 0)) {
+				$podcast_tag_name = $sprockets_tag_buffer[$clean_tag_id]->getVar('title');
+				$icmsTpl->assign('podcast_tag_name', $podcast_tag_name);
+				$icmsTpl->assign('podcast_category_path', '<a href="soundtrack.php">' 
+						. _CO_PODCAST_PROGRAMME_SOUNDTRACKS . '</a> &gt; ' 
+						. $sprockets_tag_buffer[$clean_tag_id]->getVar('title'));
+			} elseif ($untagged_content) {
+				$icmsTpl->assign('podcast_tag_name', _CO_PODCAST_PROGRAMME_UNTAGGED);
+				$icmsTpl->assign('podcast_category_path', '<a href="soundtrack.php">' 
+						. _CO_PODCAST_PROGRAMME_SOUNDTRACKS . '</a> &gt; ' 
+						. _CO_PODCAST_PROGRAMME_UNTAGGED);
+			}
+			
+			$icmsTpl->assign('podcast_select_box', $tag_select_box);
+		}
+	}
+	
+	// Optionally filter soundtracks by tag
+	if (icms_get_module_status("sprockets") && ($clean_tag_id || $untagged_content)) {
+		$podcastModule = icms::handler("icms_module")->getByDirname("podcast");
+		$criteria = new icms_db_criteria_Compo();
+		$criteria->add(new icms_db_criteria_Item('tid', $clean_tag_id));
+		$criteria->add(new icms_db_criteria_Item('mid', $podcastModule->getVar('mid')));
+		$criteria->add(new icms_db_criteria_Item('item', 'soundtrack'));
+		// Is this scalable to thousands of records? A manual query would use less resources
+		$taglink_array = $sprockets_taglink_handler->getObjects($criteria);
+		foreach ($taglink_array as $taglink) {
+			 $tagged_soundtrack_list[] = $taglink->getVar('iid');
+		}
+		unset($criteria);
+		
+		// Use the tagged message IDs as a filter criteria
+		$tagged_soundtrack_list = "('" . implode("','", $tagged_soundtrack_list) . "')";
+	}
+
 	// prepare buffers to minimise queries
 	$podcast_programme_handler = icms_getModuleHandler('programme',
 			basename(dirname(__FILE__)), 'podcast');
 	$system_mimetype_handler = icms_getModuleHandler('mimetype', 'system');
 	$sources = $podcast_programme_handler->getObjects(null, true);
 	$formats = $system_mimetype_handler->getObjects(null, true);
-
-	$icmsTpl->assign('podcast_title', _MD_PODCAST_ALL_SOUNDTRACKS);
-
+	
+	// Retrieve soundtracks
 	$criteria = new icms_db_criteria_Compo();
+	if (!empty($tagged_soundtrack_list)) {
+		$criteria->add(new icms_db_criteria_Item('soundtrack_id', $tagged_soundtrack_list, 'IN'));
+	}
 	$criteria->add(new icms_db_criteria_Item('online_status', true));
 	$objectTable = new icms_ipf_view_Table($podcast_soundtrack_handler, $criteria, array(), true);
 	$objectTable->isForUserSide();
@@ -229,8 +301,11 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 	$icmsTpl->assign('podcast_soundtrack_table', $objectTable->fetch());
 }
 
+$icmsTpl->assign('podcast_title', _MD_PODCAST_ALL_SOUNDTRACKS);
 $icmsTpl->assign('podcast_module_home', podcast_getModuleName(true, true));
 $icmsTpl->assign('podcast_display_breadcrumb', $podcastConfig['display_breadcrumb']);
-$icmsTpl->assign('podcast_category_path', _CO_PODCAST_PROGRAMME_SOUNDTRACKS);
+if(!$clean_tag_id) {
+	$icmsTpl->assign('podcast_category_path', _CO_PODCAST_PROGRAMME_SOUNDTRACKS);
+}
 
 include_once 'footer.php';
