@@ -209,12 +209,8 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 
 	// Optional tagging support (only if Sprockets module installed)
 	if (icms_get_module_status("sprockets")) {
-		$sprocketsModule = icms::handler("icms_module")->getByDirname("sprockets");
-		$sprockets_tag_handler = icms_getModuleHandler("tag", "sprockets", "sprockets");
-		$sprockets_taglink_handler = icms_getModuleHandler("taglink", "sprockets", "sprockets");
-		
-		// Prepare common Sprockets handlers and buffers
 		icms_loadLanguageFile("sprockets", "common");
+		$sprocketsModule = icms::handler("icms_module")->getByDirname("sprockets");
 		$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
 				'sprockets');
 		$sprockets_taglink_handler = icms_getModuleHandler('taglink', 
@@ -304,8 +300,9 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 $icmsTpl->assign('podcast_title', _MD_PODCAST_ALL_SOUNDTRACKS);
 $icmsTpl->assign('podcast_module_home', podcast_getModuleName(true, true));
 $icmsTpl->assign('podcast_display_breadcrumb', $podcastConfig['display_breadcrumb']);
-if(!$clean_tag_id) {
-	$icmsTpl->assign('podcast_category_path', _CO_PODCAST_PROGRAMME_SOUNDTRACKS);
+if(!$clean_tag_id && !$untagged_content) {
+	$icmsTpl->assign('podcast_category_path', '<a href="soundtrack.php">' 
+			. _CO_PODCAST_PROGRAMME_SOUNDTRACKS . '</a>');
 }
 
 include_once 'footer.php';

@@ -86,10 +86,10 @@ class PodcastProgrammeHandler extends icms_ipf_Handler {
 				$query .= " ORDER BY `title` ASC";
 				break;
 			case "1": // sort programmes by submission date (ascending)
-				$query .= " ORDER BY `submisstion_time` ASC";
+				$query .= " ORDER BY `submission_time` ASC";
 				break;
 			case "2": // sort programmes by submission date (descending)
-				$query .= " ORDER BY `submisstion_time` DESC";
+				$query .= " ORDER BY `submission_time` DESC";
 				break;
 		}
 		

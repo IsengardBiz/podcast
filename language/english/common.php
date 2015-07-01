@@ -146,3 +146,4 @@ define("_CO_PODCAST_PROGRAMME_CREATOR", "Creator");
 define("_CO_PODCAST_PROGRAMME_CREATOR_DSC", "The author of this work, if any.");
 define("_CO_PODCAST_ALL_TAGS", "-- All tags --");
 define("_CO_PODCAST_PROGRAMME_UNTAGGED", "Untagged");
+define("_CO_PODCAST_SOUNDTRACK_NOTHING", "Nothing to display.");

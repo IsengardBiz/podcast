@@ -37,6 +37,7 @@ $clean_programme_id = $sort_order = '';
 $podcastModule = icms_getModuleInfo(basename(dirname(__FILE__)));
 
 $clean_programme_id = isset($_GET['programme_id']) ? intval($_GET['programme_id']) : false;
+$clean_tag_id = !empty($_GET['tag_id']) ? intval($_GET['tag_id']) : FALSE;
 $clean_start = isset($_GET['start']) ? intval($_GET['start']) : false;
 $clean_limit = isset($_GET['limit']) ? intval($_GET['limit']) : false;
 
@@ -50,7 +51,7 @@ $podcast_programme_handler =
 	icms_getModuleHandler('programme', basename(dirname(__FILE__)), 'podcast');
 
 // generates a feed of recent soundtracks across all programmes
-if (empty($clean_programme_id)) {
+if (empty($clean_programme_id) && empty($clean_tag_id)) {
 	$programme_title = _CO_PODCAST_NEW;
 	$site_name = encode_entities($icmsConfig['sitename']);
 
@@ -70,34 +71,93 @@ if (empty($clean_programme_id)) {
 	}
 	$podcast_feed->width = $width;
 	$podcast_feed->atom_link = '"' . PODCAST_URL . 'rss.php"';
+	
+	$soundtrackArray = $podcast_soundtrack_handler->getProgrammeSoundtracks($clean_start,
+	$clean_limit, $clean_programme_id, $sort_order);
 
-} else { // generates a feed for a specific programme
+} else { // generates a feed for a specific programme or tag
+	
+	// Generate a programme-specific feed
+	if ($clean_programme_id) {
+		// need to remove html tags and problematic characters to meet RSS spec
+		$programmeObj = $podcast_programme_handler->get($clean_programme_id);
+		$site_name = encode_entities($icmsConfig['sitename']);
+		$programme_title = encode_entities($programmeObj->getVar('title'));
+		$programme_description = strip_tags($programmeObj->getVar('description'));
+		$programme_description = encode_entities($programme_description);
+		$url = $programmeObj->getImageDir() . $programmeObj->getVar('cover');
+		$url = encode_entities($url);
 
-	// need to remove html tags and problematic characters to meet RSS spec
-	$programmeObj = $podcast_programme_handler->get($clean_programme_id);
-	$site_name = encode_entities($icmsConfig['sitename']);
-	$programme_title = encode_entities($programmeObj->getVar('title'));
-	$programme_description = strip_tags($programmeObj->getVar('description'));
-	$programme_description = encode_entities($programme_description);
-	$url = $programmeObj->getImageDir() . $programmeObj->getVar('cover');
-	$url = encode_entities($url);
+		$podcast_feed->title = $site_name . ' - ' . $programme_title;
+		$podcast_feed->url = PODCAST_URL . 'programme.php?programme_id=' . $programmeObj->id();
+		$podcast_feed->description = $programme_description;
+		$podcast_feed->language = icms::$module->config['default_language'];
+		$podcast_feed->charset = _CHARSET;
+		$podcast_feed->category = $podcastModule->getVar('name');
 
-	$podcast_feed->title = $site_name . ' - ' . $programme_title;
-	$podcast_feed->url = PODCAST_URL . 'programme.php?programme_id=' . $programmeObj->id();
-	$podcast_feed->description = $programme_description;
-	$podcast_feed->language = icms::$module->config['default_language'];
-	$podcast_feed->charset = _CHARSET;
-	$podcast_feed->category = $podcastModule->getVar('name');
+		$url = $programmeObj->getImageDir() . $programmeObj->getVar('cover');
+		$podcast_feed->image = array('title' => $podcast_feed->title, 'url' => $url,
+				'link' => PODCAST_URL . 'programme.php?programme_id=' . $programmeObj->id());
+		$width = icms::$module->config['screenshot_width'];
+		if ($width > 144) {
+			$width = 144;
+		}
+		$podcast_feed->width = $width;
+		$podcast_feed->atom_link = '"' . PODCAST_URL . 'rss.php?programme_id=' . $programmeObj->id() . '"';
+		
+		$soundtrackArray = $podcast_soundtrack_handler->getProgrammeSoundtracks($clean_start,
+		$clean_limit, $clean_programme_id, $sort_order);
+	} else {
+		// Generate a tag-specific feed
+		if (icms_get_module_status("sprockets") && $clean_tag_id) {
+			$sprocketsModule = icms_getModuleInfo('sprockets');
+			$sprockets_taglink_handler = icms_getModuleHandler('taglink',
+					$sprocketsModule->getVar('dirname'), 'sprockets');
+			$sprockets_tag_handler = icms_getModuleHandler('tag',
+					$sprocketsModule->getVar('dirname'), 'sprockets');
 
-	$url = $programmeObj->getImageDir() . $programmeObj->getVar('cover');
-	$podcast_feed->image = array('title' => $podcast_feed->title, 'url' => $url,
-			'link' => PODCAST_URL . 'programme.php?programme_id=' . $programmeObj->id());
-	$width = icms::$module->config['screenshot_width'];
-	if ($width > 144) {
-		$width = 144;
+			// Check that the tag exists and has RSS feeds enabled
+			$tagObj = $sprockets_tag_handler->get($clean_tag_id);
+			if (!empty($tagObj) && !$tagObj->isNew()) {
+				if ($tagObj->getVar('rss', 'e') == 1) {
+
+					// Need to remove html tags and problematic characters to meet RSS spec
+					$tagObj = $sprockets_tag_handler->get($clean_tag_id);
+					$site_name = encode_entities($icmsConfig['sitename']);
+					$tag_title = encode_entities($tagObj->getVar('title'));
+					$tag_description = strip_tags($tagObj->getVar('description'));
+					$tag_description = encode_entities($tag_description);
+
+					$news_feed->title = $site_name . ' - ' . $tag_title;
+					$news_feed->url = LIBRARY_URL . 'news.php?tag_id=' . $tagObj->getVar('tag_id');
+					$news_feed->description = $tag_description;
+					$news_feed->language = _LANGCODE;
+					$news_feed->charset = _CHARSET;
+					$news_feed->category = $podcastModule->getVar('name');
+
+					// If there's a tag icon, use it as the feed image
+					if ($tagObj->getVar('icon', 'e')) {
+						$url = $tagObj->getImageDir() . $tagObj->getVar('icon', 'e');
+					} else {
+						$url = ICMS_URL . 'images/logo.gif';
+					}
+					$news_feed->image = array('title' => $news_feed->title, 'url' => $url,
+							'link' => PODCAST_URL . 'rss.php?tag_id='
+							. $tagObj->getVar('tag_id'));
+					$news_feed->width = 144;
+					$news_feed->atom_link = '"' . PODCAST_URL . 'rss.php?tag_id=' 
+							. $tagObj->getVar('tag_id') . '"';
+
+					$soundtrackArray = $podcast_soundtrack_handler->getSoundtracksForTag($clean_tag_id, 
+							$podcastModule->config['new_items'], 0, FALSE);
+				} else {
+					exit; // RSS not enabled for this tag
+				}
+			} else {
+				exit; // Tag does not exist
+			}
+		}
 	}
-	$podcast_feed->width = $width;
-	$podcast_feed->atom_link = '"' . PODCAST_URL . 'rss.php?programme_id=' . $programmeObj->id() . '"';
 }
 
 if ($programmeObj) {
@@ -108,19 +168,14 @@ if (empty($clean_limit)) {
 	$clean_limit = icms::$module->config['new_items'];
 }
 
-$soundtrackArray = $podcast_soundtrack_handler->getProgrammeSoundtracks($clean_start,
-	$clean_limit, $clean_programme_id, $sort_order);
-
 // prepare an array of soundtracks associated with this programme
 foreach($soundtrackArray as $soundtrack) {
-	$soundtrackObj = $podcast_soundtrack_handler->get($soundtrack['soundtrack_id']);
-	$creator = $soundtrackObj->getVar('creator', 'e');
-	$creator = explode('|', $creator);
+	$creator = explode('|', $soundtrack['creator']);
 	foreach ($creator as &$individual) {
 		$individual = encode_entities($individual);
 	}
 	$description = encode_entities($soundtrack['description']);
-	$file_size = $soundtrackObj->getVar('file_size', 'e');
+	$file_size = $soundtrack['file_size'];
 	$title = encode_entities($soundtrack['title']);
 	$identifier = encode_entities($soundtrack['identifier']);
 	$link = encode_entities($soundtrack['itemUrl']);
@@ -131,12 +186,12 @@ foreach($soundtrackArray as $soundtrack) {
 		'description' => $description,
 		'author' => $creator,
 		// pubdate must be a RFC822-date-time EXCEPT with 4-digit year or the feed won't validate
-		'pubdate' => date(DATE_RSS, $soundtrackObj->getVar('date', false)),
+		'pubdate' => date(DATE_RSS, $soundtrackObj['date']),
 		'guid' => $link,
 		'category' => $programme_title,
 		// added the possibility to include media enclosures in the feed & template
 		'enclosure' => '<enclosure length="' . $file_size . '" type="'
-			. $soundtrackObj->get_mimetype() . '" url="' . $identifier . '" />'
+			. $soundtrack['mimetype'] . '" url="' . $identifier . '" />'
 	);
 }
 

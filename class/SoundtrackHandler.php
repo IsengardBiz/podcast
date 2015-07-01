@@ -28,6 +28,94 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 	public function getSoundtracks() {
 		return $this->getList();
 	}
+	
+	/*
+	 * Counts the number of (online) soundtracks for a tag to support pagination controls
+	 * 
+	 * @param int $tag_id 
+	 * 
+	 * @return int
+	 */
+	public function getSoundtrackCountForTag($tag_id)
+	{
+		// Sanitise the parameter
+		$clean_tag_id = isset($tag_id) ? (int)$tag_id : 0 ;
+		
+		$podcastModule = $this->getModuleInfo();
+		
+		$sprockets_taglink_handler = icms_getModuleHandler('taglink', 'sprockets', 'sprockets');
+		$group_query = "SELECT count(*) FROM " . $this->table . ", "
+				. $sprockets_taglink_handler->table
+				. " WHERE `soundtrack_id` = `iid`"
+				. " AND `online_status` = '1'"
+				. " AND `tid` = '" . $clean_tag_id . "'"
+				. " AND `mid` = '" . $podcastModule->getVar('mid') . "'"
+				. " AND `item` = 'soundtrack'";
+		$result = icms::$xoopsDB->query($group_query);
+		if (!$result) {
+			echo 'Error';
+			exit;
+		}
+		else {
+			while ($row = icms::$xoopsDB->fetchArray($result)) {
+				foreach ($row as $key => $count) {
+					$soundtrack_count = $count;
+				}
+			}
+			return $soundtrack_count;
+		}
+	}
+	
+	/*
+	 * Retrieves a list of soundtracks for a given tag, formatted for user-side display
+	 * 
+	 * @param int $tag_id
+	 * @param int $count
+	 * @param int $start
+	 * 
+	 * @return array soundtracks
+	 */
+	public function getSoundtracksForTag($tag_id, $count, $start, $as_object = TRUE)
+	{
+		// Sanitise the parameters
+		$clean_tag_id = isset($tag_id) ? (int)$tag_id : 0 ;
+		$soundtrack_count = isset($count) ? (int)$count : 0 ;
+		$clean_start = isset($start) ? (int)$start : 0 ;
+			
+		$podcast_soundtrack_summaries = array();
+		$podcastModule = $this->getModuleInfo();
+		
+		$query = $rows = '';
+		$linked_soundtrack_ids = array();
+		$sprockets_taglink_handler = icms_getModuleHandler('taglink', 'sprockets', 'sprockets');
+		
+		// Build the query
+		$query = "SELECT * FROM " . $this->table . ", "
+				. $sprockets_taglink_handler->table
+				. " WHERE `soundtrack_id` = `iid`"
+				. " AND `online_status` = '1'"
+				. " AND `tid` = '" . $clean_tag_id . "'"
+				. " AND `mid` = '" . $podcastModule->getVar('mid') . "'"
+				. " AND `item` = 'soundtrack'"
+				. " ORDER BY `submission_time` DESC";
+		
+		// Execute the query and process
+		$query .= " LIMIT " . $clean_start . ", " . $podcastModule->config['new_items'];
+		$result = icms::$xoopsDB->query($query);
+		if (!$result) {
+			echo 'Error';
+			exit;
+		} else {
+			// Retrieve soundtracks as objects, with id as key, and prepare for display
+			if ($as_object) {
+				$rows = $this->convertResultSet($result, TRUE, TRUE);
+			} else {
+				$rows = $this->convertResultSet($result, TRUE, FALSE);
+			}
+			
+			return $rows;
+		}
+	}
 
 	/**
      * Provides global search functionality for Podcast module, only searches soundtracks presently

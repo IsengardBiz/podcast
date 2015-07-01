@@ -339,7 +339,7 @@ if ($programmeObj && !$programmeObj->isNew()) {
 	
 	// Retrieve programmes for a given tag
 	if (($clean_tag_id || $untagged_content) && icms_get_module_status("sprockets")) {
-		// Get a count for pagination purposes
+			// Get a count for pagination purposes
 			$programme_count = $podcast_programme_handler->getProgrammeCountForTag($clean_tag_id);
 			
 			// Retrieve the objects
@@ -356,7 +356,7 @@ if ($programmeObj && !$programmeObj->isNew()) {
 			}
 			$pagenav = new icms_view_PageNav($programme_count, 
 				icms::$module->config['number_programmes_per_page'], $clean_start, 'start', $extra_arg);
-			$icmsTpl->assign('library_navbar', $pagenav->renderNav());
+			$icmsTpl->assign('podcast_navbar', $pagenav->renderNav());
 	} else {
 		// Get an untagged list of programmes considering pagination and preference requirements
 		$criteria = new icms_db_criteria_Compo();
