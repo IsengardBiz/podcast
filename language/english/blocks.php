@@ -15,3 +15,8 @@ if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
 define("_MB_PODCAST_PODCAST_RECENT_LIMIT", "Number of soundtracks to show");
 define("_MB_PODCAST_PODCAST_RECENT_PROGRAMME", "Programme to show tracks from");
 define("_MB_PODCAST_PODCAST_PROGRAMME_LIMIT", "Number of programmes to show");
+define("_MB_PODCAST_RECENT_ALL", "-- All --");
+define("_MB_PODCAST_RECENT_TAG", "Filter programmes by tag:");
+define("_MB_PODCAST_PROGRAMME_DYNAMIC_TAG", "Dynamic tag filtering (overrides the static tag filter).");		
+define("_MB_PODCAST_PROGRAMME_YES", "Yes");
+define("_MB_PODCAST_PROGRAMME_NO", "No");

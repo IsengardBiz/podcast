@@ -380,13 +380,13 @@ if ($programmeObj && !$programmeObj->isNew()) {
 				$criteria->setOrder('ASC');
 				break;
 
-			case "1": // sort programmes by submission date (ascending)
-				$criteria->setSort('submission_time');
+			case "1": // sort programmes by date (ascending)
+				$criteria->setSort('date');
 				$criteria->setOrder('ASC');
 				break;
 
-			case "2": // sort programmes by submission date (descending)
-				$criteria->setSort('submission_time');
+			case "2": // sort programmes by date (descending)
+				$criteria->setSort('date');
 				$criteria->setOrder('DESC');
 				break;
 		}
