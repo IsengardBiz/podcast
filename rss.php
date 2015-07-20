@@ -50,6 +50,10 @@ $podcast_soundtrack_handler =
 $podcast_programme_handler = 
 	icms_getModuleHandler('programme', basename(dirname(__FILE__)), 'podcast');
 
+// Buffer a list of mimetypes
+$system_mimetype_handler = icms_getModuleHandler('mimetype', 'system');
+$mimetype_buffer = $system_mimetype_handler->getObjects(null, TRUE);
+
 // generates a feed of recent soundtracks across all programmes
 if (empty($clean_programme_id) && empty($clean_tag_id)) {
 	$programme_title = _CO_PODCAST_NEW;
@@ -74,7 +78,6 @@ if (empty($clean_programme_id) && empty($clean_tag_id)) {
 	
 	$soundtrackArray = $podcast_soundtrack_handler->getProgrammeSoundtracks($clean_start,
 	$clean_limit, $clean_programme_id, $sort_order);
-
 } else { // generates a feed for a specific programme or tag
 	
 	// Generate a programme-specific feed
@@ -128,12 +131,12 @@ if (empty($clean_programme_id) && empty($clean_tag_id)) {
 					$tag_description = strip_tags($tagObj->getVar('description'));
 					$tag_description = encode_entities($tag_description);
 
-					$news_feed->title = $site_name . ' - ' . $tag_title;
-					$news_feed->url = LIBRARY_URL . 'news.php?tag_id=' . $tagObj->getVar('tag_id');
-					$news_feed->description = $tag_description;
-					$news_feed->language = _LANGCODE;
-					$news_feed->charset = _CHARSET;
-					$news_feed->category = $podcastModule->getVar('name');
+					$podcast_feed->title = $site_name . ' - ' . $tag_title;
+					$podcast_feed->url = LIBRARY_URL . 'news.php?tag_id=' . $tagObj->getVar('tag_id');
+					$podcast_feed->description = $tag_description;
+					$podcast_feed->language = _LANGCODE;
+					$podcast_feed->charset = _CHARSET;
+					$podcast_feed->category = $podcastModule->getVar('name');
 
 					// If there's a tag icon, use it as the feed image
 					if ($tagObj->getVar('icon', 'e')) {
@@ -141,15 +144,15 @@ if (empty($clean_programme_id) && empty($clean_tag_id)) {
 					} else {
 						$url = ICMS_URL . 'images/logo.gif';
 					}
-					$news_feed->image = array('title' => $news_feed->title, 'url' => $url,
+					$podcast_feed->image = array('title' => $news_feed->title, 'url' => $url,
 							'link' => PODCAST_URL . 'rss.php?tag_id='
 							. $tagObj->getVar('tag_id'));
-					$news_feed->width = 144;
-					$news_feed->atom_link = '"' . PODCAST_URL . 'rss.php?tag_id=' 
+					$podcast_feed->width = 144;
+					$podcast_feed->atom_link = '"' . PODCAST_URL . 'rss.php?tag_id=' 
 							. $tagObj->getVar('tag_id') . '"';
 
 					$soundtrackArray = $podcast_soundtrack_handler->getSoundtracksForTag($clean_tag_id, 
-							$podcastModule->config['new_items'], 0, FALSE);
+							$podcastModule->config['new_items'], 0, TRUE);
 				} else {
 					exit; // RSS not enabled for this tag
 				}
@@ -169,29 +172,28 @@ if (empty($clean_limit)) {
 }
 
 // prepare an array of soundtracks associated with this programme
-foreach($soundtrackArray as $soundtrack) {
-	$creator = explode('|', $soundtrack['creator']);
+foreach($soundtrackArray as &$soundtrack) {
+	$creator = explode('|', $soundtrack->getVar('creator', 'e'));
 	foreach ($creator as &$individual) {
 		$individual = encode_entities($individual);
 	}
-	$description = encode_entities($soundtrack['description']);
-	$file_size = $soundtrack['file_size'];
-	$title = encode_entities($soundtrack['title']);
-	$identifier = encode_entities($soundtrack['identifier']);
-	$link = encode_entities($soundtrack['itemUrl']);
-
+	$description = encode_entities($soundtrack->getVar('description'));
+	$file_size = intval($soundtrack->getVar('file_size', 'e'));
+	$title = encode_entities($soundtrack->getVar('title'));
+	$identifier = encode_entities($soundtrack->getVar('identifier'));
+	$link = PODCAST_URL . '/soundtrack.php?soundtrack_id=' . $soundtrack->getVar('soundtrack_id');
 	$podcast_feed->feeds[] = array (
 		'title' => $title,
 		'link' => $link,
 		'description' => $description,
 		'author' => $creator,
 		// pubdate must be a RFC822-date-time EXCEPT with 4-digit year or the feed won't validate
-		'pubdate' => date(DATE_RSS, $soundtrackObj['date']),
+		'pubdate' => date(DATE_RSS, $soundtrack->getVar('date', 'e')),
 		'guid' => $link,
 		'category' => $programme_title,
 		// added the possibility to include media enclosures in the feed & template
 		'enclosure' => '<enclosure length="' . $file_size . '" type="'
-			. $soundtrack['mimetype'] . '" url="' . $identifier . '" />'
+			. $soundtrack->get_mimetype() . '" url="' . $identifier . '" />'
 	);
 }
 
@@ -199,5 +201,4 @@ foreach($soundtrackArray as $soundtrack) {
 // single and double quotes in programme title generate no-html-recommended warnings
 // (although feed is valid). It looks like the quotes are converted to html entities during
 // template assignment which is downstream of this file - can this behaviour be overridden?
-
 $podcast_feed->render();

@@ -8,7 +8,7 @@
 </h3>
 <{/if}>
 <{if $podcast_programme.date || $podcast_programme.publisher || $podcast_programme.rss || $podcast_programme.track_count || $podcast_programme.counter || $podcast_programme.play_all_button}>
-<div class="podcast_info">
+<div class="itemInfo">
 	<{if $podcast_programme.date}>
 	<{$smarty.const._CO_PODCAST_PROGRAMME_DATE}>: <{$podcast_programme.date}>
 	<{/if}>
@@ -32,6 +32,9 @@
 	|
 	<{/if}>
 	<{if $podcast_programme.play_all_button}><{$podcast_programme.play_all_button}><{/if}>
+</div>
+<div class="itemInfo">
+	<{if $podcast_programme.tags}><{$smarty.const._CO_PODCAST_SOUNDTRACK_TAG}>: <{$podcast_programme.tags}><{/if}>
 </div>
 <{/if}>
 <{if $podcast_programme.cover_path}>

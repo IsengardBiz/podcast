@@ -33,6 +33,24 @@ $clean_tag_id = isset($_GET['tag_id']) ? intval($_GET['tag_id']) : 0 ;
 
 $programmeObj = $podcast_programme_handler->get($clean_programme_id);
 
+// Prepare buffers to reduce query load
+$system_mimetype_handler = icms_getModuleHandler('mimetype', 'system');
+$mimetypeObjArray = $system_mimetype_handler->getObjects(null, true);
+if (icms_get_module_status("sprockets")) {
+	
+	$sprocketsModule = icms::handler("icms_module")->getByDirname("sprockets");
+	icms_loadLanguageFile("sprockets", "common");
+
+	// Prepare rights
+	$sprockets_rights_handler = icms_getModuleHandler('rights', 'sprockets', 'sprockets');
+	$rightsObjArray = $sprockets_rights_handler->getObjects(null, true);
+
+	// Prepare tags
+	$sprockets_tag_handler = icms_getModuleHandler('tag', 'sprockets', 'sprockets');
+	$sprockets_taglink_handler = icms_getModuleHandler('taglink', 'sprockets', 'sprockets');
+	$sprockets_tag_buffer = $sprockets_tag_handler->getTagBuffer(TRUE);
+}
+
 // check pagination
 $clean_start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 
@@ -164,14 +182,16 @@ if ($programmeObj && !$programmeObj->isNew()) {
 
 		// check display preferences and unset unwanted fields
 		$programme = podcast_programme_display_preferences($programme);
-
-		// buffer some data to avoid repetitive queries
-		$system_mimetype_handler = icms_getModuleHandler('mimetype', 'system');
-		$mimetypeObjArray = $system_mimetype_handler->getObjects(null, true);
-		if (icms_get_module_status("sprockets"))
-		{
-			$sprockets_rights_handler = icms_getModuleHandler('rights', 'sprockets', 'sprockets');
-			$rightsObjArray = $sprockets_rights_handler->getObjects(null, true);
+		
+		// Optional tagging support
+		if (icms_get_module_status("sprockets")) {
+			$programme_tag_array = $sprockets_taglink_handler->getTagsForObject($programme['programme_id'],
+					$podcast_programme_handler, $label_type = '0');
+			foreach ($programme_tag_array as $key => $value) {
+				$programme['tags'][$value] = '<a href="' . PODCAST_URL . 'programme.php?tag_id='
+						. $value . '">' . $sprockets_tag_buffer[$value]->getVar('title') . '</a>';
+			}
+			$programme['tags'] = implode(', ', $programme['tags']);
 		}
 
 		// retrieve the soundtracks
@@ -264,6 +284,7 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		$icmsTpl->assign('podcast_programme', $programme);
 		$icmsTpl->assign('podcast_programme_rss_button', $programmeObj->get_rss_button());
 		$icmsTpl->assign('podcast_programme_soundtracks', $soundtrack_array);
+		$icmsTpl->assign('podcast_programme_tags', $programme['tags']);
 
 		// pagination
 		$criteria = new icms_db_criteria_Compo();
@@ -298,15 +319,6 @@ if ($programmeObj && !$programmeObj->isNew()) {
 	
 	// Optional tagging support (only if Sprockets module installed)
 	if (icms_get_module_status("sprockets")) {
-		
-		// Prepare common Sprockets handlers and buffers
-		$sprocketsModule = icms::handler("icms_module")->getByDirname("sprockets");
-		icms_loadLanguageFile("sprockets", "common");
-		$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
-				'sprockets');
-		$sprockets_taglink_handler = icms_getModuleHandler('taglink', 
-				$sprocketsModule->getVar('dirname'), 'sprockets');
-		$sprockets_tag_buffer = $sprockets_tag_handler->getTagBuffer(TRUE);
 
 		// Append the tag to the breadcrumb title
 		if (array_key_exists($clean_tag_id, $sprockets_tag_buffer) && ($clean_tag_id !== 0)) {
@@ -339,24 +351,24 @@ if ($programmeObj && !$programmeObj->isNew()) {
 	
 	// Retrieve programmes for a given tag
 	if (($clean_tag_id || $untagged_content) && icms_get_module_status("sprockets")) {
-			// Get a count for pagination purposes
-			$programme_count = $podcast_programme_handler->getProgrammeCountForTag($clean_tag_id);
-			
-			// Retrieve the objects
-			$programmeObjectArray = $podcast_programme_handler->getProgrammesForTag($clean_tag_id, 
-					$programme_count, $clean_start);
-			$icmsTpl->assign('podcast_programme_array', $programmeObjectArray);
+		// Get a count for pagination purposes
+		$programme_count = $podcast_programme_handler->getProgrammeCountForTag($clean_tag_id);
 
-			// Pagination control - adust for tag (and label_type), if present
-			if ($clean_tag_id) {
-				$extra_arg = 'tag_id=' . $clean_tag_id;
-			}
-			else {
-				$extra_arg = 'tag_id=' . 'untagged';
-			}
-			$pagenav = new icms_view_PageNav($programme_count, 
-				icms::$module->config['number_programmes_per_page'], $clean_start, 'start', $extra_arg);
-			$icmsTpl->assign('podcast_navbar', $pagenav->renderNav());
+		// Retrieve the objects
+		$programmeObjectArray = $podcast_programme_handler->getProgrammesForTag($clean_tag_id, 
+				$programme_count, $clean_start);
+		$icmsTpl->assign('podcast_programme_array', $programmeObjectArray);
+
+		// Pagination control - adust for tag (and label_type), if present
+		if ($clean_tag_id) {
+			$extra_arg = 'tag_id=' . $clean_tag_id;
+		}
+		else {
+			$extra_arg = 'tag_id=' . 'untagged';
+		}
+		$pagenav = new icms_view_PageNav($programme_count, 
+			icms::$module->config['number_programmes_per_page'], $clean_start, 'start', $extra_arg);
+		$icmsTpl->assign('podcast_navbar', $pagenav->renderNav());
 	} else {
 		// Get an untagged list of programmes considering pagination and preference requirements
 		$criteria = new icms_db_criteria_Compo();
@@ -380,6 +392,14 @@ if ($programmeObj && !$programmeObj->isNew()) {
 		}
 		$programmeObjectArray = $podcast_programme_handler->getObjects($criteria);
 		$icmsTpl->assign('podcast_category_path', _CO_PODCAST_PROGRAMME_PROGRAMMES);
+	}
+	
+	if (icms_get_module_status("sprockets")) {
+		$programme_ids = array();
+		foreach ($programmeObjectArray as $progObj) {
+			$programme_ids[] = $progObj->getVar('programme_id');
+			$programme_tag_array = $sprockets_taglink_handler->getTagsForObjects($programme_ids, 'programme');
+		}
 	}
 	
 	$podcastModule = icms_getModuleInfo(basename(dirname(__FILE__)));
@@ -418,6 +438,21 @@ if ($programmeObj && !$programmeObj->isNew()) {
 
 		// check display preferences and unset unwanted fields
 		$programme = podcast_programme_display_preferences($programme);
+		
+		// Prepare the tags, need an array of programme iids
+		if (icms_get_module_status("sprockets")) {
+			$programme['tags'] = $programme_tag_array[$programme['programme_id']];
+			foreach ($programme['tags'] as $key => &$tag) {
+				$tag_id = $tag;
+				$tag = '<a href="' . PODCAST_URL . 'programme.php?tag_id='
+					. $tag_id;
+				if ($sprockets_tag_buffer[$tag_id]->getVar('short_url')) {
+					$tag .= '&amp;title=' . $sprockets_tag_buffer[$tag_id]->getVar('short_url');
+				}
+				$tag .= '">' . $sprockets_tag_buffer[$tag_id]->getVar('title') . '</a>';
+			}
+			$programme['tags'] = implode(', ', $programme['tags']);
+		}
 
 		// assign the programme to an array for user side display
 		$programmeArray[] = $programme;

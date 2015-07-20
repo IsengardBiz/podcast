@@ -214,7 +214,7 @@ class PodcastSoundtrackHandler extends icms_ipf_Handler {
 	public function getProgrammeSoundtracks($start = 0, $limit = 10, $programme_id = false,
 		$sort_order = false) {
 		$criteria = $this->getPodcastCriteria($start, $limit, $programme_id, $sort_order);
-		$ret = $this->getObjects($criteria, true, false);
+		$ret = $this->getObjects($criteria, true, true);
 		return $ret;
 	}
 
