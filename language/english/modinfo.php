@@ -148,3 +148,5 @@ define("_MI_PODCAST_JWPLAYER_HEIGHTDSC", "The height at which the inline video p
 define("_MI_PODCAST_SELECT_BOX", "Enable tag select box?");
 define("_MI_PODCAST_SELECT_BOX_DSC", "Makes a tag select box visible on the Programme and "
 		. "Soundtrack pages. Only if Sprockets module installed.");
+define("_MI_PODCAST_DATE_FORMAT", "Date format");
+define("_MI_PODCAST_DATE_FORMAT_DSC", "Formats the date field according to a template, please see the date() function in the PHP manual for instructions.");

@@ -68,7 +68,7 @@ function podcast_programmes_show($options) {
 
 		if (!$result) 
 		{
-			echo 'Error: Recent podcasts block';
+			echo 'Error: Recent programmes block';
 			exit;
 		}
 		else
@@ -93,11 +93,10 @@ function podcast_programmes_show($options) {
 
 	// Prepare programme for display
 	$programme_list = array();
-	foreach ($programmeObjects as $key => $object)
-	{
+	foreach ($programmeObjects as $key => $object) {
 		$programme = array();
 		$programme['title'] = $object->getVar('title');
-		$programme['submission_time'] = $object->getVar('submission_time');
+		$programme['date'] = date(icms_getConfig('date_format', 'podcast'), $object->getVar('date', 'e'));
 		
 		// Add SEO friendly string to URL
 		$programme['itemUrl'] = $object->getItemLink(TRUE);
@@ -111,8 +110,12 @@ function podcast_programmes_show($options) {
 		unset($short_url);
 	}
 	
-	// Assign to template
-	$block['programmes'] = $programme_list;
+	// Assign to template, or unset the block if its empty (prevents block title being displayed)
+	if(!empty($programme_list)) {
+		$block['programmes'] = $programme_list;
+	} else {
+		unset($block);
+	}
 
 	// also need to consider item permissions and status
 	return $block;

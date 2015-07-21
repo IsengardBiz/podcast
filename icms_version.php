@@ -34,7 +34,7 @@ $modversion = array(
 	/**  Development information */
 	'status_version'=> "1.34",
 	'status'=> "Beta",
-	'date'=> "24/7/2013",
+	'date'=> "21/7/2015",
 	'author_word'=> "Thanks to the makers of IPF and ImBuilding.",
 
 	/** Contributors */
@@ -616,6 +616,16 @@ $modversion['config'][] = array(
 	'formtype' => 'textbox',
 	'valuetype' => 'int',
 	'default' =>  '360');
+
+// Date format, default is the way that civilised people do it, ie. day/month/year eg. 1/12/2015
+
+$modversion['config'][] = array(
+	'name' => 'date_format',
+	'title' => '_MI_PODCAST_DATE_FORMAT',
+	'description' => '_MI_DATE_FORMATDSC',
+	'formtype' => 'textbox',
+	'valuetype' => 'text',
+	'default' => 'j/m/Y');
 
 /** Comments information */
 $modversion['hasComments'] = 1;
