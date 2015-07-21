@@ -80,7 +80,28 @@ if ($soundtrackObj && !$soundtrackObj->isNew()) {
 			. $soundtrackObj->get_m3u($soundtrackArray['itemUrl'])
 			. '" title="' . _CO_PODCAST_SOUNDTRACK_PLAY . '">'
 			. '<img src="' . PODCAST_IMAGES_URL . 'stream.png" alt="Stream soundtrack" /></a>';
-
+		
+		// Optional tagging support (only if Sprockets installed)
+		if (icms_get_module_status("sprockets")) {
+			$sprockets_tag_handler = icms_getModuleHandler('tag', 'sprockets', 'sprockets');
+			$sprockets_taglink_handler = icms_getModuleHandler('taglink', 'sprockets', 'sprockets');
+			$sprockets_tag_buffer = $sprockets_tag_handler->getTagBuffer(TRUE);
+			$tag_ids = $sprockets_taglink_handler->getTagsForObject($soundtrackArray['soundtrack_id'], 
+					$podcast_soundtrack_handler);
+			foreach ($tag_ids as $tag) {
+				$tag_id = $tag;
+				$short_url = $sprockets_tag_buffer[$tag_id]->getVar('short_url');
+				$tag = '<a href="' . PODCAST_URL . 'soundtrack.php?tag_id=' . $tag_id;
+				if (!empty($short_url)) {
+					$tag .= '&amp;title=' . $short_url;
+				}
+				$tag .= '">' . $sprockets_tag_buffer[$tag_id]->getVar('title') . '</a>';
+				$soundtrackArray['tags'][] = $tag;
+				unset($tag_id);
+			}
+			$soundtrackArray['tags'] = implode(', ', $soundtrackArray['tags']);
+		}
+echo $soundtrackArray['tags'];
 		// get relative path to document root for this ICMS install
 		$directory_name = basename(dirname(__FILE__));
 		$script_name = getenv("SCRIPT_NAME");

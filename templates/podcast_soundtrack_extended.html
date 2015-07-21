@@ -8,7 +8,7 @@
                 <h3><{$podcast_soundtrack.itemLink}></h3>
         </div>
     <{/if}>
-    <div class="podcast_info">
+    <div class="itemInfo">
         <p>
             <{if $podcast_soundtrack.creator}><{$smarty.const._CO_PODCAST_SOUNDTRACK_BY}> <{$podcast_soundtrack.creator}><{/if}><{if $podcast_soundtrack.creator && $podcast_soundtrack.date}>, <{/if}>
             <{if $podcast_soundtrack.date}><{$podcast_soundtrack.date}><{/if}>
@@ -20,6 +20,7 @@
                 && ($podcast_soundtrack.download || $podcast_soundtrack.streaming)}> | <{/if}>
             <{if $podcast_soundtrack.download}><{$podcast_soundtrack.download}><{/if}> <{if $podcast_soundtrack.streaming}><{$podcast_soundtrack.streaming}><{/if}>
             <{if $podcast_soundtrack.source}><br /><{$smarty.const._CO_PODCAST_SOUNDTRACK_SOURCE}>: <{$podcast_soundtrack.source}><{/if}>
+			<{if $podcast_soundtrack.tags}><br /><{$smarty.const._CO_PODCAST_SOUNDTRACK_TAG}>: <{$podcast_soundtrack.tags}><{/if}>
         </p>
     </div>
     <div class="podcast_separator"></div>

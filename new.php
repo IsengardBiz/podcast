@@ -149,10 +149,21 @@ if (empty($soundtrack_object_array)) {
 			$feature_item['cover_link'] = $programme['itemUrl'];
 		}
 
-		// convert rights to human readable, do lookup from buffer
-		if (icms_get_module_status("sprockets"))
-		{
+		// convert rights to human readable, do lookup from buffer; optional tagging support
+		if (icms_get_module_status("sprockets")) {
 			$feature_item['rights'] = $rightsObjArray[$feature_item['rights']]->getItemLink();
+			$feature_item['tags'] = $sprockets_taglink_handler->getTagsForObject($feature_item['soundtrack_id'], 
+					$podcast_soundtrack_handler);
+			foreach ($feature_item['tags'] as $key => &$tag) {
+				$tag_id = $tag;
+				$short_url = $sprockets_tag_buffer[$tag]->getVar('short_url');
+				$tag = '<a href="' . PODCAST_URL . 'new.php?tag_id=' . $tag_id;
+				if (!empty($short_url)) {
+					$tag .= '&amp;title=' . $short_url;
+				}
+				$tag .= '">' . $sprockets_tag_buffer[$tag_id]->getVar('title') . '</a>';
+			}
+			$feature_item['tags'] = implode(', ', $feature_item['tags']);
 		} else {
 			unset($feature_item['rights']);
 		}
