@@ -99,7 +99,7 @@ if (icms_get_module_status("sprockets") && ($clean_tag_id || $untagged_content))
 	$criteria->setSort('date');
 	$criteria->setOrder('DESC');
 	$criteria->add(new icms_db_criteria_Item('online_status', true));
-	$soundtrack_object_array = $podcast_soundtrack_handler->getObjects($criteria);
+	$soundtrack_object_array = $podcast_soundtrack_handler->getObjects($criteria, TRUE);
 }
 
 if (empty($soundtrack_object_array)) {
@@ -107,13 +107,13 @@ if (empty($soundtrack_object_array)) {
 } else {
 	// prepare buffers to avoid repetitive queries, keys match object ids
 	$system_mimetype_handler = icms_getModuleHandler('mimetype', 'system');
-	$mimetypeObjArray = $system_mimetype_handler->getObjects(null, true);
+	$mimetypeObjArray = $system_mimetype_handler->getObjects(null, TRUE);
 	if (icms_get_module_status("sprockets"))
 	{
 		$sprockets_rights_handler = icms_getModuleHandler('rights', 'sprockets', 'sprockets');
-		$rightsObjArray = $sprockets_rights_handler->getObjects(null, true);
+		$rightsObjArray = $sprockets_rights_handler->getObjects(null, TRUE);
 	}
-	$programme_object_array = $podcast_programme_handler->getObjects(null, true);
+	$programme_object_array = $podcast_programme_handler->getObjects(null, TRUE);
 	$programme_cover_array = array();
 	
 	// get the path to document root for this ICMS install
@@ -133,7 +133,9 @@ if (empty($soundtrack_object_array)) {
 	// isolate the most recent soundtrack to use as the page highlight
 	// if not starting from zero (pagination) do not show a feature item
 	if ($clean_start == 0) {
-		$feature_item_object = array_shift($soundtrack_object_array);
+		// Use reverse and pop in order to preserve the array keys - array_shift destroyes them
+		$soundtrack_object_array = array_reverse($soundtrack_object_array, TRUE);
+		$feature_item_object = array_pop($soundtrack_object_array);
 		$feature_item = $feature_item_object->toArrayWithoutOverrides();
 
 		unset($soundtrack_object_array[0]);
@@ -215,6 +217,12 @@ if (empty($soundtrack_object_array)) {
 	if (!empty($soundtrack_object_array)) {
 		$icmsTpl->assign('podcast_soundtrack_view', 'multiple');
 		
+		// Get a reference list of iids for the soundtrack objects
+		if (icms_get_module_status("sprockets") && !$podcastConfig['new_view_mode']) {
+			$soundtrack_ids = array_keys($soundtrack_object_array);
+			$soundtrack_tags = $sprockets_taglink_handler->getTagsForObjects($soundtrack_ids, 'soundtrack');
+		}
+		
 		foreach($soundtrack_object_array as $soundtrack_object) {
 			$soundtrack = $soundtrack_object->toArrayWithoutOverrides();
 
@@ -222,10 +230,24 @@ if (empty($soundtrack_object_array)) {
 			$mimetypeObj = $mimetypeObjArray[$soundtrack_object->getVar('format', 'e')];
 			$soundtrack['format'] = '.' . $mimetypeObj->getVar('extension');
 
-			// convert rights to human readable, lookup value from buffer
-			if (icms_get_module_status("sprockets"))
-			{
+			// convert rights to human readable, lookup value from buffer; optional tagging support
+			if (icms_get_module_status("sprockets")) {
 				$soundtrack['rights'] = $rightsObjArray[$soundtrack['rights']]->getItemLink();
+				
+				// Only prepare tags if extended view option is active
+				if (icms_get_module_status("sprockets") && !$podcastConfig['new_view_mode']) {
+					$soundtrack['tags'] = $soundtrack_tags[$soundtrack['soundtrack_id']];
+					foreach ($soundtrack['tags'] as $key => &$tag) {
+						$tag_id = $tag;
+						$short_url = $sprockets_tag_buffer[$tag]->getVar('short_url');
+						$tag = '<a href="' . PODCAST_URL . 'new.php?tag_id=' . $tag_id;
+						if (!empty($short_url)) {
+							$tag .= '&amp;title=' . $short_url;
+						}
+						$tag .= '">' . $sprockets_tag_buffer[$tag_id]->getVar('title') . '</a>';
+					}
+					$soundtrack['tags'] = implode(', ', $soundtrack['tags']);
+				}		
 			} else {
 				unset($soundtrack['rights']);
 			}
