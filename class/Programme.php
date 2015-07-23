@@ -88,9 +88,12 @@ class PodcastProgramme extends icms_ipf_seo_Object {
 		$this->doMakeFieldreadOnly('dohtml');
 		$this->doHideFieldFromForm('dohtml');
 
-		// hide the notification status field, its for internal use only
+		// hide the notification status and type fields, they are for internal use only
 		$this->hideFieldFromForm ('programme_notification_sent');
 		$this->hideFieldFromSingleView ('programme_notification_sent');
+		$this->hideFieldFromForm('type');
+		$this->hideFieldFromSingleView('type');
+		$this->doMakeFieldreadOnly('type');
 	}
 
 	/**
