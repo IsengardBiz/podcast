@@ -4,3 +4,18 @@
 #Podcast
 Publish podcasts and albums and stream audio recordings for 
 	ImpressCMS versions 1.2.x
+## A manual is available
+
+A manual for operation of Podcast is included in the `podcast/extras` folder. Read it!
+
+## How to install Podcast
+
+Podcast is installed as a regular ImpressCMS module, which means you should copy the complete
+`/podcast` folder into the `/modules` directory of your website. Then, log in to your site as
+administrator, go to `System Admin > Modules`, look for the Podcast icon in the list of
+uninstalled modules and click in the install icon. Follow the directions in the screen and you'll
+be ready to go.
+
+The module is designed to be zero configuration; you can start publishing soundtracks immediately
+on install, though of course you will probably want to customise the programmes/albums to suit
+your own purpose.
